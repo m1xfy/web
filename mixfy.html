@@ -1,1573 +1,700 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="light">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0" />
-  <meta name="description" content="Mixfy - Crea, mezcla y comparte melodías fácilmente con nuestra app móvil. La herramienta perfecta para productores musicales y aficionados.">
-  <title>Mixfy</title>
-  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mixfy — Crea tu música</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
-    :root {
-      --primary: #6a407f; /* Darker Purple */
-      --primary-light: #8a5da8;
-      --primary-dark: #4d2b5c; /* Darker Purple */
-      --secondary: #3d2447;
-      --accent: #d3bfdc;
-      --text: #333;
-      --text-light: #4A5568;
-      --background: #f5effc;
-      --surface: #FFFFFF;
-      --surface-light: #F1F5F9;
-      --gradient: linear-gradient(135deg, #6a407f 0%, #3d2447 100%); /* Updated Gradient */
-      --gradient-secondary: linear-gradient(135deg, #8a5da8 0%, #4d2b5c 100%); /* Updated Gradient */
-      --gradient-surface: linear-gradient(135deg, #FFFFFF 0%, #f4f1f7 100%);
-      /* Tamaños base responsivos */
-      --base-font-size: clamp(16px, 2vw, 18px);
-      --h1-size: clamp(2.5rem, 5vw, 4.5rem);
-      --h2-size: clamp(1.8rem, 3vw, 2.5rem);
-      --h3-size: clamp(1.3rem, 2.5vw, 1.8rem);
-      --section-padding: clamp(3rem, 5vw, 6rem) clamp(1rem, 3vw, 2rem);
-      --container-max-width: min(1200px, 90vw);
-    }
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    html {
-      font-size: var(--base-font-size);
-      scroll-behavior: smooth;
-    }
-    body {
-      margin: 0;
-      font-family: 'Chakra Petch', sans-serif;
-      background: var(--background);
-      color: var(--text);
-      overflow-x: hidden;
-      line-height: 1.6;
-      transition: all 0.5s ease;
-    }
-    /* Navegación moderna minimalista */
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(20px);
-      z-index: 1000;
-      padding: 1.2rem 0;
-      transition: all 0.3s ease;
-      border-bottom: 1px solid rgba(106, 64, 127, 0.1); /* Updated Color */
-    }
-    nav.scrolled {
-      padding: 0.8rem 0;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-    }
-    .nav-container {
-      max-width: var(--container-max-width);
-      margin: 0 auto;
-      padding: 0 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .logo {
-      color: var(--text);
-      font-size: clamp(1.5rem, 4vw, 1.8rem);
-      font-weight: 700;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      background: var(--gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    .logo i {
-      margin-right: 0.6rem;
-      font-size: clamp(1.3rem, 3vw, 1.5rem);
-    }
-    .nav-links {
-      display: flex;
-      list-style: none;
-      transition: all 0.5s ease;
-    }
-    .nav-links li {
-      margin-left: clamp(1rem, 2vw, 1.8rem);
-    }
-    .nav-links a {
-      color: var(--text);
-      text-decoration: none;
-      font-weight: 500;
-      transition: all 0.3s ease;
-      position: relative;
-      font-size: clamp(0.9rem, 2vw, 1rem);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      bottom: -0.3rem;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: var(--gradient);
-      transition: width 0.3s ease;
-    }
-    .nav-links a:hover::after {
-      width: 100%;
-    }
-    .mobile-menu-btn {
-      display: none;
-      background: none;
-      border: none;
-      color: var(--text);
-      font-size: 1.5rem;
-      cursor: pointer;
-      padding: 0.5rem;
-    }
-    /* Header moderno con gradiente */
-    header {
-      background: linear-gradient(135deg, rgba(106, 64, 127, 0.9) 0%, rgba(61, 36, 71, 0.9) 100%), 
-                  url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
-      background-size: cover;
-      background-position: center;
-      color: white;
-      text-align: center;
-      padding: var(--section-padding);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .header-content {
-      position: relative;
-      z-index: 2;
-      max-width: 900px;
-    }
-    header h1 {
-      font-size: var(--h1-size);
-      margin: 0;
-      line-height: 1.1;
-      transform: translateY(20px);
-      opacity: 0;
-      animation: fadeInUp 1s ease forwards 0.3s;
-      padding: 0 1rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: -1px;
-      text-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }
-    header p {
-      font-size: clamp(1rem, 2vw, 1.3rem);
-      margin: 1.5rem 0 2.5rem;
-      max-width: min(700px, 90vw);
-      transform: translateY(20px);
-      opacity: 0;
-      animation: fadeInUp 1s ease forwards 0.5s;
-      padding: 0 1rem;
-      color: rgba(255, 255, 255, 0.9);
-      font-weight: 500;
-    }
-    .header-buttons {
-      display: flex;
-      gap: 1rem;
-      margin-top: 2rem;
-      flex-wrap: wrap;
-      justify-content: center;
-      width: 100%;
-      padding: 0 1rem;
-    }
-    .btn {
-      padding: clamp(0.8rem, 2vw, 1rem) clamp(1.5rem, 3vw, 2rem);
-      background: white;
-      border: none;
-      color: var(--primary);
-      border-radius: 50px;
-      text-decoration: none;
-      font-weight: 600;
-      display: inline-block;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      position: relative;
-      overflow: hidden;
-      transform: translateY(20px);
-      opacity: 0;
-      animation: fadeInUp 1s ease forwards 0.7s;
-      font-size: clamp(0.9rem, 2vw, 1rem);
-      text-align: center;
-      flex-grow: 1;
-      max-width: 300px;
-      z-index: 1;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-    }
-    .btn:active {
-      transform: translateY(1px);
-    }
-    .btn-outline {
-      background: transparent;
-      border: 2px solid white;
-      color: white;
-    }
-    .btn-outline:hover {
-      background: white;
-      color: var(--primary);
-    }
-    section {
-      padding: var(--section-padding);
-      max-width: var(--container-max-width);
-      margin: auto;
-    }
-    h2 {
-      font-size: var(--h2-size);
-      margin-bottom: 2rem;
-      position: relative;
-      display: inline-block;
-      color: var(--text);
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    h2::after {
-      content: '';
-      position: absolute;
-      bottom: -0.8rem;
-      left: 0;
-      width: 4rem;
-      height: 4px;
-      background: var(--gradient);
-      border-radius: 2px;
-    }
-    h3 {
-      font-size: var(--h3-size);
-      color: var(--text);
-      font-weight: 600;
-    }
-    .section-subtitle {
-      color: var(--text-light);
-      margin-bottom: 3rem;
-      font-size: 1.1rem;
-      max-width: 600px;
-    }
-    /* Características con diseño moderno */
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
-      gap: 2rem;
-      margin-top: 2rem;
-    }
-    .feature-item {
-      background: var(--surface);
-      padding: 2.5rem 2rem;
-      border-radius: 20px;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-      border: 1px solid rgba(106, 64, 127, 0.1); /* Updated Color */
-      text-align: center;
-    }
-    .feature-item:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 20px 40px rgba(106, 64, 127, 0.15); /* Updated Color */
-    }
-    .feature-icon {
-      width: 80px;
-      height: 80px;
-      border-radius: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 1.5rem;
-      background: var(--gradient);
-      color: white;
-      font-size: 2rem;
-      transition: all 0.3s ease;
-    }
-    .feature-item:hover .feature-icon {
-      transform: rotate(10deg) scale(1.1);
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
-      gap: 2rem;
-    }
-    /* Sección de precios con diseño moderno */
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
-      gap: 2rem;
-      margin-top: 3rem;
-    }
-    .pricing-card {
-      background: var(--surface);
-      border-radius: 25px;
-      padding: 2.5rem 2rem;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-      text-align: center;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-      border: 2px solid rgba(106, 64, 127, 0.1); /* Updated Color */
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
-    .pricing-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 20px 40px rgba(106, 64, 127, 0.15); /* Updated Color */
-      border-color: var(--primary);
-    }
-    .pricing-card.popular {
-      border-color: var(--primary);
-      transform: scale(1.05);
-    }
-    .pricing-card.popular:hover {
-      transform: scale(1.05) translateY(-10px);
-    }
-    .popular-badge {
-      position: absolute;
-      top: 1rem;
-      right: -2rem;
-      background: var(--gradient);
-      color: white;
-      padding: 0.5rem 3rem;
-      transform: rotate(45deg);
-      font-size: 0.8rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    .pricing-name {
-      font-size: 1.5rem;
-      color: var(--text);
-      margin-bottom: 1rem;
-      font-weight: 700;
-    }
-    .pricing-price {
-      font-size: 3rem;
-      color: var(--primary);
-      margin: 1.5rem 0;
-      font-weight: 700;
-    }
-    .pricing-price span {
-      font-size: 1rem;
-      color: var(--text-light);
-      font-weight: 500;
-    }
-    .pricing-features {
-      list-style: none;
-      margin: 2rem 0;
-      text-align: left;
-      flex-grow: 1;
-    }
-    .pricing-features li {
-      margin-bottom: 1rem;
-      position: relative;
-      padding-left: 2rem;
-      font-size: 0.95rem;
-      color: var(--text);
-    }
-    .pricing-features li::before {
-      content: '\f00c';
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
-      position: absolute;
-      left: 0;
-      color: var(--primary);
-    }
-    .pricing-features li.disabled {
-      color: #ccc;
-    }
-    .pricing-features li.disabled::before {
-      content: '\f00d';
-      color: #ccc;
-    }
-    /* Galería con carrusel horizontal moderno */
-    .gallery-container {
-      position: relative;
-      margin-top: 2rem;
-      overflow: hidden;
-    }
-    .gallery-track {
-      display: flex;
-      gap: 1.5rem;
-      transition: transform 0.5s ease;
-      padding: 1rem 0;
-    }
-    .gallery-item {
-      position: relative;
-      border-radius: 20px;
-      overflow: hidden;
-      aspect-ratio: 1/1;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      transition: all 0.3s ease;
-      flex: 0 0 min(250px, 80vw);
-    }
-    .gallery-item:hover {
-      transform: scale(1.05);
-    }
-    .gallery-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.5s ease;
-    }
-    .gallery-item:hover img {
-      transform: scale(1.1);
-    }
-    .gallery-item .overlay {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: linear-gradient(transparent, rgba(0,0,0,0.8));
-      padding: 1.5rem;
-      color: white;
-      transform: translateY(100%);
-      transition: transform 0.3s ease;
-    }
-    .gallery-item:hover .overlay {
-      transform: translateY(0);
-    }
-    .gallery-item .overlay h3 {
-      color: white !important;
-      margin-bottom: 0.5rem;
-    }
-    .gallery-controls {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-top: 1.5rem;
-    }
-    .gallery-btn {
-      background: var(--surface);
-      border: 2px solid var(--primary);
-      color: var(--primary);
-      width: 3rem;
-      height: 3rem;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-    .gallery-btn:hover {
-      background: var(--primary);
-      color: white;
-      transform: translateY(-2px);
-    }
-    .gallery-btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
-    }
-    .gallery-btn:disabled:hover {
-      background: var(--surface);
-      color: var(--primary);
-    }
-    /* Blog Section Moderna */
-    .blog-section {
-      padding: var(--section-padding);
-      position: relative;
-    }
-    .blog-header {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-    .blog-header h2 {
-      font-size: var(--h2-size);
-      margin-bottom: 1rem;
-      position: relative;
-      display: inline-block;
-    }
-    .blog-header h2::after {
-      content: '';
-      position: absolute;
-      bottom: -0.8rem;
-      left: 0;
-      width: 4rem;
-      height: 4px;
-      background: var(--gradient);
-      border-radius: 2px;
-    }
-    .blog-header .section-subtitle {
-      max-width: 600px;
-      margin: 0 auto 1.5rem;
-      color: var(--text-light);
-      font-size: 1.1rem;
-    }
-    
-    /* Blog Promo Slider Styles */
-    .blog-promo-slider-container {
-      position: relative;
-      width: 100%;
-      max-width: 1000px;
-      margin: 2rem auto;
-      overflow: hidden;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    
-    .blog-promo-slider-container:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 40px rgba(106, 64, 127, 0.2);
-    }
-    
-    .blog-promo-slider {
-      display: flex;
-      transition: transform 0.5s ease-in-out;
-    }
-    
-    .blog-promo-slide {
-      min-width: 100%;
-      height: 400px;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-    
-    .blog-promo-slide::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, rgba(106, 64, 127, 0.7) 0%, rgba(61, 36, 71, 0.7) 100%);
-      z-index: 1;
-    }
-    
-    .blog-promo-slide img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-    
-    .blog-promo-content {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      color: white;
-      padding: 2rem;
-      max-width: 600px;
-    }
-    
-    .blog-promo-content h3 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-      color: white;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-    }
-    
-    .blog-promo-content p {
-      font-size: 1.2rem;
-      margin-bottom: 2rem;
-      opacity: 0.9;
-      text-shadow: 0 2px 5px rgba(0,0,0,0.3);
-    }
-    
-    .blog-promo-btn {
-      background: white;
-      color: var(--primary);
-      padding: 1rem 2rem;
-      border-radius: 50px;
-      text-decoration: none;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      transition: all 0.3s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    }
-    
-    .blog-promo-btn:hover {
-      background: var(--surface-light);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-    }
-    
-    .blog-promo-controls {
-      position: absolute;
-      top: 50%;
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      padding: 0 1rem;
-      transform: translateY(-50%);
-      z-index: 3;
-    }
-    
-    .blog-promo-btn-control {
-      background: rgba(255, 255, 255, 0.9);
-      border: none;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      color: var(--primary);
-      font-size: 1.2rem;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    }
-    
-    .blog-promo-btn-control:hover {
-      background: white;
-      transform: scale(1.1);
-    }
-    
-    .blog-promo-dots {
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 0.8rem;
-      z-index: 3;
-    }
-    
-    .blog-promo-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.5);
-      border: none;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    
-    .blog-promo-dot.active {
-      background: white;
-      transform: scale(1.2);
-    }
-    
-    /* CTA Divider for Blog */
-    .blog-cta {
-      background: var(--gradient-secondary);
-      border-radius: 20px;
-      padding: 2rem;
-      text-align: center;
-      color: white;
-      margin-top: 2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      align-items: center;
-    }
-    .blog-cta h3 {
-      color: white;
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-    }
-    .blog-cta p {
-      max-width: 600px;
-      margin: 0 auto 1.5rem;
-      opacity: 0.9;
-      font-size: 1rem;
-    }
-    .blog-cta-buttons {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    .blog-cta-button {
-      background: white;
-      color: var(--primary);
-      font-weight: 700;
-      padding: 0.8rem 1.5rem;
-      border-radius: 50px;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      font-size: 0.95rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .blog-cta-button:hover {
-      background: var(--surface-light);
-      color: var(--primary-dark);
-      transform: translateY(-2px);
-    }
-    .blog-cta-button i {
-      font-size: 0.9rem;
-    }
-    /* FAQ con diseño de acordeón moderno */
-    .faq-item {
-      margin-bottom: 1rem;
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-      transition: all 0.3s ease;
-      border: 1px solid rgba(106, 64, 127, 0.1); /* Updated Color */
-    }
-    .faq-item:hover {
-      border-color: var(--primary);
-    }
-    .faq-question {
-      padding: 1.5rem;
-      background: var(--surface);
-      color: var(--text);
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: all 0.3s ease;
-      font-size: 1rem;
-    }
-    .faq-question:hover {
-      background: var(--surface-light);
-    }
-    .faq-question::after {
-      content: '+';
-      font-size: 1.5rem;
-      color: var(--primary);
-      transition: transform 0.3s ease;
-    }
-    .faq-question.active::after {
-      content: '-';
-      transform: rotate(180deg);
-    }
-    .faq-answer {
-      padding: 0;
-      max-height: 0;
-      overflow: hidden;
-      background: var(--surface);
-      transition: all 0.3s ease;
-    }
-    .faq-answer-content {
-      padding: 1.5rem;
-      font-size: 0.95rem;
-      color: var(--text-light);
-    }
-    /* Descargas con diseño de tarjetas interactivas */
-    .download-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      margin-top: 1.5rem;
-    }
-    .download-card {
-      perspective: 1000px;
-      margin-bottom: 1.5rem;
-    }
-    .download-card-inner {
-      position: relative;
-      width: 100%;
-      height: 5rem;
-      transition: transform 0.6s;
-      transform-style: preserve-3d;
-    }
-    .download-card:hover .download-card-inner {
-      transform: rotateY(180deg);
-    }
-    .download-card-front, .download-card-back {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
-      border-radius: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0 1.5rem;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-    }
-    .download-card-front {
-      background: var(--surface);
-      color: var(--text);
-    }
-    .download-card-back {
-      background: var(--gradient);
-      color: white;
-      transform: rotateY(180deg);
-    }
-    .download-icon {
-      margin-right: 1rem;
-      font-size: 1.5rem;
-    }
-    /* Formulario de contacto moderno */
-    input, textarea, select {
-      width: 100%;
-      padding: 1rem;
-      margin-top: 0.8rem;
-      border: 2px solid var(--surface-light);
-      border-radius: 12px;
-      font-family: 'Chakra Petch', sans-serif;
-      transition: all 0.3s ease;
-      font-size: 1rem;
-      background: var(--surface);
-      color: var(--text);
-    }
-    input:focus, textarea:focus, select:focus {
-      outline: none;
-      border-color: var(--primary-light);
-      box-shadow: 0 0 0 3px rgba(138, 93, 168, 0.2);
-    }
-    button[type="submit"] {
-      margin-top: 1.5rem;
-      background: var(--gradient);
-      color: white;
-      border: none;
-      padding: 1rem;
-      border-radius: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(106, 64, 127, 0.3);
-      width: 100%;
-      font-size: 1rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    button[type="submit"]:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(106, 64, 127, 0.4);
-    }
-    /* Footer moderno */
-    footer {
-      text-align: center;
-      padding: 3rem 1rem;
-      background: var(--surface);
-      color: var(--text);
-      position: relative;
-      border-top: 2px solid rgba(106, 64, 127, 0.1); /* Updated Color */
-    }
-    footer::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 5px;
-      background: var(--gradient);
-    }
-    .footer-content {
-      max-width: var(--container-max-width);
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
-      gap: 2rem;
-      text-align: left;
-    }
-    .footer-column h3 {
-      color: var(--primary);
-      margin-bottom: 1.5rem;
-      font-size: 1.2rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    .footer-links {
-      list-style: none;
-    }
-    .footer-links li {
-      margin-bottom: 0.8rem;
-    }
-    .footer-links a {
-      color: var(--text-light);
-      text-decoration: none;
-      transition: all 0.3s ease;
-      font-size: 0.9rem;
-    }
-    .footer-links a:hover {
-      color: var(--primary);
-      padding-left: 5px;
-    }
-    .social-icons {
-      display: flex;
-      gap: 1rem;
-      margin-top: 1.5rem;
-      flex-wrap: wrap;
-    }
-    .social-icons a {
-      color: var(--text-light);
-      font-size: 1.3rem;
-      transition: all 0.3s ease;
-    }
-    .social-icons a:hover {
-      color: var(--primary);
-      transform: translateY(-3px);
-    }
-    .copyright {
-      margin-top: 3rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid rgba(0,0,0,0.1);
-      font-size: 0.9rem;
-      color: var(--text-light);
-    }
-    /* Animaciones */
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    /* Media Queries para dispositivos específicos */
-    @media (max-width: 640px) {
-      :root {
-        --base-font-size: 16px;
-        --h1-size: 2.2rem;
-        --h2-size: 1.6rem;
-        --section-padding: 2.5rem 1rem;
-      }
-      .nav-links {
-        position: fixed;
-        top: 4.5rem;
-        left: -100%;
-        width: 100%;
-        height: calc(100vh - 4.5rem);
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        padding-top: 2rem;
-        transition: all 0.5s ease;
-      }
-      .nav-links.active {
-        left: 0;
-      }
-      .nav-links li {
-        margin: 0.8rem 0;
-      }
-      .mobile-menu-btn {
-        display: block;
-      }
-      header {
-        padding-top: 6rem;
-        padding-bottom: 4rem;
-      }
-      .header-buttons {
-        flex-direction: column;
-        align-items: center;
-      }
-      .header-buttons .btn {
-        margin-left: 0 !important;
-        margin-top: 0.8rem;
-      }
-      .pricing-card {
-        padding: 1.5rem;
-      }
-      .pricing-card.popular {
-        transform: scale(1);
-      }
-      .pricing-card.popular:hover {
-        transform: translateY(-10px);
-      }
-      .blog-promo-content h3 {
-        font-size: 1.8rem;
-      }
-      .blog-promo-content p {
-        font-size: 1rem;
-      }
-      .blog-promo-slide {
-        height: 300px;
-      }
-    }
-    @media (min-width: 641px) and (max-width: 1024px) {
-      :root {
-        --base-font-size: 17px;
-        --h1-size: 3rem;
-        --section-padding: 4rem 1.5rem;
-      }
-      .nav-links li {
-        margin-left: 1.2rem;
-      }
-      .feature-item {
-        padding: 1.2rem;
-      }
+    :root{
+      --bg:#faf7f2;--bg2:#f3eef8;--surface:#fff;--surf2:#f5f0fb;
+      --pur:#5b2d8e;--pur2:#7a45b5;--pur3:#9b6dcc;--pur4:#c49eee;
+      --beige:#ede4d8;--ink:#1a0e2e;--muted:#7d6a90;--muted2:#a090b0;
+      --border:rgba(91,45,142,.15);--border2:rgba(91,45,142,.09);--glow:rgba(91,45,142,.22);
+    }
+    [data-theme="dark"]{
+      --bg:#0c0718;--bg2:#130a22;--surface:#1a0e30;--surf2:#120a24;
+      --pur:#dcc5ff;--pur2:#c9b0f0;--pur3:#b090e0;--pur4:#8a5dcc;
+      --beige:#251540;--ink:#f5eeff;--muted:#c0a8e0;--muted2:#9080b0;
+      --border:rgba(220,197,255,.14);--border2:rgba(220,197,255,.08);--glow:rgba(220,197,255,.1);
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;line-height:1.65;transition:background .45s,color .45s;}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.018'/%3E%3C/svg%3E");opacity:.5;}
+
+    /* NAV */
+    nav{position:fixed;top:0;width:100%;z-index:900;padding:1.1rem 0;background:rgba(250,247,242,.92);backdrop-filter:blur(20px);border-bottom:1px solid transparent;transition:all .4s;}
+    [data-theme="dark"] nav{background:rgba(12,7,24,.92);}
+    nav.scrolled{border-bottom-color:var(--border);}
+    .nav-c{max-width:1240px;margin:0 auto;padding:0 2.5rem;display:flex;justify-content:space-between;align-items:center;}
+    .logo{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;letter-spacing:.04em;color:var(--pur);text-decoration:none;}
+    .nav-links{display:flex;list-style:none;gap:2.4rem;}
+    .nav-links a{font-family:'Outfit',sans-serif;font-size:.7rem;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .25s;position:relative;padding-bottom:3px;}
+    .nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1px;background:var(--pur);transition:width .3s;}
+    .nav-links a:hover{color:var(--pur);}
+    .nav-links a:hover::after{width:100%;}
+    .nav-r{display:flex;align-items:center;gap:.5rem;}
+    .ctrl-btn{width:36px;height:36px;border:1px solid var(--border);background:transparent;border-radius:50%;cursor:pointer;color:var(--pur);display:flex;align-items:center;justify-content:center;font-size:.78rem;transition:all .25s;}
+    .ctrl-btn:hover{background:var(--pur);color:white;border-color:var(--pur);}
+    [data-theme="dark"] .ctrl-btn:hover{color:#0c0718;}
+    .mob-btn{display:none;background:none;border:none;color:var(--pur);font-size:1.2rem;cursor:pointer;}
+
+    /* HERO */
+    header{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:100px 2.5rem 80px;}
+    header::before{content:'';position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse 55% 65% at 72% 50%,rgba(155,109,204,.15) 0%,transparent 60%),radial-gradient(ellipse 45% 55% at 10% 80%,rgba(91,45,142,.1) 0%,transparent 60%),radial-gradient(ellipse 35% 40% at 85% 15%,rgba(196,158,238,.08) 0%,transparent 55%);}
+    [data-theme="dark"] header::before{background:radial-gradient(ellipse 60% 70% at 70% 50%,rgba(91,45,142,.35) 0%,transparent 65%),radial-gradient(ellipse 45% 55% at 10% 80%,rgba(220,197,255,.06) 0%,transparent 60%);}
+    .hero-bg-word{position:absolute;bottom:-3rem;left:-1rem;z-index:0;pointer-events:none;font-family:'Cormorant Garamond',serif;font-size:clamp(10rem,26vw,22rem);font-weight:700;color:transparent;-webkit-text-stroke:1px var(--border);line-height:1;user-select:none;white-space:nowrap;}
+    header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:var(--border);z-index:2;}
+    .hero-ct{position:relative;z-index:2;max-width:1240px;width:100%;margin:0 auto;}
+    .hero-row{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+    .hero-label{font-family:'Outfit',sans-serif;font-size:.62rem;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--pur3);display:flex;align-items:center;gap:.7rem;margin-bottom:1.8rem;opacity:0;animation:fadeUp .6s .1s ease forwards;}
+    .hero-label::before{content:'';display:block;width:28px;height:1px;background:var(--pur3);opacity:.7;}
+    .hero-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(3.2rem,6.5vw,5.5rem);font-weight:700;line-height:1.0;letter-spacing:-.02em;color:var(--pur);margin-bottom:1.8rem;}
+    .hero-h1 .line{display:block;overflow:hidden;}
+    .hero-h1 .inner{display:block;opacity:0;transform:translateY(100%);animation:slideUp .75s cubic-bezier(.16,1,.3,1) forwards;}
+    .l1 .inner{animation-delay:.22s;}.l2 .inner{animation-delay:.36s;}.l3 .inner{animation-delay:.5s;}
+    .hero-h1 .it{font-style:italic;font-weight:300;color:var(--pur3);}
+    @keyframes slideUp{to{opacity:1;transform:none;}}
+    .hero-quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:1.05rem;color:var(--muted);border-left:2px solid var(--pur4);padding-left:1rem;margin-bottom:2.5rem;line-height:1.7;opacity:0;animation:fadeUp .6s .7s ease forwards;}
+    .hero-btns{display:flex;gap:1rem;flex-wrap:wrap;opacity:0;animation:fadeUp .6s .88s ease forwards;}
+    .btn-p{display:inline-flex;align-items:center;gap:.5rem;background:var(--pur);color:white;padding:.88rem 2.3rem;border-radius:3px;text-decoration:none;font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;transition:all .3s;position:relative;overflow:hidden;}
+    [data-theme="dark"] .btn-p{color:#0c0718;}
+    .btn-p::before{content:'';position:absolute;inset:0;background:var(--pur2);transform:scaleX(0);transform-origin:left;transition:transform .3s;}
+    .btn-p:hover{transform:translateY(-2px);box-shadow:0 12px 32px var(--glow);}
+    .btn-p:hover::before{transform:scaleX(1);}
+    .btn-p span,.btn-p i{position:relative;z-index:1;}
+    .btn-o{display:inline-flex;align-items:center;gap:.5rem;background:transparent;color:var(--pur);padding:.88rem 2.3rem;border-radius:3px;text-decoration:none;font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;transition:all .3s;border:1px solid var(--border);}
+    .btn-o:hover{background:var(--pur);color:white;border-color:var(--pur);transform:translateY(-2px);}
+    [data-theme="dark"] .btn-o:hover{color:#0c0718;}
+
+    /* hero visual */
+    .hero-visual{opacity:0;animation:fadeUp .8s .52s ease forwards;}
+    .h-panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:2rem;box-shadow:0 24px 64px rgba(91,45,142,.08);position:relative;}
+    [data-theme="dark"] .h-panel{box-shadow:0 24px 64px rgba(0,0,0,.5);}
+    .h-panel::before{content:'';position:absolute;top:-1px;left:2rem;right:2rem;height:2px;background:linear-gradient(to right,transparent,var(--pur3),transparent);}
+    .p-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;}
+    .p-dots{display:flex;gap:.35rem;}
+    .p-dot{width:8px;height:8px;border-radius:50%;}
+    .pd1{background:#ff5f57;}.pd2{background:#ffbd2e;}.pd3{background:#28c840;}
+    .p-label{font-family:'Outfit',sans-serif;font-size:.62rem;font-weight:400;letter-spacing:.12em;text-transform:uppercase;color:var(--muted2);}
+    .track-row{display:flex;align-items:center;gap:.8rem;padding:.55rem 0;border-bottom:1px solid var(--border2);}
+    .track-row:last-of-type{border:none;}
+    .track-n{font-family:'Outfit',sans-serif;font-size:.7rem;font-weight:400;color:var(--muted2);width:1rem;flex-shrink:0;}
+    .track-name{font-family:'Outfit',sans-serif;font-size:.76rem;font-weight:500;color:var(--ink);flex:1;}
+    .track-bars{flex:2;height:22px;display:flex;align-items:center;gap:1.5px;}
+    .tb{border-radius:1px;background:var(--pur3);opacity:.3;}
+    .tb.lit{opacity:.7;}.tb.bright{opacity:1;background:var(--pur);}
+    .track-time{font-family:'Outfit',sans-serif;font-size:.62rem;color:var(--muted2);white-space:nowrap;}
+    .stat-cards{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-top:1.4rem;}
+    .sc{background:var(--surf2);border:1px solid var(--border2);border-left:3px solid var(--pur4);border-radius:8px;padding:.85rem;transition:transform .3s;}
+    .sc:hover{transform:translateY(-2px);border-left-color:var(--pur);}
+    .sc-n{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:700;color:var(--pur);line-height:1;}
+    .sc-l{font-family:'Outfit',sans-serif;font-size:.6rem;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);margin-top:.15rem;}
+    .float-badge{position:absolute;top:-14px;right:1.5rem;background:var(--pur);color:white;font-family:'Outfit',sans-serif;font-size:.58rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:.3rem .9rem;border-radius:100px;animation:badgeFloat 4s ease-in-out infinite;}
+    [data-theme="dark"] .float-badge{color:#0c0718;}
+    @keyframes badgeFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+    .scroll-i{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;z-index:2;opacity:0;animation:fadeUp .6s 1.8s ease forwards;}
+    .scroll-i span{font-family:'Outfit',sans-serif;font-size:.56rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);}
+    .scroll-line{width:1px;height:36px;background:linear-gradient(to bottom,var(--pur),transparent);animation:scrollPulse 2s ease-in-out infinite;}
+    @keyframes scrollPulse{0%,100%{opacity:.8;}50%{opacity:.2;}}
+
+    /* TICKER */
+    .ticker{background:var(--pur);padding:.52rem 0;overflow:hidden;position:relative;z-index:2;}
+    [data-theme="dark"] .ticker{background:var(--pur4);}
+    .t-track{display:flex;gap:2rem;animation:tScroll 24s linear infinite;white-space:nowrap;}
+    .t-track span{font-family:'Outfit',sans-serif;font-size:.6rem;font-weight:400;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.5);}
+    [data-theme="dark"] .t-track span{color:rgba(0,0,0,.5);}
+    .t-track span::before{content:'♪  ';color:rgba(255,255,255,.22);}
+    [data-theme="dark"] .t-track span::before{color:rgba(0,0,0,.22);}
+    @keyframes tScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+    /* SECTION COMMONS */
+    .sw{position:relative;z-index:2;}
+    .section{padding:5.5rem 2.5rem;max-width:1240px;margin:0 auto;}
+    .sc-label{font-family:'Outfit',sans-serif;font-size:.6rem;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:var(--pur3);display:flex;align-items:center;gap:.7rem;margin-bottom:.9rem;}
+    .sc-label::before{content:'';display:block;width:22px;height:2px;background:linear-gradient(to right,var(--pur),var(--pur3));border-radius:1px;}
+    .sc-h{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,4.5vw,3.3rem);font-weight:700;letter-spacing:-.02em;color:var(--pur);line-height:1.08;}
+    .sc-h em{font-style:italic;font-weight:300;color:var(--pur3);}
+    .sc-p{color:var(--muted);font-size:.9rem;margin-top:.75rem;max-width:480px;line-height:1.85;font-weight:300;}
+    .sc-head{margin-bottom:3.5rem;}
+    .rv{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1);}
+    .rv.in{opacity:1;transform:none;}
+    .d1{transition-delay:.08s;}.d2{transition-delay:.16s;}.d3{transition-delay:.24s;}.d4{transition-delay:.32s;}
+    .bg-alt{background:var(--bg2);}
+    .bg-surf{background:var(--surface);}
+
+    /* ABOUT STRIP - new section with real image */
+    .about-strip{display:grid;grid-template-columns:1fr 1fr;gap:0;background:var(--border);}
+    .as-img{overflow:hidden;aspect-ratio:1.2;}
+    .as-img img{width:100%;height:100%;object-fit:cover;transition:transform .8s;filter:grayscale(15%);}
+    .as-img:hover img{transform:scale(1.04);filter:grayscale(0);}
+    .as-body{padding:4rem;background:var(--surface);display:flex;flex-direction:column;justify-content:center;}
+    [data-theme="dark"] .as-body{background:var(--surface);}
+    .as-body blockquote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1.3rem,2.5vw,1.9rem);font-weight:300;color:var(--pur);line-height:1.5;margin-bottom:1.5rem;border-left:2px solid var(--pur4);padding-left:1.5rem;}
+    .as-body p{font-size:.88rem;color:var(--muted);line-height:1.85;font-weight:300;max-width:400px;}
+
+    /* FEATURES */
+    .fg{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+    .fc{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:10px;
+      padding:2.4rem 2rem;
+      cursor:default;
+      position:relative;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      text-align:center;
+      transition:all .38s cubic-bezier(.16,1,.3,1);
+    }
+    .fc::before{
+      content:'';position:absolute;inset:0;
+      background:var(--pur);
+      transform:translateY(100%);
+      transition:transform .42s cubic-bezier(.16,1,.3,1);
+      z-index:0;
+    }
+    .fc:hover{
+      border-color:var(--pur);
+      transform:translateY(-4px);
+      box-shadow:0 20px 48px var(--glow);
+    }
+    .fc:hover::before{transform:translateY(0);}
+    .fi{
+      width:52px;height:52px;
+      display:flex;align-items:center;justify-content:center;
+      background:rgba(91,45,142,.1);
+      border:1px solid var(--border);
+      color:var(--pur);
+      border-radius:50%;
+      font-size:1.1rem;
+      margin-bottom:1.1rem;
+      position:relative;z-index:1;
+      transition:all .38s cubic-bezier(.16,1,.3,1);
+    }
+    [data-theme="dark"] .fi{background:rgba(220,197,255,.08);color:var(--pur);}
+    .fc:hover .fi{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.3);color:white;}
+    .fc h3{
+      font-family:'Cormorant Garamond',serif;
+      font-size:1.12rem;font-weight:700;
+      color:var(--pur);
+      position:relative;z-index:1;
+      transition:color .38s;
+      margin-bottom:0;
+    }
+    .fc:hover h3{color:white;}
+    .fc p{
+      color:var(--muted);font-size:.84rem;line-height:1.8;font-weight:300;
+      position:relative;z-index:1;
+      max-height:0;overflow:hidden;opacity:0;margin-top:0;
+      transition:max-height .42s cubic-bezier(.16,1,.3,1), opacity .38s .06s, margin-top .38s;
+    }
+    .fc:hover p{max-height:120px;opacity:1;margin-top:.7rem;}
+    .fc:hover p{color:rgba(255,255,255,.75);}
+    @media(max-width:768px){.fg{grid-template-columns:repeat(2,1fr);}}
+
+    /* PRICING */
+    .pg{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;background:var(--border);}
+    .pc{background:var(--surface);padding:2.4rem;display:flex;flex-direction:column;transition:background .3s;}
+    .pc:hover:not(.pc-feat){background:var(--bg2);}
+    .pc-feat{background:var(--pur);}
+    .p-tag{font-family:'Outfit',sans-serif;font-size:.58rem;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--muted2);margin-bottom:.7rem;}
+    .pc-feat .p-tag{color:rgba(255,255,255,.5);}
+    [data-theme="dark"] .pc-feat .p-tag{color:rgba(0,0,0,.45);}
+    .p-name{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:700;color:var(--pur);margin-bottom:1.1rem;}
+    .pc-feat .p-name{color:white;}
+    [data-theme="dark"] .pc-feat .p-name{color:#0c0718;}
+    .p-price{font-family:'Cormorant Garamond',serif;font-size:3.3rem;font-weight:700;color:var(--pur);line-height:1;margin-bottom:1.6rem;}
+    .p-price sup{font-size:1.2rem;vertical-align:super;}
+    .p-price sub{font-size:.9rem;color:var(--muted);font-weight:300;font-family:'Outfit',sans-serif;}
+    .pc-feat .p-price{color:white;}
+    [data-theme="dark"] .pc-feat .p-price{color:#0c0718;}
+    .pc-feat .p-price sub{color:rgba(255,255,255,.5);}
+    [data-theme="dark"] .pc-feat .p-price sub{color:rgba(0,0,0,.4);}
+    .p-hr{height:1px;background:var(--border);margin-bottom:1.6rem;}
+    .pc-feat .p-hr{background:rgba(255,255,255,.2);}
+    [data-theme="dark"] .pc-feat .p-hr{background:rgba(0,0,0,.15);}
+    .p-list{list-style:none;flex:1;margin-bottom:2rem;}
+    .p-list li{padding:.38rem 0;font-size:.84rem;color:var(--muted);display:flex;align-items:center;gap:.6rem;border-bottom:1px solid var(--border2);font-weight:300;}
+    .pc-feat .p-list li{color:rgba(255,255,255,.75);border-bottom-color:rgba(255,255,255,.1);}
+    [data-theme="dark"] .pc-feat .p-list li{color:rgba(0,0,0,.7);}
+    .p-list li:last-child{border:none;}
+    .p-list li i{font-size:.6rem;color:var(--pur3);flex-shrink:0;}
+    .pc-feat .p-list li i{color:rgba(255,255,255,.5);}
+    [data-theme="dark"] .pc-feat .p-list li i{color:rgba(0,0,0,.4);}
+    .p-list li.off{opacity:.3;}
+    .p-btn{display:block;text-align:center;padding:.78rem;border-radius:3px;font-family:'Outfit',sans-serif;font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:all .3s;border:1px solid var(--border);}
+    .p-btn-d{color:var(--pur);}
+    .p-btn-d:hover{background:var(--pur);color:white;border-color:var(--pur);}
+    [data-theme="dark"] .p-btn-d:hover{color:#0c0718;}
+    .p-btn-l{color:var(--pur);background:white;border-color:white;}
+    [data-theme="dark"] .p-btn-l{color:#0c0718;}
+    .p-btn-l:hover{background:var(--bg);}
+
+    /* GALLERY */
+    .gal-wrap{overflow:hidden;}
+    .gal-track{display:flex;gap:1.2rem;transition:transform .55s cubic-bezier(.4,0,.2,1);}
+    .gal-item{flex:0 0 240px;aspect-ratio:.85;overflow:hidden;border-radius:8px;position:relative;cursor:pointer;}
+    .gal-item img{width:100%;height:100%;object-fit:cover;transition:transform .6s;filter:grayscale(18%);}
+    .gal-item:hover img{transform:scale(1.07);filter:grayscale(0);}
+    .gal-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(91,45,142,.9) 0%,transparent 50%);display:flex;align-items:flex-end;padding:1.2rem;opacity:0;transition:opacity .3s;}
+    .gal-item:hover .gal-ov{opacity:1;}
+    .gal-ov h4{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;color:white;font-style:italic;}
+    .gal-ov p{font-size:.7rem;color:rgba(255,255,255,.6);margin-top:.1rem;}
+    .gal-ctrl{display:flex;gap:.6rem;margin-top:1.3rem;}
+    .gal-btn{width:38px;height:38px;border:1px solid var(--border);background:var(--surface);border-radius:3px;cursor:pointer;color:var(--pur);font-size:.78rem;display:flex;align-items:center;justify-content:center;transition:all .25s;}
+    .gal-btn:hover{background:var(--pur);color:white;border-color:var(--pur);}
+    [data-theme="dark"] .gal-btn:hover{color:#0c0718;}
+
+    /* BLOG */
+    .bg-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1px;background:var(--border);}
+    .bc{background:var(--surface);display:flex;flex-direction:column;cursor:pointer;transition:background .3s;}
+    .bc:hover{background:var(--bg2);}
+    .bc-img{overflow:hidden;aspect-ratio:1.6;}
+    .bc-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s;filter:grayscale(15%);}
+    .bc:hover .bc-img img{transform:scale(1.05);filter:grayscale(0);}
+    .bc-body{padding:1.6rem;flex:1;display:flex;flex-direction:column;}
+    .bc-cat{font-family:'Outfit',sans-serif;font-size:.58rem;font-weight:400;letter-spacing:.2em;text-transform:uppercase;color:var(--pur3);margin-bottom:.6rem;}
+    .bc-body h3{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:700;color:var(--pur);line-height:1.35;margin-bottom:.5rem;flex:1;}
+    .bc-body p{font-size:.82rem;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.7;font-weight:300;}
+    .bc-foot{padding:.9rem 1.6rem;border-top:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;}
+    .bc-date{font-size:.7rem;color:var(--muted2);font-weight:300;}
+    .bc-more{font-family:'Outfit',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--pur3);display:flex;align-items:center;gap:.3rem;transition:gap .25s;}
+    .bc:hover .bc-more{gap:.55rem;}
+
+    /* SUBSCRIBE */
+    .sub-row{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);}
+    .sub-c{background:var(--surface);padding:2.8rem;}
+    .sub-c.creator{background:var(--pur);}
+    [data-theme="dark"] .sub-c.creator{background:var(--pur4);}
+    .sub-ico{width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);border-radius:3px;font-size:1rem;color:var(--pur);margin-bottom:1.4rem;}
+    .sub-c.creator .sub-ico{border-color:rgba(255,255,255,.2);color:white;}
+    [data-theme="dark"] .sub-c.creator .sub-ico{color:#0c0718;border-color:rgba(0,0,0,.2);}
+    .sub-c h3{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:700;color:var(--pur);margin-bottom:.5rem;}
+    .sub-c.creator h3{color:white;}
+    [data-theme="dark"] .sub-c.creator h3{color:#0c0718;}
+    .sub-c p{font-size:.84rem;color:var(--muted);line-height:1.8;margin-bottom:.9rem;font-weight:300;}
+    .sub-c.creator p{color:rgba(255,255,255,.6);}
+    [data-theme="dark"] .sub-c.creator p{color:rgba(0,0,0,.55);}
+    .sub-perks{list-style:none;margin-bottom:1.8rem;}
+    .sub-perks li{font-size:.82rem;color:var(--muted);padding:.28rem 0;display:flex;align-items:flex-start;gap:.5rem;border-bottom:1px solid var(--border2);font-weight:300;}
+    .sub-perks li:last-child{border:none;}
+    .sub-c.creator .sub-perks li{color:rgba(255,255,255,.65);border-bottom-color:rgba(255,255,255,.1);}
+    [data-theme="dark"] .sub-c.creator .sub-perks li{color:rgba(0,0,0,.6);}
+    .sub-perks li i{font-size:.58rem;color:var(--pur3);margin-top:.28rem;flex-shrink:0;}
+    .sub-c.creator .sub-perks li i{color:rgba(255,255,255,.45);}
+    .sub-form{display:flex;gap:.5rem;}
+    .sub-in{flex:1;padding:.72rem 1rem;background:var(--bg2);border:1px solid var(--border);border-radius:3px;font-family:'Outfit',sans-serif;font-size:.84rem;color:var(--ink);}
+    .sub-c.creator .sub-in{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.2);color:white;}
+    [data-theme="dark"] .sub-c.creator .sub-in{background:rgba(0,0,0,.12);color:#0c0718;}
+    .sub-in::placeholder{color:var(--muted2);}
+    .sub-in:focus{outline:none;border-color:var(--pur);}
+    .sub-btn{background:var(--pur);color:white;border:none;padding:.72rem 1.2rem;border-radius:3px;font-family:'Outfit',sans-serif;font-size:.66rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .25s;white-space:nowrap;}
+    .sub-btn:hover{background:var(--pur2);}
+    .sub-c.creator .sub-btn{background:white;color:var(--pur);}
+    [data-theme="dark"] .sub-c.creator .sub-btn{color:#0c0718;}
+    .sub-msg{font-size:.74rem;color:var(--pur3);margin-top:.5rem;min-height:1.1em;}
+
+    /* FAQ */
+    .faq-l{max-width:700px;margin:0 auto;}
+    .faq-i{border-bottom:1px solid var(--border);}
+    .faq-q{width:100%;padding:1.3rem 0;display:flex;justify-content:space-between;align-items:center;background:none;border:none;cursor:pointer;text-align:left;font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:600;color:var(--pur);transition:color .25s;}
+    .faq-q:hover{color:var(--pur3);}
+    .fq-ic{font-size:.65rem;color:var(--muted);transition:transform .3s;flex-shrink:0;}
+    .faq-q.open .fq-ic{transform:rotate(45deg);}
+    .faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease;}
+    .faq-ai{padding:.1rem 0 1.3rem;font-size:.87rem;color:var(--muted);line-height:1.85;font-weight:300;}
+
+    /* DOWNLOAD */
+    .dl-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
+    .dl-btns{display:flex;flex-direction:column;gap:.9rem;}
+    .dl-btn{display:flex;align-items:center;gap:1.1rem;padding:1.2rem 1.6rem;background:var(--surface);border:1px solid var(--border);border-radius:6px;text-decoration:none;color:var(--ink);transition:all .3s;}
+    .dl-btn:hover{border-color:var(--pur);background:var(--bg2);transform:translateX(6px);}
+    .dl-btn i{font-size:1.5rem;color:var(--pur);width:28px;flex-shrink:0;}
+    .dl-t{font-family:'Outfit',sans-serif;font-weight:600;font-size:.9rem;color:var(--pur);}
+    .dl-s{font-size:.73rem;color:var(--muted);margin-top:.1rem;font-weight:300;}
+    .qr-side{text-align:center;}
+    .qr-side img{border:4px solid var(--beige);border-radius:8px;max-width:150px;}
+    .qr-lbl{font-family:'Outfit',sans-serif;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;font-weight:300;}
+
+    /* CONTACT */
+    .cg{display:grid;grid-template-columns:1fr 1fr;gap:4.5rem;align-items:start;}
+    .ci-info p{color:var(--muted);font-size:.88rem;margin-bottom:2.2rem;line-height:1.85;font-weight:300;}
+    .ci-row{display:flex;align-items:center;gap:.9rem;margin-bottom:1rem;}
+    .ci-ic{width:34px;height:34px;border:1px solid var(--border);border-radius:3px;display:flex;align-items:center;justify-content:center;color:var(--pur);font-size:.82rem;flex-shrink:0;}
+    .ci-t{font-family:'Outfit',sans-serif;font-size:.76rem;font-weight:600;color:var(--pur);}
+    .ci-v{font-size:.76rem;color:var(--muted);font-weight:300;}
+    form.contact input,form.contact textarea,form.contact select{width:100%;padding:.8rem 1rem;background:var(--surface);border:1px solid var(--border);border-radius:3px;font-family:'Outfit',sans-serif;font-size:.87rem;color:var(--ink);transition:border-color .25s;margin-bottom:.85rem;}
+    form.contact input:focus,form.contact textarea:focus,form.contact select:focus{outline:none;border-color:var(--pur);}
+    form.contact select option{background:var(--surface);}
+    form.contact textarea{height:112px;resize:vertical;}
+    form.contact button{background:var(--pur);color:white;width:100%;padding:.86rem;border:none;border-radius:3px;font-family:'Outfit',sans-serif;font-size:.74rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .3s;}
+    [data-theme="dark"] form.contact button{color:#0c0718;}
+    form.contact button:hover{background:var(--pur2);transform:translateY(-1px);}
+
+    /* POPUP */
+    .pop-ov{position:fixed;inset:0;z-index:9999;background:rgba(26,14,46,.78);backdrop-filter:blur(14px);display:none;align-items:center;justify-content:center;padding:2rem;}
+    .pop-ov.open{display:flex;animation:pIn .22s ease;}
+    @keyframes pIn{from{opacity:0;}to{opacity:1;}}
+    .pop-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;max-width:740px;width:100%;max-height:88vh;overflow-y:auto;position:relative;animation:pUp .3s cubic-bezier(.16,1,.3,1);}
+    @keyframes pUp{from{transform:translateY(40px);opacity:0;}to{transform:none;opacity:1;}}
+    .pop-img{aspect-ratio:2;overflow:hidden;}
+    .pop-img img{width:100%;height:100%;object-fit:cover;}
+    .pop-body{padding:2.4rem;}
+    .pop-cat{font-family:'Outfit',sans-serif;font-size:.6rem;font-weight:400;letter-spacing:.2em;text-transform:uppercase;color:var(--pur3);margin-bottom:.7rem;}
+    .pop-body h2{font-family:'Cormorant Garamond',serif;font-size:1.65rem;font-weight:700;color:var(--pur);margin-bottom:1.1rem;line-height:1.22;}
+    .pop-body p{color:var(--muted);line-height:1.85;margin-bottom:.9rem;font-size:.88rem;font-weight:300;}
+    .pop-body strong{color:var(--pur);}
+    .pop-close{position:absolute;top:1rem;right:1rem;background:var(--bg2);border:1px solid var(--border);border-radius:3px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);font-size:.82rem;transition:all .25s;z-index:1;}
+    .pop-close:hover{background:var(--pur);color:white;}
+    [data-theme="dark"] .pop-close:hover{color:#0c0718;}
+
+    /* FOOTER */
+    footer{background:var(--pur);color:white;padding:4.5rem 2.5rem 2rem;position:relative;z-index:2;}
+    [data-theme="dark"] footer{background:#160c2e;}
+    .fi-grid{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3.5rem;margin-bottom:3.5rem;}
+    .fb .logo-f{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;letter-spacing:.04em;color:white;margin-bottom:1rem;display:block;}
+    [data-theme="dark"] .fb .logo-f{color:var(--pur);}
+    .fb p{font-size:.82rem;color:rgba(255,255,255,.4);line-height:1.8;max-width:230px;font-weight:300;}
+    [data-theme="dark"] .fb p{color:var(--muted);}
+    .fs-socials{display:flex;gap:.55rem;margin-top:1.3rem;}
+    .fs-socials a{width:32px;height:32px;border:1px solid rgba(255,255,255,.15);border-radius:3px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.4);font-size:.8rem;text-decoration:none;transition:all .25s;}
+    .fs-socials a:hover{border-color:rgba(255,255,255,.5);color:white;}
+    .fcol h4{font-family:'Outfit',sans-serif;font-size:.58rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:1.1rem;}
+    [data-theme="dark"] .fcol h4{color:var(--muted2);}
+    .fcol ul{list-style:none;}
+    .fcol ul li{margin-bottom:.55rem;}
+    .fcol ul li a{font-size:.82rem;color:rgba(255,255,255,.4);text-decoration:none;transition:color .25s;font-weight:300;}
+    [data-theme="dark"] .fcol ul li a{color:var(--muted);}
+    .fcol ul li a:hover{color:white;}
+    [data-theme="dark"] .fcol ul li a:hover{color:var(--pur);}
+    .foot-bot{max-width:1240px;margin:0 auto;padding-top:2rem;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem;}
+    .foot-bot p{font-size:.73rem;color:rgba(255,255,255,.28);font-weight:300;}
+    [data-theme="dark"] .foot-bot p{color:var(--muted2);}
+    [data-theme="dark"] .foot-bot{border-top-color:var(--border);}
+
+    @keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:none;}}
+    @media(max-width:768px){
+      .nav-links{display:none;}.nav-links.open{display:flex;flex-direction:column;position:fixed;top:60px;left:0;right:0;background:rgba(250,247,242,.97);padding:2rem;z-index:899;border-bottom:1px solid var(--border);}
+      [data-theme="dark"] .nav-links.open{background:rgba(12,7,24,.97);}
+      .mob-btn{display:block;}.hero-row{grid-template-columns:1fr;}.hero-visual{display:none;}
+      .dl-grid,.cg,.sub-row,.about-strip{grid-template-columns:1fr;}
+      .fi-grid{grid-template-columns:1fr 1fr;}
     }
   </style>
 </head>
 <body>
-  <!-- Navegación -->
-  <nav id="navbar">
-    <div class="nav-container">
-      <a href="#" class="logo"><i class="fas fa-music"></i> Mixfy</a>
-      <button class="mobile-menu-btn" id="mobileMenuBtn">
-        <i class="fas fa-bars"></i>
-      </button>
-      <ul class="nav-links" id="navLinks">
-        <li><a href="#features">Características</a></li>
-        <li><a href="#pricing">Precios</a></li>
-        <li><a href="#gallery">Samples</a></li>
-        <li><a href="#blog">Blog</a></li>
-        <li><a href="#download">Descargar</a></li>
-        <li><a href="#contact">Contacto</a></li>
-      </ul>
-    </div>
-  </nav>
-  <!-- Encabezado -->
-  <header>
-    <div class="header-content">
-      <h1 class="animate__animated animate__fadeIn">Crea tu música con Mixfy</h1>
-      <p class="animate__animated animate__fadeIn">La herramienta definitiva para productores musicales y aficionados. Crea, mezcla y comparte tus melodías de forma intuitiva.</p>
-      <div class="header-buttons">
-        <a href="demo.html" class="btn animate__animated animate__fadeIn">Probar demo</a>
-        <a href="#download" class="btn btn-outline animate__animated animate__fadeIn animate__delay-1s">Descargar ahora</a>
-      </div>
-    </div>
-  </header>
-  <!-- Sección de características -->
-  <section class="features" id="features">
-    <h2>Potentes características</h2>
-    <p class="section-subtitle">Descubre todo lo que Mixfy puede hacer por tu creatividad musical</p>
-    <ul class="features-grid">
-      <li class="feature-item">
-        <div class="feature-icon">
-          <i class="fas fa-sliders-h"></i>
-        </div>
-        <h3>Mezclador profesional</h3>
-        <p>Controla volumen, paneo, ecualización y efectos para cada pista con nuestra interfaz intuitiva.</p>
-      </li>
-      <li class="feature-item">
-        <div class="feature-icon">
-          <i class="fas fa-drum"></i>
-        </div>
-        <h3>Biblioteca de sonidos</h3>
-        <p>Accede a miles de samples y loops profesionales en todos los géneros musicales.</p>
-      </li>
-      <li class="feature-item">
-        <div class="feature-icon">
-          <i class="fas fa-mobile-alt"></i>
-        </div>
-        <h3>Multiplataforma</h3>
-        <p>Trabaja en tus proyectos desde cualquier dispositivo, en cualquier momento.</p>
-      </li>
-      <li class="feature-item">
-        <div class="feature-icon">
-          <i class="fas fa-cloud"></i>
-        </div>
-        <h3>Sincronización en la nube</h3>
-        <p>Tus proyectos se guardan automáticamente y están disponibles en todos tus dispositivos.</p>
-      </li>
-      <li class="feature-item">
-        <div class="feature-icon">
-          <i class="fas fa-users"></i>
-        </div>
-        <h3>Colaboración en tiempo real</h3>
-        <p>Trabaja con otros artistas en el mismo proyecto simultáneamente.</p>
-      </li>
-      <li class="feature-item">
-        <div class="feature-icon">
-          <i class="fas fa-chart-line"></i>
-        </div>
-        <h3>Analíticas avanzadas</h3>
-        <p>Obtén insights sobre cómo interactúan los oyentes con tus creaciones.</p>
-      </li>
+
+<nav id="nav">
+  <div class="nav-c">
+    <a href="index.html" class="logo">Mixfy</a>
+    <button class="mob-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#features">Características</a></li>
+      <li><a href="#pricing">Precios</a></li>
+      <li><a href="mixphere.html">Blog</a></li>
+      <li><a href="demo.html">Demo</a></li>
     </ul>
-  </section>
-  <!-- Sección de precios -->
-  <section class="pricing" id="pricing">
-    <h2>Nuestros planes</h2>
-    <p class="section-subtitle">Elige el plan que mejor se adapte a tus necesidades creativas</p>
-    <div class="pricing-grid">
-      <div class="pricing-card">
-        <h3 class="pricing-name">Básico</h3>
-        <div class="pricing-price">$0<span>/mes</span></div>
-        <ul class="pricing-features">
-          <li>100 samples básicos</li>
-          <li>10 proyectos simultáneos</li>
-          <li>Exportación en MP3</li>
-          <li>Colaboración con 1 persona</li>
-          <li class="disabled">Soporte prioritario</li>
-        </ul>
-        <a href="#download" class="btn" style="width: 100%;">Empezar gratis</a>
-      </div>
-      <div class="pricing-card popular">
-        <div class="popular-badge">Popular</div>
-        <h3 class="pricing-name">Premium</h3>
-        <div class="pricing-price">$9.99<span>/mes</span></div>
-        <ul class="pricing-features">
-          <li>5,000+ samples premium</li>
-          <li>Proyectos ilimitados</li>
-          <li>Exportación en WAV/MP3</li>
-          <li>Colaboración con hasta 5 personas</li>
-          <li>Soporte prioritario</li>
-        </ul>
-        <a href="#download" class="btn" style="width: 100%;">Elegir Premium</a>
-      </div>
-      <div class="pricing-card">
-        <h3 class="pricing-name">Estudio</h3>
-        <div class="pricing-price">$19.99<span>/mes</span></div>
-        <ul class="pricing-features">
-          <li>Todos los samples premium</li>
-          <li>Proyectos ilimitados</li>
-          <li>Exportación en alta calidad</li>
-          <li>Colaboradores ilimitados</li>
-          <li>Soporte VIP 24/7</li>
-        </ul>
-        <a href="#download" class="btn" style="width: 100%;">Elegir Estudio</a>
-      </div>
+    <div class="nav-r">
+      <button class="ctrl-btn" id="themeBtn"><i id="themeIco" class="fas fa-moon"></i></button>
     </div>
-  </section>
-  <!-- Galería de Samples con carrusel -->
-  <section class="gallery" id="gallery">
-    <h2>Nuestra colección de samples</h2>
-    <p class="section-subtitle">Explora algunos de los sonidos profesionales que incluye Mixfy</p>
-    <div class="gallery-container">
-      <div class="gallery-track" id="galleryTrack">
-        <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1496293455970-f8581aae0e3b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1413&q=80" alt="Sample 1">
-          <div class="overlay">
-            <h3>Deep House Pack</h3>
-            <p>45 bajos y ritmos</p>
-          </div>
-        </div>
-        <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Sample 2">
-          <div class="overlay">
-            <h3>Urban Beats</h3>
-            <p>30 loops de hip-hop</p>
-          </div>
-        </div>
-        <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Sample 3">
-          <div class="overlay">
-            <h3>Live Instruments</h3>
-            <p>Guitarras y pianos reales</p>
-          </div>
-        </div>
-        <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1469&q=80" alt="Sample 4">
-          <div class="overlay">
-            <h3>Electronic Dreams</h3>
-            <p>Sintetizadores futuristas</p>
-          </div>
-        </div>
-        <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Sample 5">
-          <div class="overlay">
-            <h3>Ambient Textures</h3>
-            <p>25 pads atmosféricos</p>
-          </div>
-        </div>
-        <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1571974599782-87624638275f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80" alt="Sample 6">
-          <div class="overlay">
-            <h3>Vocal Chops</h3>
-            <p>40 samples vocales</p>
-          </div>
-        </div>
-      </div>
-      <div class="gallery-controls">
-        <button class="gallery-btn" id="galleryPrev">
-          <i class="fas fa-chevron-left"></i>
-        </button>
-        <button class="gallery-btn" id="galleryNext">
-          <i class="fas fa-chevron-right"></i>
-        </button>
-      </div>
-    </div>
-  </section>
-  <!-- Blog Section -->
-  <section class="blog-section" id="blog">
-    <div class="blog-header">
-      <h2>Mixphere</h2>
-      <p class="section-subtitle">Explora ideas, tutoriales y tendencias musicales — desde el estudio hasta el escenario.</p>
-    </div>
-    
-    <!-- Blog Promo Slider -->
-    <div class="blog-promo-slider-container" onclick="window.location.href='mixphere.html';">
-      <div class="blog-promo-slider" id="blogPromoSlider">
-        <!-- Slide 1 -->
-        <div class="blog-promo-slide">
-          <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Blog Mixfy">
-          <div class="blog-promo-content">
-            <h3>Descubre Mixphere</h3>
-            <p>Tutoriales, consejos y las últimas tendencias en producción musical</p>
-            <div class="blog-promo-btn">
-              Explorar artículos <i class="fas fa-arrow-right"></i>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Slide 2 -->
-        <div class="blog-promo-slide">
-          <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Tutoriales">
-          <div class="blog-promo-content">
-            <h3>Aprende con Expertos</h3>
-            <p>Tutoriales paso a paso para mejorar tus habilidades de producción</p>
-            <div class="blog-promo-btn">
-              Ver tutoriales <i class="fas fa-arrow-right"></i>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Slide 3 -->
-        <div class="blog-promo-slide">
-          <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Tendencias">
-          <div class="blog-promo-content">
-            <h3>Últimas Tendencias</h3>
-            <p>Mantente actualizado con lo último en producción musical</p>
-            <div class="blog-promo-btn">
-              Ver tendencias <i class="fas fa-arrow-right"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="blog-promo-controls">
-        <button class="blog-promo-btn-control" id="blogPromoPrev">
-          <i class="fas fa-chevron-left"></i>
-        </button>
-        <button class="blog-promo-btn-control" id="blogPromoNext">
-          <i class="fas fa-chevron-right"></i>
-        </button>
-      </div>
-      
-      <div class="blog-promo-dots" id="blogPromoDots">
-        <button class="blog-promo-dot active" data-slide="0"></button>
-        <button class="blog-promo-dot" data-slide="1"></button>
-        <button class="blog-promo-dot" data-slide="2"></button>
-      </div>
-    </div>
-    
-    <!-- CTA -->
-    <div class="blog-cta">
-      <h3>¿Quieres participar en Mixphere?</h3>
-      <p>Si eres productor, ingeniero, o simplemente tienes una historia musical que contar — queremos escucharte.</p>
-      <div class="blog-cta-buttons">
-        <a href="mailto:blog@mixfy.com?subject=Propuesta%20de%20artículo" class="blog-cta-button">
-          Publicar en Mixphere
-          <i class="fas fa-paper-plane"></i>
-        </a>
-        <a href="#" class="blog-cta-button">
-          Suscribirse para más publicaciones
-          <i class="fas fa-envelope"></i>
-        </a>
-      </div>
-    </div>
-  </section>
-  <!-- FAQ -->
-  <section class="faq">
-    <h2>Preguntas frecuentes</h2>
-    <p class="section-subtitle">Encuentra respuestas a las dudas más comunes sobre Mixfy</p>
-    <div class="faq-item">
-      <div class="faq-question">¿Mixfy es gratuito?</div>
-      <div class="faq-answer">
-        <div class="faq-answer-content">
-          Mixfy ofrece un plan gratuito con funciones básicas que te permite crear hasta 10 proyectos simultáneos con acceso a una selección de samples. También tenemos planes de pago con más funciones y recursos para aquellos que necesiten capacidades más avanzadas.
-        </div>
-      </div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-question">¿En qué dispositivos está disponible?</div>
-      <div class="faq-answer">
-        <div class="faq-answer-content">
-          Mixfy está disponible para iOS y Android. Puedes descargar la app desde la App Store (iPhone/iPad) y Google Play (dispositivos Android). Estamos trabajando en una versión web que estará disponible próximamente.
-        </div>
-      </div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-question">¿Puedo exportar mis canciones?</div>
-      <div class="faq-answer">
-        <div class="faq-answer-content">
-          ¡Sí! Con el plan gratuito puedes exportar tus creaciones en formato MP3. Los planes de pago te permiten exportar en formatos de mayor calidad como WAV, además de opciones para compartir directamente en plataformas como SoundCloud, Spotify y YouTube.
-        </div>
-      </div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-question">¿Cómo funciona la colaboración?</div>
-      <div class="faq-answer">
-        <div class="faq-answer-content">
-          La función de colaboración permite que varios usuarios trabajen en el mismo proyecto simultáneamente. Con el plan gratuito puedes colaborar con 1 persona, el plan Premium permite hasta 5 colaboradores, mientras que el plan Estudio permite colaboradores ilimitados. Todos los cambios se sincronizan en tiempo real.
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- Descargas -->
-  <section class="downloads" id="download">
-    <h2>Descarga Mixfy ahora</h2>
-    <p class="section-subtitle">Disponible en todas las plataformas móviles</p>
-    <div class="grid">
+  </div>
+</nav>
+
+<!-- HERO -->
+<header>
+  <div class="hero-bg-word" aria-hidden="true">MIXFY</div>
+  <div class="hero-ct">
+    <div class="hero-row">
       <div>
-        <div class="download-buttons">
-          <div class="download-card">
-            <div class="download-card-inner">
-              <div class="download-card-front">
-                <i class="fab fa-google-play download-icon" style="color: #0F9D58;"></i>
-                <span>Disponible en Google Play</span>
-              </div>
-              <div class="download-card-back">
-                <span>Descargar para Android</span>
-              </div>
-            </div>
+        <div class="hero-label">Producción musical reimaginada</div>
+        <h1 class="hero-h1">
+          <span class="line l1"><span class="inner">Crea.</span></span>
+          <span class="line l2"><span class="inner">Mezcla.</span></span>
+          <span class="line l3"><span class="inner it">Comparte.</span></span>
+        </h1>
+        <p class="hero-quote">"La herramienta definitiva para productores — diseñada para el artista moderno."</p>
+        <div class="hero-btns">
+          <a href="demo.html" class="btn-p"><span>Probar demo</span><i class="fas fa-arrow-right"></i></a>
+          <a href="#download" class="btn-o">Descargar gratis</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="h-panel">
+          <div class="float-badge">● Live</div>
+          <div class="p-top">
+            <div class="p-dots"><div class="p-dot pd1"></div><div class="p-dot pd2"></div><div class="p-dot pd3"></div></div>
+            <span class="p-label">Proyecto activo</span>
           </div>
-          <div class="download-card">
-            <div class="download-card-inner">
-              <div class="download-card-front">
-                <i class="fab fa-apple download-icon" style="color: #000;"></i>
-                <span>Descarga en App Store</span>
-              </div>
-              <div class="download-card-back">
-                <span>Descargar para iOS</span>
-              </div>
-            </div>
+          <div id="trackList"></div>
+          <div class="stat-cards">
+            <div class="sc"><div class="sc-n">8</div><div class="sc-l">Pistas activas</div></div>
+            <div class="sc"><div class="sc-n">44.1k</div><div class="sc-l">Hz Calidad</div></div>
+            <div class="sc"><div class="sc-n">4:32</div><div class="sc-l">Duración</div></div>
+            <div class="sc"><div class="sc-n">3</div><div class="sc-l">Colaboradores</div></div>
           </div>
         </div>
       </div>
-      <div>
-        <h3>¿Listo para crear?</h3>
-        <p>Escanea el código QR con tu dispositivo móvil para descargar la app directamente</p>
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://mixfy.com/download" alt="QR Code" style="margin-top: 1rem; border: 0.8rem solid var(--surface); box-shadow: 0 5px 15px rgba(0,0,0,0.05); max-width: 100%;">
-      </div>
     </div>
-  </section>
-  <!-- Contacto -->
-  <section class="contact" id="contact">
-    <h2>Contáctanos</h2>
-    <p class="section-subtitle">¿Tienes preguntas, sugerencias o necesitas ayuda? Escríbenos.</p>
-    <form action="https://formsubmit.co/mixfy.app@gmail.com" method="POST">
+  </div>
+  <div class="scroll-i"><div class="scroll-line"></div><span>Scroll</span></div>
+</header>
+
+<!-- TICKER -->
+<div class="sw"><div class="ticker"><div class="t-track">
+  <span>Deep House</span><span>Hip-Hop</span><span>Ambient</span><span>Trap</span><span>Lo-Fi</span><span>Classical</span><span>Electronic</span><span>Jazz</span><span>R&amp;B</span><span>Afrobeats</span><span>Future Bass</span><span>Drill</span>
+  <span>Deep House</span><span>Hip-Hop</span><span>Ambient</span><span>Trap</span><span>Lo-Fi</span><span>Classical</span><span>Electronic</span><span>Jazz</span><span>R&amp;B</span><span>Afrobeats</span><span>Future Bass</span><span>Drill</span>
+</div></div></div>
+
+<!-- ABOUT STRIP (real image) -->
+<div class="sw bg-surf"><div class="about-strip rv">
+  <div class="as-img"><img src="5.png" alt="Estudio de producción profesional"/></div>
+  <div class="as-body">
+    <blockquote>"Música sin límites. Producción sin fronteras."</blockquote>
+    <p>Mixfy nace de la necesidad de los productores modernos de tener herramientas profesionales accesibles desde cualquier lugar. Desde el estudio hasta el escenario, tu música merece lo mejor.</p>
+  </div>
+</div></div>
+
+<!-- FEATURES -->
+<div class="sw bg-alt" id="features" style="background:linear-gradient(135deg,var(--bg2) 0%,rgba(196,158,238,.08) 100%);"><div class="section">
+  <div class="sc-head rv">
+    <div class="sc-label">Funcionalidades</div>
+    <div class="sc-h">Todo lo que necesitas,<br><em>sin lo que no.</em></div>
+    <p class="sc-p">Herramientas profesionales construidas para la era móvil. Sin compromisos.</p>
+  </div>
+  <div class="fg">
+    <div class="fc rv d1"><div class="fi"><i class="fas fa-sliders-h"></i></div><h3>Mezclador profesional</h3><p>Controla volumen, paneo y EQ para cada pista con nuestra interfaz táctil de precisión profesional.</p></div>
+    <div class="fc rv d2"><div class="fi"><i class="fas fa-drum"></i></div><h3>Biblioteca de sonidos</h3><p>Miles de samples y loops de calidad estudio en todos los géneros musicales que puedas imaginar.</p></div>
+    <div class="fc rv d3"><div class="fi"><i class="fas fa-mobile-alt"></i></div><h3>Multiplataforma</h3><p>iOS, Android y web. Tu proyecto siempre contigo, sincronizado al instante en cualquier dispositivo.</p></div>
+    <div class="fc rv d1"><div class="fi"><i class="fas fa-cloud"></i></div><h3>Nube inteligente</h3><p>Proyectos guardados automáticamente. Recupera cualquier versión de tu trabajo en cualquier momento.</p></div>
+    <div class="fc rv d2"><div class="fi"><i class="fas fa-users"></i></div><h3>Colaboración en vivo</h3><p>Trabaja en tiempo real con otros artistas desde cualquier parte del mundo sin latencia.</p></div>
+    <div class="fc rv d3"><div class="fi"><i class="fas fa-chart-line"></i></div><h3>Analíticas avanzadas</h3><p>Insights detallados sobre cómo tus oyentes interactúan y descubren tus creaciones.</p></div>
+  </div>
+</div></div>
+
+<!-- PRICING -->
+<div class="sw bg-surf" id="pricing"><div class="section">
+  <div class="sc-head rv">
+    <div class="sc-label">Precios</div>
+    <div class="sc-h">Elige tu plan,<br><em>empieza hoy.</em></div>
+    <p class="sc-p">Empieza gratis. Actualiza cuando lo necesites, sin permanencia.</p>
+  </div>
+  <div class="pg">
+    <div class="pc rv d1">
+      <div class="p-tag">Plan</div><div class="p-name">Básico</div>
+      <div class="p-price">$0<sub>/mes</sub></div>
+      <div class="p-hr"></div>
+      <ul class="p-list">
+        <li><i class="fas fa-check"></i> 100 samples</li>
+        <li><i class="fas fa-check"></i> 10 proyectos</li>
+        <li><i class="fas fa-check"></i> Exportación MP3</li>
+        <li class="off"><i class="fas fa-times"></i> Soporte prioritario</li>
+      </ul>
+      <a href="#download" class="p-btn p-btn-d">Empezar gratis</a>
+    </div>
+    <div class="pc pc-feat rv">
+      <div class="p-tag">Más popular</div><div class="p-name">Premium</div>
+      <div class="p-price"><sup>$</sup>9.99<sub>/mes</sub></div>
+      <div class="p-hr"></div>
+      <ul class="p-list">
+        <li><i class="fas fa-check"></i> 5.000+ samples</li>
+        <li><i class="fas fa-check"></i> Proyectos ilimitados</li>
+        <li><i class="fas fa-check"></i> WAV + MP3</li>
+        <li><i class="fas fa-check"></i> 5 colaboradores</li>
+        <li><i class="fas fa-check"></i> Soporte prioritario</li>
+      </ul>
+      <a href="#download" class="p-btn p-btn-l">Elegir Premium</a>
+    </div>
+    <div class="pc rv d2">
+      <div class="p-tag">Plan</div><div class="p-name">Estudio</div>
+      <div class="p-price"><sup>$</sup>19.99<sub>/mes</sub></div>
+      <div class="p-hr"></div>
+      <ul class="p-list">
+        <li><i class="fas fa-check"></i> Todo Premium +</li>
+        <li><i class="fas fa-check"></i> Calidad de estudio</li>
+        <li><i class="fas fa-check"></i> Colaboradores ∞</li>
+        <li><i class="fas fa-check"></i> VIP 24/7</li>
+        <li><i class="fas fa-check"></i> Developer API</li>
+      </ul>
+      <a href="#download" class="p-btn p-btn-d">Elegir Estudio</a>
+    </div>
+  </div>
+</div></div>
+
+<!-- GALLERY (real images) -->
+<div class="sw bg-alt"><div class="section">
+  <div class="sc-head rv">
+    <div class="sc-label">Samples &amp; Sesiones</div>
+    <div class="sc-h">Nuestra colección.</div>
+  </div>
+  <div class="gal-wrap rv"><div class="gal-track" id="gT">
+    <div class="gal-item"><img src="1.png" alt="Mixer headphones"><div class="gal-ov"><div><h4>Studio Headphones Pack</h4><p>45 stems de calidad</p></div></div></div>
+    <div class="gal-item"><img src="2.png" alt="Acoustic guitar"><div class="gal-ov"><div><h4>Acoustic Sessions</h4><p>30 loops de guitarra</p></div></div></div>
+    <div class="gal-item"><img src="3.png" alt="Waveform artist"><div class="gal-ov"><div><h4>Sound Design Lab</h4><p>Síntesis avanzada</p></div></div></div>
+    <div class="gal-item"><img src="4.png" alt="Concert stage"><div class="gal-ov"><div><h4>Concert Vibes</h4><p>Pads y atmósferas</p></div></div></div>
+    <div class="gal-item"><img src="5.png" alt="Pro studio"><div class="gal-ov"><div><h4>Pro Studio Sessions</h4><p>Samples de estudio</p></div></div></div>
+    <div class="gal-item"><img src="6.png" alt=""><div class="gal-ov"><div><h4>Live Recording</h4><p>Samples vocales</p></div></div></div>
+    <div class="gal-item"><img src="7.png" alt=""><div class="gal-ov"><div><h4>Electronic Drums</h4><p>Ritmos electrónicos</p></div></div></div>
+    <div class="gal-item"><img src="8.png" alt=""><div class="gal-ov"><div><h4>DJ Toolkit</h4><p>Transiciones y FX</p></div></div></div>
+  </div></div>
+  <div class="gal-ctrl rv"><button class="gal-btn" id="gPrev"><i class="fas fa-chevron-left"></i></button><button class="gal-btn" id="gNext"><i class="fas fa-chevron-right"></i></button></div>
+</div></div>
+
+<!-- BLOG (real images) -->
+<div class="sw bg-surf" id="blog"><div class="section">
+  <div class="sc-head rv">
+    <div class="sc-label">Mixphere</div>
+    <div class="sc-h">Del estudio<br><em>al escenario.</em></div>
+  </div>
+  <div class="bg-grid">
+    <div class="bc rv d1" onclick="openPost(0)">
+      <div class="bc-img"><img src="1.png" alt="Mastering"></div>
+      <div class="bc-body"><p class="bc-cat">Producción</p><h3>Mastering para Spotify: guía completa 2025</h3><p>Aprende a preparar tus mezclas para sonar perfectas en streaming.</p></div>
+      <div class="bc-foot"><span class="bc-date">12 Dic 2024</span><span class="bc-more">Leer <i class="fas fa-arrow-right"></i></span></div>
+    </div>
+    <div class="bc rv" onclick="openPost(1)">
+      <div class="bc-img"><img src="5.png" alt="Colaboración"></div>
+      <div class="bc-body"><p class="bc-cat">Colaboración</p><h3>Cómo colaborar con artistas de forma remota</h3><p>Flujos de trabajo para crear música con artistas desde cualquier lugar del mundo.</p></div>
+      <div class="bc-foot"><span class="bc-date">5 Dic 2024</span><span class="bc-more">Leer <i class="fas fa-arrow-right"></i></span></div>
+    </div>
+    <div class="bc rv d2" onclick="openPost(2)">
+      <div class="bc-img"><img src="3.png" alt="Teoría"></div>
+      <div class="bc-body"><p class="bc-cat">Técnica</p><h3>Teoría musical para productores modernos</h3><p>Los conceptos de armonía y acordes que todo productor debería dominar.</p></div>
+      <div class="bc-foot"><span class="bc-date">28 Nov 2024</span><span class="bc-more">Leer <i class="fas fa-arrow-right"></i></span></div>
+    </div>
+  </div>
+  <div style="margin-top:2.2rem;" class="rv"><a href="mixphere.html" class="btn-o" style="display:inline-flex">Ver todos los artículos →</a></div>
+</div></div>
+
+<!-- SUBSCRIBE -->
+<div class="sw bg-alt" id="suscribirse"><div class="section">
+  <div class="sc-head rv"><div class="sc-label">Comunidad</div><div class="sc-h">Únete a <em>Mixphere.</em></div></div>
+  <div class="sub-row">
+    <div class="sub-c rv">
+      <div class="sub-ico"><i class="fas fa-bell"></i></div>
+      <h3>Suscríbete al blog</h3>
+      <p>Recibe artículos y noticias de cultura musical en tu email cada semana.</p>
+      <ul class="sub-perks">
+        <li><i class="fas fa-check"></i> Artículos de producción y técnica</li>
+        <li><i class="fas fa-check"></i> Noticias semanales de la industria</li>
+        <li><i class="fas fa-check"></i> Sin spam, nunca</li>
+      </ul>
+      <div class="sub-form"><input type="email" class="sub-in" placeholder="tu@email.com" id="subR"><button class="sub-btn" onclick="handleSub('R')">Suscribirse</button></div>
+      <p class="sub-msg" id="subRMsg"></p>
+    </div>
+    <div class="sub-c creator rv d1">
+      <div class="sub-ico"><i class="fas fa-pen-nib"></i></div>
+      <h3>Publica en el blog</h3>
+      <p>Comparte tu conocimiento con nuestra comunidad de productores y artistas.</p>
+      <ul class="sub-perks">
+        <li><i class="fas fa-check"></i> Publica artículos propios</li>
+        <li><i class="fas fa-check"></i> Perfil de autor verificado</li>
+        <li><i class="fas fa-check"></i> Revisión editorial incluida</li>
+      </ul>
+      <div class="sub-form"><input type="email" class="sub-in" placeholder="tu@email.com" id="subC"><button class="sub-btn" onclick="handleSub('C')">Solicitar acceso</button></div>
+      <p class="sub-msg" id="subCMsg"></p>
+    </div>
+  </div>
+</div></div>
+
+<!-- FAQ -->
+<div class="sw bg-surf"><div class="section">
+  <div class="sc-head rv"><div class="sc-label">FAQ</div><div class="sc-h">Preguntas <em>frecuentes.</em></div></div>
+  <div class="faq-l">
+    <div class="faq-i rv"><button class="faq-q"><span>¿Mixfy es gratuito?</span><i class="fas fa-plus fq-ic"></i></button><div class="faq-a"><div class="faq-ai">Sí, el plan gratuito incluye hasta 10 proyectos, 100 samples y exportación en MP3, sin límite de tiempo.</div></div></div>
+    <div class="faq-i rv d1"><button class="faq-q"><span>¿En qué dispositivos funciona?</span><i class="fas fa-plus fq-ic"></i></button><div class="faq-a"><div class="faq-ai">iOS, Android y web. Los proyectos se sincronizan automáticamente entre todos tus dispositivos.</div></div></div>
+    <div class="faq-i rv d2"><button class="faq-q"><span>¿Puedo exportar mis canciones?</span><i class="fas fa-plus fq-ic"></i></button><div class="faq-a"><div class="faq-ai">El plan gratuito incluye exportación en MP3. Los planes Premium y Estudio añaden WAV de alta calidad.</div></div></div>
+    <div class="faq-i rv d3"><button class="faq-q"><span>¿Cómo funciona la colaboración?</span><i class="fas fa-plus fq-ic"></i></button><div class="faq-a"><div class="faq-ai">Invita colaboradores con un enlace. Gratis: 1 · Premium: 5 · Estudio: ilimitados. Todo en tiempo real.</div></div></div>
+  </div>
+</div></div>
+
+<!-- DOWNLOAD -->
+<div class="sw bg-alt" id="download"><div class="section">
+  <div class="sc-head rv"><div class="sc-label">Descarga</div><div class="sc-h">Descarga Mixfy <em>ahora.</em></div></div>
+  <div class="dl-grid rv">
+    <div class="dl-btns">
+      <a href="#" class="dl-btn"><i class="fab fa-google-play"></i><div><div class="dl-t">Google Play</div><div class="dl-s">Android</div></div></a>
+      <a href="#" class="dl-btn"><i class="fab fa-apple"></i><div><div class="dl-t">App Store</div><div class="dl-s">iOS · iPadOS</div></div></a>
+      <a href="demo.html" class="dl-btn"><i class="fas fa-globe"></i><div><div class="dl-t">Demo Web</div><div class="dl-s">Prueba en el navegador ahora</div></div></a>
+    </div>
+    <div class="qr-side"><p class="qr-lbl">Escanea para descargar</p><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://mixfy.app/download&bgcolor=faf7f2&color=5b2d8e" alt="QR"></div>
+  </div>
+</div></div>
+
+<!-- CONTACT -->
+<div class="sw bg-surf" id="contact"><div class="section">
+  <div class="sc-head rv"><div class="sc-label">Contacto</div><div class="sc-h">Hablemos.</div></div>
+  <div class="cg rv">
+    <div class="ci-info">
+      <p>¿Preguntas, sugerencias o quieres colaborar? Estamos aquí para escucharte.</p>
+      <div class="ci-row"><span class="ci-ic"><i class="fas fa-envelope"></i></span><div><div class="ci-t">Email</div><div class="ci-v"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a9c1c6c5c8e9c4c0d1cfd087c8d9d9">[email&#160;protected]</a></div></div></div>
+      <div class="ci-row"><span class="ci-ic"><i class="fab fa-instagram"></i></span><div><div class="ci-t">Instagram</div><div class="ci-v">@mixfy.app</div></div></div>
+      <div class="ci-row"><span class="ci-ic"><i class="fab fa-tiktok"></i></span><div><div class="ci-t">TikTok</div><div class="ci-v">@mixfy.app</div></div></div>
+    </div>
+    <form action="https://formsubmit.co/mixfy.app@gmail.com" method="POST" class="contact">
       <input type="hidden" name="_captcha" value="false">
       <input type="text" name="nombre" placeholder="Nombre" required>
-      <input type="email" name="email" placeholder="Correo electrónico" required>
-      <select name="asunto" required>
-        <option value="">Selecciona un asunto</option>
-        <option value="soporte">Soporte técnico</option>
-        <option value="prensa">Prensa</option>
-        <option value="colaboracion">Oportunidades de colaboración</option>
-        <option value="feedback">Feedback/Sugerencias</option>
-      </select>
-      <textarea name="mensaje" placeholder="Tu mensaje" rows="4" required></textarea>
+      <input type="email" name="email" placeholder="Email" required>
+      <select name="asunto" required><option value="">Asunto</option><option>Soporte</option><option>Prensa</option><option>Colaboración</option><option>Feedback</option></select>
+      <textarea name="mensaje" placeholder="Tu mensaje..." required></textarea>
       <button type="submit">Enviar mensaje</button>
     </form>
-  </section>
-  <!-- Footer -->
-  <footer>
-    <div class="footer-content">
-      <div class="footer-column">
-        <h3>Mixfy</h3>
-        <p>La herramienta definitiva para crear música en tu móvil. Diseñada por productores, para productores.</p>
-        <div class="social-icons">
-          <a href="#"><i class="fab fa-instagram"></i></a>
-          <a href="#"><i class="fab fa-twitter"></i></a>
-          <a href="#"><i class="fab fa-facebook"></i></a>
-          <a href="#"><i class="fab fa-youtube"></i></a>
-          <a href="#"><i class="fab fa-tiktok"></i></a>
-        </div>
-      </div>
-      <div class="footer-column">
-        <h3>Enlaces</h3>
-        <ul class="footer-links">
-          <li><a href="#">Inicio</a></li>
-          <li><a href="#features">Características</a></li>
-          <li><a href="#pricing">Precios</a></li>
-          <li><a href="#blog">Mixphere</a></li>
-          <li><a href="#contact">Contacto</a></li>
-        </ul>
-      </div>
-      <div class="footer-column">
-        <h3>Legal</h3>
-        <ul class="footer-links">
-          <li><a href="#">Términos de servicio</a></li>
-          <li><a href="#">Política de privacidad</a></li>
-          <li><a href="#">Cookies</a></li>
-          <li><a href="#">DMCA</a></li>
-        </ul>
-      </div>
-      <div class="footer-column">
-        <h3>Recursos</h3>
-        <ul class="footer-links">
-          <li><a href="#">Documentación</a></li>
-          <li><a href="#">Centro de ayuda</a></li>
-          <li><a href="#">Tutoriales</a></li>
-          <li><a href="#">API para desarrolladores</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="copyright">
-      <p>&copy; 2025 Mixfy. Todos los derechos reservados.</p>
-      <p>Creado con ♥ por Sofia Fontan Rey</p>
-    </div>
-  </footer>
-  <!-- Script para funcionalidades -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Menú móvil
-      const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-      const navLinks = document.getElementById('navLinks');
-      mobileMenuBtn.addEventListener('click', function() {
-        navLinks.classList.toggle('active');
-        this.innerHTML = navLinks.classList.contains('active') ? 
-          '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
-      });
-      // Cerrar menú al hacer clic
-      document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', function() {
-          navLinks.classList.remove('active');
-          mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-        });
-      });
-      // Cambiar navbar al hacer scroll
-      const navbar = document.getElementById('navbar');
-      window.addEventListener('scroll', function() {
-        if (window.scrollY > 50) {
-          navbar.classList.add('scrolled');
-        } else {
-          navbar.classList.remove('scrolled');
-        }
-      });
-      // Carrusel de galería
-      const galleryTrack = document.getElementById('galleryTrack');
-      const galleryPrev = document.getElementById('galleryPrev');
-      const galleryNext = document.getElementById('galleryNext');
-      let galleryPosition = 0;
-      function updateGalleryButtons() {
-        galleryPrev.disabled = galleryPosition === 0;
-        const trackWidth = galleryTrack.offsetWidth;
-        const itemWidth = galleryTrack.querySelector('.gallery-item').offsetWidth + 24;
-        const maxPosition = galleryTrack.scrollWidth - trackWidth;
-        galleryNext.disabled = galleryPosition >= maxPosition;
-      }
-      galleryPrev.addEventListener('click', function() {
-        const itemWidth = galleryTrack.querySelector('.gallery-item').offsetWidth + 24;
-        galleryPosition = Math.max(0, galleryPosition - itemWidth * 2);
-        galleryTrack.style.transform = `translateX(-${galleryPosition}px)`;
-        updateGalleryButtons();
-      });
-      galleryNext.addEventListener('click', function() {
-        const itemWidth = galleryTrack.querySelector('.gallery-item').offsetWidth + 24;
-        const maxPosition = galleryTrack.scrollWidth - galleryTrack.offsetWidth;
-        galleryPosition = Math.min(maxPosition, galleryPosition + itemWidth * 2);
-        galleryTrack.style.transform = `translateX(-${galleryPosition}px)`;
-        updateGalleryButtons();
-      });
-      
-      // Blog Promo Slider
-      const blogPromoSlider = document.getElementById('blogPromoSlider');
-      const blogPromoPrev = document.getElementById('blogPromoPrev');
-      const blogPromoNext = document.getElementById('blogPromoNext');
-      const blogPromoDots = document.querySelectorAll('.blog-promo-dot');
-      let currentBlogPromoSlide = 0;
-      const totalBlogPromoSlides = document.querySelectorAll('.blog-promo-slide').length;
-      
-      function updateBlogPromoSlider() {
-        blogPromoSlider.style.transform = `translateX(-${currentBlogPromoSlide * 100}%)`;
-        
-        // Actualizar dots
-        blogPromoDots.forEach((dot, index) => {
-          dot.classList.toggle('active', index === currentBlogPromoSlide);
-        });
-      }
-      
-      function nextBlogPromoSlide() {
-        currentBlogPromoSlide = (currentBlogPromoSlide + 1) % totalBlogPromoSlides;
-        updateBlogPromoSlider();
-      }
-      
-      function prevBlogPromoSlide() {
-        currentBlogPromoSlide = (currentBlogPromoSlide - 1 + totalBlogPromoSlides) % totalBlogPromoSlides;
-        updateBlogPromoSlider();
-      }
-      
-      // Event listeners para botones del blog promo slider
-      blogPromoNext.addEventListener('click', function(e) {
-        e.stopPropagation(); // Prevenir que el clic se propague al contenedor
-        nextBlogPromoSlide();
-      });
-      
-      blogPromoPrev.addEventListener('click', function(e) {
-        e.stopPropagation(); // Prevenir que el clic se propague al contenedor
-        prevBlogPromoSlide();
-      });
-      
-      // Dots navigation
-      blogPromoDots.forEach((dot, index) => {
-        dot.addEventListener('click', function(e) {
-          e.stopPropagation(); // Prevenir que el clic se propague al contenedor
-          currentBlogPromoSlide = index;
-          updateBlogPromoSlider();
-        });
-      });
-      
-      // Auto slide para blog promo
-      let blogPromoAutoSlide = setInterval(nextBlogPromoSlide, 4000);
-      
-      // Pausar auto slide al interactuar
-      const blogPromoContainer = document.querySelector('.blog-promo-slider-container');
-      blogPromoContainer.addEventListener('mouseenter', () => {
-        clearInterval(blogPromoAutoSlide);
-      });
-      
-      blogPromoContainer.addEventListener('mouseleave', () => {
-        blogPromoAutoSlide = setInterval(nextBlogPromoSlide, 4000);
-      });
-      
-      // Redirección al hacer clic en el slider
-      blogPromoContainer.addEventListener('click', function() {
-        window.location.href = 'mixphere.html';
-      });
-      
-      // FAQ acordeón
-      const faqQuestions = document.querySelectorAll('.faq-question');
-      faqQuestions.forEach(question => {
-        question.addEventListener('click', function() {
-          this.classList.toggle('active');
-          const answer = this.nextElementSibling;
-          if (this.classList.contains('active')) {
-            answer.style.maxHeight = answer.scrollHeight + 'px';
-            answer.style.padding = '20px';
-          } else {
-            answer.style.maxHeight = '0';
-            answer.style.padding = '0';
-          }
-        });
-      });
-      // Smooth scrolling
-      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-          e.preventDefault();
-          const targetId = this.getAttribute('href');
-          if (targetId === '#') return;
-          const targetElement = document.querySelector(targetId);
-          if (targetElement) {
-            window.scrollTo({
-              top: targetElement.offsetTop - 80,
-              behavior: 'smooth'
-            });
-          }
-        });
-      });
-      // Inicializar botones galería
-      updateGalleryButtons();
-      // Inicializar blog promo slider
-      updateBlogPromoSlider();
-    });
-  </script>
-</body>
-</html>
+  </div>
+</div></div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="fi-grid">
+    <div class="fb"><span class="logo-f">Mixfy</span><p>La herramienta definitiva para crear música en tu móvil. Diseñada por productores, para productores.</p><div class="fs-socials"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-twitter"></i></a><a href="#"><i class="fab fa-youtube"></i></a><a href="#"><i class="fab fa-tiktok"></i></a></div></div>
+    <div class="fcol"><h4>Producto</h4><ul><li><a href="#features">Características</a></li><li><a href="#pricing">Precios</a></li><li><a href="demo.html">Demo</a></li><li><a href="mixphere.html">Blog</a></li></ul></div>
+    <div class="fcol"><h4>Comunidad</h4><ul><li><a href="mixphere.html">Mixphere</a></li><li><a href="#suscribirse">Suscribirse</a></li><li><a href="#suscribirse">Publicar</a></li></ul></div>
+    <div class="fcol"><h4>Legal</h4><ul><li><a href="#">Términos</a></li><li><a href="#">Privacidad</a></li><li><a href="#">Cookies</a></li></ul></div>
+  </div>
+  <div class="foot-bot"><p>&copy; 2025 Mixfy. Todos los derechos reservados.</p><p>Creado con ♥ por Sofia Fontan Rey</p></div>
+</footer>
+
+<div class="pop-ov" id="popOv" onclick="closePop(event)">
+  <div class="pop-box"><button class="pop-close" onclick="closePop()"><i class="fas fa-times"></i></button>
+    <div class="pop-img"><img id="pImg" src="" alt=""></div>
+    <div class="pop-body"><p class="pop-cat" id="pCat"></p><h2 id="pTitle"></h2><div id="pCont"></div></div>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+let dark=localStorage.getItem('mxTheme')==='dark';
+function applyTheme(){document.documentElement.setAttribute('data-theme',dark?'dark':'light');document.getElementById('themeIco').className=dark?'fas fa-sun':'fas fa-moon';}
+applyTheme();
+document.getElementById('themeBtn').onclick=()=>{dark=!dark;localStorage.setItem('mxTheme',dark?'dark':'light');applyTheme();};
+document.getElementById('menuBtn').onclick=()=>document.getElementById('navLinks').classList.toggle('open');
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>50));
+
+// Track rows
+const tracks=[{name:'Kick',bars:'0101010101010101010101010101010101010101'},{name:'Bass',bars:'1101100110011001100110011001100110011001'},{name:'Synth',bars:'1111100011111000111110001111100011111000'},{name:'Voz',bars:'0011111111001100111111110011001111111100'}];
+const tl=document.getElementById('trackList');
+tracks.forEach((t,ti)=>{
+  const row=document.createElement('div');row.className='track-row';
+  const barsDiv=document.createElement('div');barsDiv.className='track-bars';
+  t.bars.split('').forEach(b=>{const d=document.createElement('div');d.className='tb'+(b==='1'?(Math.random()>.4?' bright':' lit'):'');d.style.cssText=`height:${8+Math.round(Math.random()*10)}px;flex:1;`;barsDiv.appendChild(d);});
+  row.innerHTML=`<span class="track-n">${ti+1}</span><span class="track-name">${t.name}</span>`;
+  row.appendChild(barsDiv);row.innerHTML+=`<span class="track-time">4:32</span>`;
+  tl.appendChild(row);
+});
+
+const posts=[
+  {img:'1.png',cat:'Producción',title:'Mastering para Spotify: guía completa 2025',content:'<p>Spotify normaliza a <strong>-14 LUFS</strong>. Apunta con true peak de <strong>-1 dBTP</strong>. Exporta en WAV 24-bit para mejores resultados.</p>'},
+  {img:'5.png',cat:'Colaboración',title:'Cómo colaborar con artistas de forma remota',content:'<p>Usa <strong>Audiomovers</strong> o <strong>Cleanfeed</strong> para feedback de audio en tiempo real. Mixfy tiene colaboración nativa integrada.</p>'},
+  {img:'3.png',cat:'Técnica',title:'Teoría musical para productores modernos',content:'<p>Lo esencial: <strong>escalas</strong> y <strong>acordes</strong>. El Scale Helper de Mixfy muestra qué notas están en tu escala automáticamente.</p>'}
+];
+function openPost(i){const p=posts[i];document.getElementById('pImg').src=p.img;document.getElementById('pCat').textContent=p.cat;document.getElementById('pTitle').textContent=p.title;document.getElementById('pCont').innerHTML=p.content;document.getElementById('popOv').classList.add('open');document.body.style.overflow='hidden';}
+function closePop(e){if(!e||e.target===document.getElementById('popOv')||e.currentTarget.classList.contains('pop-close')){document.getElementById('popOv').classList.remove('open');document.body.style.overflow='';}}
+function handleSub(t){const inp=document.getElementById('sub'+t);const msg=document.getElementById('sub'+t+'Msg');if(!inp.value.includes('@')){msg.textContent='Email inválido.';return;}msg.textContent=t==='R'?'¡Suscripción confirmada!':'¡Solicitud enviada!';inp.value='';}
+
+const gt=document.getElementById('gT');let gPos=0;
+document.getElementById('gPrev').onclick=()=>{gPos=Math.max(0,gPos-252);gt.style.transform=`translateX(-${gPos}px)`;};
+document.getElementById('gNext').onclick=()=>{const m=gt.scrollWidth-gt.parentElement.offsetWidth;gPos=Math.min(m,gPos+252);gt.style.transform=`translateX(-${gPos}px)`;};
+
+document.querySelectorAll('.faq-q').forEach(q=>{q.addEventListener('click',()=>{q.classList.toggle('open');const a=q.nextElementSibling;a.style.maxHeight=q.classList.contains('open')?a.scrollHeight+'px':'0';});});
