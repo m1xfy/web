@@ -1,2381 +1,631 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="light">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0" />
-  <meta name="description" content="Mixfy Blog - Consejos, tutoriales y noticias sobre producción musical">
-  <title>Mixphere</title>
-  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mixphere — El blog de Mixfy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
-    :root {
-      --primary: #6a407f;
-      --primary-light: #8a5da8;
-      --primary-dark: #4d2b5c;
-      --secondary: #3d2447;
-      --accent: #d3bfdc;
-      --text: #333;
-      --text-light: #4A5568;
-      --background: #f4f1f7;
-      --surface: #FFFFFF;
-      --surface-light: #F1F5F9;
-      --gradient: linear-gradient(135deg, #6a407f 0%, #3d2447 100%);
-      --gradient-secondary: linear-gradient(135deg, #8a5da8 0%, #4d2b5c 100%);
-      --gradient-surface: linear-gradient(135deg, #FFFFFF 0%, #f4f1f7 100%);
-      
-      /* Tamaños base responsivos */
-      --base-font-size: clamp(14px, 1.5vw, 16px);
-      --h1-size: clamp(2rem, 4vw, 3.5rem);
-      --h2-size: clamp(1.5rem, 2.5vw, 2rem);
-      --h3-size: clamp(1.1rem, 2vw, 1.5rem);
-      --section-padding: clamp(2rem, 4vw, 4rem) clamp(1rem, 2vw, 1.5rem);
-      --container-max-width: min(1200px, 95vw);
+    :root{
+      --bg:#f8f5fc;--bg2:#ede5f6;--surface:#fff;--surf2:#f3edfb;
+      --pur:#5b2d8e;--pur2:#7a45b5;--pur3:#9b6dcc;--pur4:#c49eee;
+      --beige:#e8e0f0;--ink:#1a0e2e;--muted:#7d6a90;--muted2:#a090b0;
+      --border:rgba(91,45,142,.16);--border2:rgba(91,45,142,.09);--glow:rgba(91,45,142,.22);
     }
-    
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    [data-theme="dark"]{
+      --bg:#0c0718;--bg2:#120a24;--surface:#1a0e30;--surf2:#120a24;
+      --pur:#dcc5ff;--pur2:#c9b0f0;--pur3:#b090e0;--pur4:#8a5dcc;
+      --beige:#251540;--ink:#f5eeff;--muted:#c0a8e0;--muted2:#9080b0;
+      --border:rgba(220,197,255,.14);--border2:rgba(220,197,255,.08);--glow:rgba(220,197,255,.1);
     }
-    
-    html, body {
-      height: 100%;
-      width: 100%;
-    }
-    
-    html {
-      font-size: var(--base-font-size);
-      scroll-behavior: smooth;
-    }
-    
-    body {
-      margin: 0;
-      font-family: 'Chakra Petch', sans-serif;
-      background: #f0e9f5;
-      color: var(--text);
-      overflow-x: hidden;
-      line-height: 1.6;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-    
-    /* Layout principal que ocupa toda la pantalla */
-    .main-container {
-      flex: 1;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-    }
-    
-    /* Navegación moderna minimalista */
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(255, 255, 255, 0.98);
-      backdrop-filter: blur(20px);
-      z-index: 1000;
-      padding: 1rem 0;
-      transition: all 0.3s ease;
-      border-bottom: 1px solid rgba(106, 64, 127, 0.1);
-    }
-    
-    nav.scrolled {
-      padding: 0.6rem 0;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-    }
-    
-    .nav-container {
-      max-width: var(--container-max-width);
-      margin: 0 auto;
-      padding: 0 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .logo {
-      color: var(--text);
-      font-size: clamp(1.3rem, 3vw, 1.6rem);
-      font-weight: 700;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      background: var(--gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    
-    .logo i {
-      margin-right: 0.5rem;
-      font-size: clamp(1.1rem, 2.5vw, 1.3rem);
-    }
-    
-    .nav-links {
-      display: flex;
-      list-style: none;
-      transition: all 0.5s ease;
-    }
-    
-    .nav-links li {
-      margin-left: clamp(0.8rem, 1.5vw, 1.5rem);
-    }
-    
-    .nav-links a {
-      color: var(--text);
-      text-decoration: none;
-      font-weight: 500;
-      transition: all 0.3s ease;
-      position: relative;
-      font-size: clamp(0.8rem, 1.5vw, 0.9rem);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      bottom: -0.3rem;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: var(--gradient);
-      transition: width 0.3s ease;
-    }
-    
-    .nav-links a:hover::after {
-      width: 100%;
-    }
-    
-    .mobile-menu-btn {
-      display: none;
-      background: none;
-      border: none;
-      color: var(--text);
-      font-size: 1.3rem;
-      cursor: pointer;
-      padding: 0.5rem;
-    }
-    
-    /* Header del blog que ocupa toda la pantalla */
-    .blog-header {
-      background: linear-gradient(135deg, rgba(106, 64, 127, 0.9) 0%, rgba(61, 36, 71, 0.9) 100%), 
-                  url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-      color: white;
-      text-align: center;
-      padding: var(--section-padding);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
-      margin-top: 0;
-      width: 100%;
-    }
-    
-    .header-content {
-      max-width: 400px;
-      position: relative;
-      z-index: 2;
-    }
-    
-    .blog-header h1 {
-      font-size: var(--h1-size);
-      margin: 0;
-      line-height: 1.1;
-      padding: 0 1rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: -1px;
-      text-shadow: 0 5px 15px rgba(0,0,0,0.2);
-      animation: fadeInUp 1s ease forwards;
-    }
-    
-    .blog-header p {
-      font-size: clamp(0.9rem, 1.8vw, 1.1rem);
-      margin: 1.5rem 0 2.5rem;
-      max-width: min(700px, 90vw);
-      padding: 0 1rem;
-      color: rgba(255, 255, 255, 0.9);
-      font-weight: 500;
-      animation: fadeInUp 1s ease forwards 0.3s;
-      opacity: 0;
-    }
-    
-    .header-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: rgba(255, 255, 255, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      color: white;
-      padding: 0.6rem 1.2rem;
-      border-radius: 50px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      margin-bottom: 2rem;
-      animation: fadeInUp 1s ease forwards 0.1s;
-      opacity: 0;
-      backdrop-filter: blur(10px);
-    }
-    
-    .header-buttons {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-top: 2rem;
-    }
-    
-    .btn {
-      padding: 0.8rem 1.5rem;
-      border: none;
-      border-radius: 50px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    
-    .btn-primary {
-      background: white;
-      color: var(--primary);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    }
-    
-    .btn-primary:hover {
-      background: var(--primary);
-      color: white;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-    }
-    
-    .btn-outline {
-      background: white;
-      color: var(--primary);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    }
-    
-    .btn-outline:hover {
-      background: var(--primary);
-      color: white;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-    }
-    
-    .scroll-indicator {
-      position: absolute;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      animation: bounce 2s infinite;
-      color: white;
-      font-size: 1.3rem;
-    }
-    
-    @keyframes bounce {
-      0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
-      40% { transform: translateX(-50%) translateY(-10px); }
-      60% { transform: translateX(-50%) translateY(-5px); }
-    }
-    
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    /* Secciones que ocupan todo el ancho */
-    section {
-      padding: var(--section-padding);
-      width: 100%;
-      margin: 0;
-    }
-    
-    .section-full {
-      width: 100%;
-      padding: var(--section-padding);
-    }
-    
-    h2 {
-      font-size: var(--h2-size);
-      margin-bottom: 1.5rem;
-      position: relative;
-      display: inline-block;
-      color: var(--text);
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    
-    h2::after {
-      content: '';
-      position: absolute;
-      bottom: -0.6rem;
-      left: 0;
-      width: 3rem;
-      height: 3px;
-      background: var(--gradient);
-      border-radius: 2px;
-    }
-    
-    h3 {
-      font-size: var(--h3-size);
-      color: var(--text);
-      font-weight: 600;
-    }
-    
-    .section-subtitle {
-      color: var(--text-light);
-      margin-bottom: 2rem;
-      font-size: 1rem;
-      max-width: 600px;
-    }
-    
-    /* Carrusel de artículos */
-    .carousel-container {
-      position: relative;
-      width: 100%;
-      max-width: 1200px;
-      margin: 2rem auto;
-      overflow: hidden;
-      padding-bottom: 70px;
-    }
-    
-    .carousel-track {
-      display: flex;
-      transition: transform 0.5s ease;
-      gap: 1.5rem;
-      padding: 0 1rem;
-    }
-    
-    .carousel-item {
-      min-width: calc(50% - 0.75rem);
-      flex: 0 0 calc(50% - 0.75rem);
-    }
-    
-.carousel-btn {
-  position: absolute;
-  bottom: 10px;
-  transform: translateY(0);
-  background: var(--primary);
-  border: 2px solid var(--primary-light);
-  color: white;
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  z-index: 10;
-  /* SIN box-shadow */
-}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;line-height:1.65;transition:background .45s,color .45s;}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.018'/%3E%3C/svg%3E");opacity:.5;}
 
-.carousel-btn:hover {
-  background: var(--primary-dark);
-  color: white;
-  transform: scale(1.1);
-  box-shadow: none; /* SIN sombra en hover */
-}
-    
-    .carousel-prev {
-      left: calc(50% - 60px);
-    }
-    
-    .carousel-next {
-      right: calc(50% - 60px);
-    }
-    
-    /* Grid de artículos moderno que ocupa todo el ancho */
-    .blog-article {
-      background: var(--surface);
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-      transition: all 0.4s ease;
-      position: relative;
-      border: 1px solid rgba(106, 64, 127, 0.1);
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      cursor: pointer;
-    }
-    
-    .blog-article:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 15px 35px rgba(106, 64, 127, 0.15);
-    }
-    
-    .article-image {
-      height: 180px;
-      overflow: hidden;
-      position: relative;
-    }
-    
-    .article-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.5s ease;
-    }
-    
-    .blog-article:hover .article-image img {
-      transform: scale(1.1);
-    }
-    
-    .article-category {
-      position: absolute;
-      top: 0.8rem;
-      left: 0.8rem;
-      background: var(--gradient);
-      color: white;
-      padding: 0.4rem 1rem;
-      border-radius: 50px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      z-index: 2;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }
-    
-    .article-content {
-      padding: 1.5rem;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .article-date {
-      color: var(--primary);
-      font-size: 0.8rem;
-      margin-bottom: 0.6rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    
-    .article-title {
-      margin: 0 0 0.8rem;
-      font-size: 1.2rem;
-      color: var(--text);
-      font-weight: 700;
-      line-height: 1.3;
-      flex: 1;
-    }
-    
-    .article-excerpt {
-      color: var(--text-light);
-      margin-bottom: 1.2rem;
-      font-size: 0.9rem;
-      line-height: 1.6;
-    }
-    
-    .article-meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: auto;
-      padding-top: 1.2rem;
-      border-top: 1px solid rgba(106, 64, 127, 0.1);
-    }
-    
-    .article-author {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-    
-    .author-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid var(--accent);
-    }
-    
-    .author-name {
-      font-weight: 600;
-      font-size: 0.85rem;
-    }
-    
-    .read-time {
-      color: var(--text-light);
-      font-size: 0.8rem;
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-    }
-    
-    /* Secciones específicas con diseño moderno */
-    .section-header {
-      text-align: center;
-      margin-bottom: 3rem;
-      width: 100%;
-    }
-    
-    .section-header h2 {
-      display: inline-block;
-      margin-bottom: 0.8rem;
-    }
-    
-    .section-header p {
-      max-width: 600px;
-      margin: 0 auto;
-      color: var(--text-light);
-    }
-    
-    /* Tutoriales Section */
-    .tutorials-section {
-      background: #f9f7fb;
-      border-radius: 0;
-      padding: 4rem 0;
-      margin: 0;
-      width: 100%;
-    }
-    
-    .tutorials-carousel {
-      position: relative;
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      overflow: hidden;
-      padding-bottom: 70px;
-    }
-    
-    .tutorials-track {
-      display: flex;
-      transition: transform 0.5s ease;
-      gap: 1.5rem;
-      padding: 0 1rem;
-    }
-    
-    .tutorial-item {
-      min-width: calc(50% - 0.75rem);
-      flex: 0 0 calc(50% - 0.75rem);
-    }
+    nav{position:fixed;top:0;width:100%;z-index:900;padding:1.1rem 0;background:rgba(250,247,242,.92);backdrop-filter:blur(20px);border-bottom:1px solid transparent;transition:all .4s;}
+    [data-theme="dark"] nav{background:rgba(12,7,24,.92);}
+    nav.scrolled{border-bottom-color:var(--border);}
+    .nav-c{max-width:1260px;margin:0 auto;padding:0 2.5rem;display:flex;justify-content:space-between;align-items:center;}
+    .logo{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;letter-spacing:.04em;color:var(--pur);text-decoration:none;}
+    .nav-links{display:flex;list-style:none;gap:2.2rem;align-items:center;}
+    .nav-links a{font-family:'Outfit',sans-serif;font-size:.7rem;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .25s;}
+    .nav-links a:hover,.nav-links a.active{color:var(--pur);}
+    .nav-r{display:flex;gap:.5rem;align-items:center;}
+    .ctrl-btn{width:36px;height:36px;border:1px solid var(--border);background:transparent;border-radius:50%;cursor:pointer;color:var(--pur);display:flex;align-items:center;justify-content:center;font-size:.78rem;transition:all .25s;}
+    .ctrl-btn:hover{background:var(--pur);color:white;border-color:var(--pur);}
+    .back-btn{font-family:'Outfit',sans-serif;font-size:.68rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--pur);border:1px solid var(--border);padding:.36rem 1rem;border-radius:100px;text-decoration:none;transition:all .25s;}
+    .back-btn:hover{background:var(--pur);color:white;}
 
-.tutorial-btn {
-  position: absolute;
-  bottom: 10px;
-  transform: translateY(0);
-  background: var(--primary);
-  border: 2px solid var(--primary-light);
-  color: white;
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  z-index: 10;
-  /* SIN box-shadow */
-}
+    .masthead{position:relative;z-index:2;min-height:88vh;display:flex;align-items:flex-end;padding:110px 2.5rem 5rem;overflow:hidden;background:linear-gradient(150deg,#18082e 0%,#2e1158 45%,#4a1f7a 75%,#5b2d8e 100%);}
+    [data-theme="dark"] .masthead{background:linear-gradient(170deg,#08031a 0%,#160a32 50%,#200e42 100%);}
+    .mast-bg1{position:absolute;top:-2rem;right:-2rem;pointer-events:none;z-index:0;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(12rem,28vw,22rem);font-weight:700;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.06);line-height:1;user-select:none;white-space:nowrap;}
+    .mast-bg2{position:absolute;bottom:-4rem;left:-2rem;pointer-events:none;z-index:0;font-family:'Cormorant Garamond',serif;font-size:clamp(8rem,20vw,17rem);font-weight:700;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.04);line-height:1;user-select:none;}
+    .mast-photo{position:absolute;inset:0;z-index:0;opacity:.18;background:url('https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=1600&q=80') center/cover;}
+    .mast-lines{position:absolute;inset:0;pointer-events:none;z-index:0;background:repeating-linear-gradient(0deg,transparent,transparent 42px,rgba(255,255,255,.02) 42px,rgba(255,255,255,.02) 43px);}
+    .mast-glow{position:absolute;top:40%;left:50%;transform:translate(-50%,-50%);width:70vw;height:60vh;border-radius:50%;background:radial-gradient(ellipse,rgba(196,158,238,.15) 0%,transparent 70%);pointer-events:none;z-index:0;}
+    .mast-inner{position:relative;z-index:2;max-width:1260px;width:100%;}
+    .mast-meta{display:flex;align-items:center;gap:1.5rem;margin-bottom:2rem;opacity:0;animation:fadeUp .6s .1s ease forwards;}
+    .mast-badge{font-family:'Outfit',sans-serif;font-size:.58rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.5);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);padding:.38rem 1rem;border-radius:100px;backdrop-filter:blur(6px);}
+    .mast-sep{width:1px;height:14px;background:rgba(255,255,255,.2);}
+    .mast-date{font-family:'Outfit',sans-serif;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);}
+    .mast-h1{color:white;margin-bottom:1.5rem;}
+    .mast-h1 .line{display:block;overflow:hidden;}
+    .mast-h1 .inner{display:block;opacity:0;transform:translateY(100%);animation:slideUp .8s cubic-bezier(.16,1,.3,1) forwards;}
+    .l1 .inner{animation-delay:.2s;}.l2 .inner{animation-delay:.34s;}
+    .w-heavy{font-family:'Cormorant Garamond',serif;font-size:clamp(3.2rem,8vw,6.8rem);font-weight:700;line-height:.95;letter-spacing:-.03em;}
+    .w-light{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(2.4rem,6vw,5.2rem);font-weight:300;color:rgba(255,255,255,.6);}
+    @keyframes slideUp{to{opacity:1;transform:none;}}
+    .mast-sub{font-family:'Outfit',sans-serif;font-size:.92rem;color:rgba(255,255,255,.45);max-width:460px;line-height:1.8;opacity:0;animation:fadeUp .6s .72s ease forwards;font-weight:300;}
+    .mast-scroll{position:absolute;bottom:2.5rem;right:2.5rem;display:flex;align-items:center;gap:.6rem;opacity:0;animation:fadeUp .6s 1.4s ease forwards;}
+    .ms-txt{font-family:'Outfit',sans-serif;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.3);}
+    .ms-line{width:36px;height:1px;background:rgba(255,255,255,.18);position:relative;overflow:hidden;}
+    .ms-line::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,.7);transform:translateX(-100%);animation:scanLine 2.5s ease-in-out infinite;}
+    @keyframes scanLine{0%{transform:translateX(-100%);}50%{transform:translateX(100%);}100%{transform:translateX(100%);}}
 
-.tutorial-btn:hover {
-  background: var(--primary-dark);
-  color: white;
-  transform: scale(1.1);
-  box-shadow: none; /* SIN sombra en hover */
-}
-    
-    .tutorial-prev {
-      left: calc(50% - 60px);
-    }
-    
-    .tutorial-next {
-      right: calc(50% - 60px);
-    }
-    
-    .tutorial-card {
-      background: var(--surface);
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-      transition: all 0.4s ease;
-      border: 1px solid rgba(106, 64, 127, 0.1);
-      position: relative;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      cursor: pointer;
-    }
-    
-    .tutorial-card:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 15px 35px rgba(106, 64, 127, 0.15);
-    }
-    
-    .tutorial-video {
-      position: relative;
-      height: 180px;
-      overflow: hidden;
-    }
-    
-    .tutorial-video img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.5s ease;
-    }
-    
-    .tutorial-card:hover .tutorial-video img {
-      transform: scale(1.1);
-    }
-    
-    .play-icon {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 60px;
-      height: 60px;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--primary);
-      font-size: 1.5rem;
-      transition: all 0.3s ease;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }
-    
-    .tutorial-card:hover .play-icon {
-      background: var(--primary);
-      color: white;
-      transform: translate(-50%, -50%) scale(1.1);
-    }
-    
-    .tutorial-content {
-      padding: 1.5rem;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .tutorial-level {
-      display: inline-block;
-      background: var(--accent);
-      color: var(--primary-dark);
-      padding: 0.3rem 0.8rem;
-      border-radius: 20px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      margin-bottom: 0.8rem;
-      border: 1px solid var(--primary-light);
-    }
-    
-    .tutorial-title {
-      font-size: 1.2rem;
-      margin-bottom: 0.8rem;
-      color: var(--text);
-      font-weight: 700;
-      line-height: 1.3;
-      flex: 1;
-    }
-    
-    .tutorial-duration {
-      color: var(--text-light);
-      font-size: 0.85rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-top: auto;
-    }
-    
-    /* Tendencias Section */
-    .trends-section {
-      padding: 4rem 0;
-      margin: 0;
-      width: 100%;
-    }
-    
-    .trends-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2rem;
-      width: 100%;
-      max-width: var(--container-max-width);
-      margin: 0 auto;
-      padding: 0 1rem;
-    }
-    
-    .trend-card {
-      background: var(--surface);
-      border-radius: 15px;
-      padding: 2.5rem 1.5rem;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-      transition: all 0.4s ease;
-      border: 1px solid rgba(106, 64, 127, 0.1);
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .trend-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 4px;
-      background: var(--gradient);
-      transform: scaleX(0);
-      transition: transform 0.3s ease;
-    }
-    
-    .trend-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 15px 35px rgba(106, 64, 127, 0.15);
-    }
-    
-    .trend-card:hover::before {
-      transform: scaleX(1);
-    }
-    
-    .trend-icon {
-      width: 70px;
-      height: 70px;
-      border-radius: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 1.2rem;
-      background: var(--gradient);
-      color: white;
-      font-size: 1.8rem;
-      transition: all 0.3s ease;
-      box-shadow: 0 8px 20px rgba(106, 64, 127, 0.2);
-    }
-    
-    .trend-card:hover .trend-icon {
-      transform: rotate(10deg) scale(1.1);
-    }
-    
-    .trend-title {
-      font-size: 1.2rem;
-      margin-bottom: 0.8rem;
-      color: var(--text);
-    }
-    
-    .trend-description {
-      color: var(--text-light);
-      font-size: 0.9rem;
-      margin-bottom: 1.2rem;
-      line-height: 1.6;
-    }
-    
-    .trend-stats {
-      display: flex;
-      justify-content: center;
-      gap: 1.2rem;
-      color: var(--text-light);
-      font-size: 0.85rem;
-    }
-    
-    .trend-stat {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    
-    /* Sección de Acción - REEMPLAZA la sección de Newsletter */
-    .action-section {
-      background: var(--gradient);
-      color: white;
-      padding: 4rem 2rem;
-      text-align: center;
-      border-radius: 0;
-      margin: 0;
-      width: 100%;
-    }
-    
-    .action-section h2 {
-      color: white;
-      margin-bottom: 0.8rem;
-    }
-    
-    .action-section h2::after {
-      background: white;
-    }
-    
-    .action-section p {
-      margin-bottom: 2rem;
-      opacity: 0.9;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    
-    .action-buttons {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    
-    .action-btn {
-      padding: 1rem 2rem;
-      background: white;
-      color: var(--primary);
-      border: none;
-      border-radius: 50px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.95rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    
-    .action-btn:hover {
-      background: var(--primary);
-      color: white;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-    }
-    
-    .action-btn.secondary {
-      background: white;
-      color: var(--primary);
-    }
-    
-    .action-btn.secondary:hover {
-      background: var(--primary);
-      color: white;
-    }
-    
-    /* Popups para Suscripción y Comunidad */
-    .popup {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      z-index: 2000;
-      overflow-y: auto;
-      padding: 1rem;
-    }
-    
-    .popup-content {
-      background: white;
-      max-width: 500px;
-      margin: 2rem auto;
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-      position: relative;
-      animation: popupFadeIn 0.3s ease;
-    }
-    
-    @keyframes popupFadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    .popup-header {
-      background: var(--gradient);
-      color: white;
-      padding: 1.5rem;
-      text-align: center;
-      position: relative;
-    }
-    
-    .popup-close {
-      position: absolute;
-      top: 1.2rem;
-      right: 1.2rem;
-      background: rgba(255, 255, 255, 0.2);
-      border: none;
-      width: 35px;
-      height: 35px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      z-index: 10;
-    }
-    
-    .popup-close:hover {
-      background: rgba(255, 255, 255, 0.3);
-    }
-    
-    .popup-title {
-      font-size: 1.5rem;
-      margin: 0;
-      font-weight: 700;
-      padding-right: 40px; /* Espacio para la X */
-    }
-    
-    .popup-body {
-      padding: 2rem;
-    }
-    
-    .popup-form {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-    
-    .form-group {
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .form-label {
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 0.5rem;
-    }
-    
-    .form-input, .form-select, .form-textarea {
-      width: 100%;
-      padding: 0.8rem 1rem;
-      border: 2px solid var(--surface-light);
-      border-radius: 8px;
-      font-family: 'Chakra Petch', sans-serif;
-      font-size: 0.9rem;
-      transition: all 0.3s ease;
-    }
-    
-    .form-input:focus, .form-select:focus, .form-textarea:focus {
-      outline: none;
-      border-color: var(--primary-light);
-      box-shadow: 0 0 0 3px rgba(138, 93, 168, 0.2);
-    }
-    
-    .form-textarea {
-      resize: vertical;
-      min-height: 100px;
-    }
-    
-    .form-section {
-      margin-top: 1rem;
-      padding: 1.5rem;
-      background: var(--surface-light);
-      border-radius: 8px;
-      border-left: 4px solid var(--primary);
-    }
-    
-    .checkbox-group {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-    
-    .checkbox {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-    }
-    
-    .checkbox input {
-      width: auto;
-    }
-    
-    .form-actions {
-      display: flex;
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-    
-    .form-btn {
-      flex: 1;
-      padding: 0.8rem 1.5rem;
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-family: 'Chakra Petch', sans-serif;
-    }
-    
-    .form-btn.primary {
-      background: var(--gradient);
-      color: white;
-      box-shadow: 0 4px 15px rgba(106, 64, 127, 0.3);
-    }
-    
-    .form-btn.primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(106, 64, 127, 0.4);
-    }
-    
-    .form-btn.secondary {
-      background: var(--surface-light);
-      color: var(--text);
-      border: 2px solid var(--surface-light);
-    }
-    
-    .form-btn.secondary:hover {
-      background: var(--surface);
-      border-color: var(--primary-light);
-    }
-    
-    .popup-message {
-      margin-top: 1rem;
-      padding: 1rem;
-      border-radius: 8px;
-      background: var(--surface-light);
-      color: var(--text);
-      border: 1px solid rgba(106, 64, 127, 0.2);
-      display: none;
-    }
-    
-    .popup-message.success {
-      background: rgba(76, 175, 80, 0.1);
-      border-color: rgba(76, 175, 80, 0.3);
-      color: #2e7d32;
-    }
-    
-    .popup-message.error {
-      background: rgba(244, 67, 54, 0.1);
-      border-color: rgba(244, 67, 54, 0.3);
-      color: #c62828;
-    }
-    
-    .hidden {
-      display: none;
-    }
-    
-    /* Popup de artículo */
-    .article-popup {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      z-index: 2000;
-      overflow-y: auto;
-      padding: 1rem;
-    }
-    
-    .article-popup-content {
-      background: white;
-      max-width: 700px;
-      margin: 2rem auto;
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-      position: relative;
-    }
-    
-    .article-popup-close {
-      position: absolute;
-      top: 1.2rem;
-      right: 1.2rem;
-      background: rgba(0,0,0,0.1);
-      border: none;
-      width: 35px;
-      height: 35px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text);
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      z-index: 10;
-    }
-    
-    .article-popup-close:hover {
-      background: var(--primary);
-      color: white;
-    }
-    
-    .popup-image {
-      height: 250px;
-      overflow: hidden;
-      position: relative;
-    }
-    
-    .popup-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    
-    .article-popup-body {
-      padding: 2rem;
-    }
-    
-    .popup-meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
-      padding-bottom: 1.2rem;
-      border-bottom: 1px solid rgba(106, 64, 127, 0.1);
-    }
-    
-    .popup-category {
-      background: var(--gradient);
-      color: white;
-      padding: 0.4rem 1rem;
-      border-radius: 50px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    
-    .popup-date {
-      color: var(--primary);
-      font-weight: 600;
-      font-size: 0.9rem;
-    }
-    
-    .popup-title {
-      font-size: 1.8rem;
-      margin-bottom: 1.2rem;
-      color: var(--text);
-      line-height: 1.2;
-      padding-right: 40px; /* Espacio para la X */
-    }
-    
-    .popup-text {
-      color: var(--text);
-      line-height: 1.7;
-      margin-bottom: 1.5rem;
-    }
-    
-    .popup-text p {
-      margin-bottom: 1.2rem;
-    }
-    
-    .popup-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 2rem;
-      padding-top: 1.2rem;
-      border-top: 1px solid rgba(106, 64, 127, 0.1);
-    }
-    
-    /* Footer moderno */
-    footer {
-      text-align: center;
-      padding: 3rem 1rem;
-      background: var(--surface);
-      color: var(--text);
-      position: relative;
-      border-top: 1px solid rgba(106, 64, 127, 0.1);
-      width: 100%;
-    }
-    
-    footer::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 4px;
-      background: var(--gradient);
-    }
-    
-    .footer-content {
-      max-width: var(--container-max-width);
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
-      gap: 1.5rem;
-      text-align: left;
-    }
-    
-    .footer-column h3 {
-      color: var(--primary);
-      margin-bottom: 1.2rem;
-      font-size: 1.1rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    
-    .footer-links {
-      list-style: none;
-    }
-    
-    .footer-links li {
-      margin-bottom: 0.6rem;
-    }
-    
-    .footer-links a {
-      color: var(--text-light);
-      text-decoration: none;
-      transition: all 0.3s ease;
-      font-size: 0.85rem;
-      position: relative;
-      padding-left: 0;
-    }
-    
-    .footer-links a::before {
-      content: '▸';
-      position: absolute;
-      left: -1rem;
-      opacity: 0;
-      transition: all 0.3s ease;
-      color: var(--primary);
-    }
-    
-    .footer-links a:hover {
-      color: var(--primary);
-      padding-left: 1rem;
-    }
-    
-    .footer-links a:hover::before {
-      opacity: 1;
-      left: 0;
-    }
-    
-    .social-icons {
-      display: flex;
-      gap: 0.8rem;
-      margin-top: 1.2rem;
-      flex-wrap: wrap;
-    }
-    
-    .social-icons a {
-      color: var(--text-light);
-      font-size: 1.2rem;
-      transition: all 0.3s ease;
-      width: 35px;
-      height: 35px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--surface-light);
-    }
-    
-    .social-icons a:hover {
-      color: white;
-      transform: translateY(-3px);
-      background: var(--gradient);
-      box-shadow: 0 5px 15px rgba(106, 64, 127, 0.3);
-    }
-    
-    .copyright {
-      margin-top: 2rem;
-      padding-top: 1.2rem;
-      border-top: 1px solid rgba(0,0,0,0.1);
-      font-size: 0.85rem;
-      color: var(--text-light);
-    }
-    
-    /* Media Queries para dispositivos específicos */
-    @media (max-width: 768px) {
-      .carousel-item,
-      .tutorial-item {
-        min-width: 100%;
-        flex: 0 0 100%;
-      }
-      
-      .carousel-btn,
-      .tutorial-btn {
-        width: 40px;
-        height: 40px;
-      }
-      
-      .carousel-prev,
-      .tutorial-prev {
-        left: calc(50% - 50px);
-      }
-      
-      .carousel-next,
-      .tutorial-next {
-        right: calc(50% - 50px);
-      }
-      
-      .action-buttons {
-        flex-direction: column;
-        align-items: center;
-      }
-      
-      .action-btn {
-        width: 100%;
-        max-width: 300px;
-        justify-content: center;
-      }
-      
-      .form-actions {
-        flex-direction: column;
-      }
-    }
-    
-    @media (max-width: 640px) {
-      :root {
-        --base-font-size: 14px;
-        --h1-size: 1.8rem;
-        --h2-size: 1.4rem;
-        --section-padding: 1.5rem 1rem;
-      }
-      
-      .nav-links {
-        position: fixed;
-        top: 4rem;
-        left: -100%;
-        width: 100%;
-        height: calc(100vh - 4rem);
-        background: rgba(255, 255, 255, 0.98);
-        backdrop-filter: blur(10px);
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        padding-top: 1.5rem;
-        transition: all 0.5s ease;
-      }
-      
-      .nav-links.active {
-        left: 0;
-      }
-      
-      .nav-links li {
-        margin: 0.6rem 0;
-      }
-      
-      .mobile-menu-btn {
-        display: block;
-      }
-      
-      .trends-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .header-buttons {
-        flex-direction: column;
-        align-items: center;
-      }
-      
-      .btn {
-        width: 100%;
-        max-width: 300px;
-        justify-content: center;
-      }
-      
-      .popup-content {
-        margin: 1rem auto;
-        max-width: 95%;
-      }
-      
-      .popup-body {
-        padding: 1.5rem 1rem;
-      }
-      
-      .popup-title {
-        font-size: 1.5rem;
-      }
-    }
-    
-    @media (min-width: 641px) and (max-width: 1024px) {
-      :root {
-        --base-font-size: 15px;
-        --h1-size: 2.5rem;
-        --section-padding: 3rem 1.5rem;
-      }
-      
-      .nav-links li {
-        margin-left: 1rem;
-      }
-    }
+    .ticker{background:rgba(91,45,142,.9);padding:.5rem 0;overflow:hidden;position:relative;z-index:2;}
+    .t-track{display:flex;gap:2rem;animation:tScroll 22s linear infinite;white-space:nowrap;}
+    .t-track span{font-family:'Outfit',sans-serif;font-size:.6rem;font-weight:400;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.45);}
+    .t-track span::before{content:'♪  ';color:rgba(255,255,255,.18);}
+    @keyframes tScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+    .tab-bar{position:sticky;top:64px;z-index:80;background:rgba(250,247,242,.95);backdrop-filter:blur(18px);border-bottom:1px solid var(--border);}
+    [data-theme="dark"] .tab-bar{background:rgba(12,7,24,.95);}
+    .tab-inner{max-width:1260px;margin:0 auto;padding:0 2.5rem;display:flex;}
+    .tab-btn{padding:.95rem 1.9rem;border:none;background:transparent;color:var(--muted);font-family:'Outfit',sans-serif;font-weight:500;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-bottom:2px solid transparent;transition:all .25s;display:flex;align-items:center;gap:.45rem;}
+    .tab-btn:hover{color:var(--pur);}
+    .tab-btn.active{color:var(--pur);border-bottom-color:var(--pur);}
+    .t-badge{background:var(--pur);color:white;font-size:.54rem;padding:.12rem .45rem;border-radius:100px;font-weight:700;}
+
+    .sw{position:relative;z-index:2;}
+    .main-layout{max-width:1260px;margin:0 auto;padding:3rem 2.5rem;display:grid;grid-template-columns:1fr 305px;gap:3.5rem;}
+    .rv{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1);}
+    .rv.in{opacity:1;transform:none;}
+    .d1{transition-delay:.08s;}.d2{transition-delay:.16s;}.d3{transition-delay:.24s;}
+    .tab-panel{display:none;}
+    .tab-panel.active{display:block;}
+
+    .feat-art{border:1px solid var(--border);cursor:pointer;transition:all .35s;background:var(--surface);margin-bottom:1.4rem;border-radius:6px;overflow:hidden;}
+    .feat-art:hover{box-shadow:0 16px 52px var(--glow);transform:translateY(-4px);}
+    .fa-img{aspect-ratio:2.3;overflow:hidden;position:relative;}
+    .fa-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s;filter:grayscale(12%);}
+    .feat-art:hover .fa-img img{transform:scale(1.04);filter:grayscale(0);}
+    .fa-cat{position:absolute;top:1.1rem;left:1.1rem;background:var(--pur);color:white;font-family:'Outfit',sans-serif;font-size:.56rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;padding:.3rem .85rem;border-radius:100px;}
+    .fa-body{padding:2rem;}
+    .fa-meta{font-family:'Outfit',sans-serif;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);margin-bottom:.8rem;display:flex;gap:.8rem;font-weight:300;}
+    .fa-body h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;color:var(--pur);line-height:1.22;margin-bottom:.6rem;letter-spacing:-.01em;}
+    .fa-body p{color:var(--muted);font-size:.86rem;line-height:1.8;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-weight:300;}
+    .fa-read{display:inline-flex;align-items:center;gap:.4rem;font-family:'Outfit',sans-serif;font-size:.62rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--pur3);margin-top:1rem;transition:gap .25s;}
+    .feat-art:hover .fa-read{gap:.65rem;}
+
+    .art-card{border:1px solid var(--border);display:flex;cursor:pointer;background:var(--surface);margin-bottom:.9rem;border-radius:6px;overflow:hidden;transition:all .3s;}
+    .art-card:hover{box-shadow:0 10px 32px var(--glow);transform:translateX(5px);}
+    .ac-img{width:135px;flex-shrink:0;overflow:hidden;}
+    .ac-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s;filter:grayscale(15%);}
+    .art-card:hover .ac-img img{transform:scale(1.08);filter:grayscale(0);}
+    .ac-body{padding:1.2rem;flex:1;}
+    .ac-cat{font-family:'Outfit',sans-serif;font-size:.58rem;font-weight:400;letter-spacing:.18em;text-transform:uppercase;color:var(--pur3);margin-bottom:.4rem;}
+    .ac-body h3{font-family:'Cormorant Garamond',serif;font-size:1.08rem;font-weight:700;color:var(--pur);line-height:1.35;margin-bottom:.35rem;}
+    .ac-body p{color:var(--muted);font-size:.8rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.7;font-weight:300;}
+    .ac-foot{display:flex;justify-content:space-between;align-items:center;margin-top:.65rem;}
+    .ac-date{font-family:'Outfit',sans-serif;font-size:.6rem;letter-spacing:.08em;color:var(--muted2);font-weight:300;}
+    .ac-more{font-family:'Outfit',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--pur3);display:flex;align-items:center;gap:.3rem;transition:gap .25s;}
+    .art-card:hover .ac-more{gap:.5rem;}
+
+    .news-hd{display:flex;align-items:center;justify-content:space-between;padding-bottom:1rem;border-bottom:1px solid var(--border);margin-bottom:1.3rem;}
+    .news-live{display:flex;align-items:center;gap:.5rem;font-family:'Outfit',sans-serif;font-size:.64rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--pur);}
+    .ldot{width:6px;height:6px;background:#e53935;border-radius:50%;box-shadow:0 0 6px #e53935;animation:ldP 1.5s ease-in-out infinite;}
+    @keyframes ldP{0%,100%{opacity:1;}50%{opacity:.2;}}
+    .news-ts{font-family:'Outfit',sans-serif;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);font-weight:300;}
+    .news-card{border:1px solid var(--border);display:flex;cursor:pointer;background:var(--surface);margin-bottom:.9rem;border-radius:6px;overflow:hidden;transition:all .3s;}
+    .news-card:hover{box-shadow:0 10px 32px var(--glow);transform:translateY(-3px);}
+    .nc-img{width:120px;flex-shrink:0;overflow:hidden;}
+    .nc-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s;filter:grayscale(12%);}
+    .news-card:hover .nc-img img{transform:scale(1.08);filter:grayscale(0);}
+    .nc-body{padding:1.1rem 1.2rem;flex:1;}
+    .n-tag{display:inline-block;font-family:'Outfit',sans-serif;font-size:.54rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .65rem;border-radius:100px;margin-bottom:.45rem;}
+    .t-grammy{background:rgba(212,168,0,.1);color:#8a6d00;}[data-theme="dark"] .t-grammy{background:rgba(212,168,0,.15);color:#d4a800;}
+    .t-charts{background:rgba(30,160,80,.08);color:#1e6a3a;}[data-theme="dark"] .t-charts{background:rgba(30,200,80,.15);color:#30e87a;}
+    .t-nuevo{background:rgba(50,100,200,.07);color:#2040a0;}[data-theme="dark"] .t-nuevo{background:rgba(100,150,255,.15);color:#90b8ff;}
+    .t-ind{background:rgba(200,80,40,.07);color:#882010;}[data-theme="dark"] .t-ind{background:rgba(255,120,80,.12);color:#ff9878;}
+    .nc-body h3{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;color:var(--pur);line-height:1.35;margin-bottom:.3rem;}
+    .nc-body p{color:var(--muted);font-size:.79rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.65;font-weight:300;}
+    .nc-foot{display:flex;justify-content:space-between;margin-top:.55rem;}
+    .nc-time,.nc-more{font-family:'Outfit',sans-serif;font-size:.6rem;letter-spacing:.08em;color:var(--muted2);font-weight:300;}
+    .nc-more{font-weight:600;text-transform:uppercase;color:var(--pur3);}
+    .news-sec{font-family:'Outfit',sans-serif;font-size:.58rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted2);padding:.7rem 0;margin:1.4rem 0 .7rem;border-top:1px solid var(--border);display:flex;align-items:center;gap:.5rem;}
+
+    .sidebar{display:flex;flex-direction:column;gap:1.8rem;}
+    .widget{background:var(--surface);border:1px solid var(--border);padding:1.6rem;border-radius:6px;}
+    .wt{font-family:'Outfit',sans-serif;font-size:.58rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--pur);padding-bottom:.75rem;border-bottom:1px solid var(--border);margin-bottom:1.1rem;display:flex;align-items:center;gap:.5rem;}
+    .pop-item{display:flex;gap:.9rem;padding:.7rem 0;border-bottom:1px solid var(--border2);cursor:pointer;transition:transform .25s;align-items:flex-start;}
+    .pop-item:last-child{border:none;padding-bottom:0;}
+    .pop-item:hover{transform:translateX(4px);}
+    .pop-n{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:700;color:var(--beige);line-height:1;flex-shrink:0;width:24px;}
+    .pop-t{font-family:'Outfit',sans-serif;font-size:.78rem;font-weight:600;color:var(--pur);line-height:1.35;}
+    .pop-m{font-size:.68rem;color:var(--muted2);margin-top:.12rem;font-weight:300;}
+    .nl-body p{font-size:.82rem;color:var(--muted);margin-bottom:.95rem;line-height:1.75;font-weight:300;}
+    .nl-in{width:100%;padding:.7rem 1rem;background:var(--bg2);border:1px solid var(--border);border-radius:3px;font-family:'Outfit',sans-serif;font-size:.84rem;color:var(--ink);margin-bottom:.55rem;}
+    .nl-in::placeholder{color:var(--muted2);}
+    .nl-in:focus{outline:none;border-color:var(--pur);}
+    .nl-btn{width:100%;background:var(--pur);color:white;border:none;padding:.7rem;border-radius:3px;font-family:'Outfit',sans-serif;font-size:.66rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .25s;}
+    .nl-btn:hover{background:var(--pur2);}
+    .nl-msg{font-size:.72rem;color:var(--pur3);margin-top:.45rem;min-height:1em;}
+    .tags{display:flex;flex-wrap:wrap;gap:.4rem;}
+    .tag{padding:.25rem .75rem;background:var(--bg2);border:1px solid var(--border);border-radius:100px;font-family:'Outfit',sans-serif;font-size:.6rem;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);cursor:pointer;transition:all .25s;}
+    .tag:hover{background:var(--pur);color:white;border-color:var(--pur);}
+    .cta-w{background:var(--pur);border:none;}
+    [data-theme="dark"] .cta-w{background:#1e0a40;}
+    .cta-w .wt{color:rgba(255,255,255,.35);border-bottom-color:rgba(255,255,255,.1);}
+    .cta-w h4{font-family:'Cormorant Garamond',serif;font-size:1.18rem;font-weight:700;color:white;margin-bottom:.4rem;}
+    .cta-w p{font-size:.82rem;color:rgba(255,255,255,.48);margin-bottom:1rem;line-height:1.7;font-weight:300;}
+    .cta-link{display:block;background:white;color:var(--pur);padding:.72rem;border-radius:3px;text-decoration:none;font-family:'Outfit',sans-serif;font-weight:700;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;text-align:center;transition:background .25s;}
+    .cta-link:hover{background:var(--bg);}
+
+    /* MODAL ENRIQUECIDO */
+    .pop-ov{position:fixed;inset:0;z-index:9999;background:rgba(26,14,46,.82);backdrop-filter:blur(18px);display:none;align-items:flex-start;justify-content:center;padding:2rem;overflow-y:auto;}
+    .pop-ov.open{display:flex;animation:pIn .22s ease;}
+    @keyframes pIn{from{opacity:0;}to{opacity:1;}}
+    .pop-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;max-width:780px;width:100%;position:relative;margin:auto;animation:pUp .3s cubic-bezier(.16,1,.3,1);}
+    @keyframes pUp{from{transform:translateY(40px);opacity:0;}to{transform:none;opacity:1;}}
+    .pop-hero{position:relative;aspect-ratio:2.2;overflow:hidden;border-radius:10px 10px 0 0;}
+    .pop-hero img{width:100%;height:100%;object-fit:cover;}
+    .pop-hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(26,14,46,.72) 0%,transparent 55%);}
+    .pop-hero-cat{position:absolute;top:1.2rem;left:1.4rem;background:var(--pur);color:white;font-family:'Outfit',sans-serif;font-size:.54rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;padding:.3rem .9rem;border-radius:100px;}
+    .pop-hero-meta{position:absolute;bottom:1.2rem;left:1.4rem;display:flex;gap:1rem;align-items:center;}
+    .pop-hero-date,.pop-hero-time{font-family:'Outfit',sans-serif;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.55);}
+    .pop-body{padding:2.4rem;}
+    .pop-body h2{font-family:'Cormorant Garamond',serif;font-size:1.85rem;font-weight:700;color:var(--pur);margin-bottom:1.4rem;line-height:1.2;letter-spacing:-.02em;}
+    .pop-lead{font-size:.96rem;color:var(--muted);line-height:1.9;margin-bottom:1.6rem;font-weight:400;border-left:3px solid var(--pur4);padding-left:1.1rem;}
+    .pop-section h3{font-family:'Cormorant Garamond',serif;font-size:1.18rem;font-weight:700;color:var(--pur);margin-bottom:.55rem;margin-top:1.1rem;}
+    .pop-section p{color:var(--muted);font-size:.87rem;line-height:1.9;font-weight:300;margin-bottom:.75rem;}
+    .pop-section strong{color:var(--ink);font-weight:600;}
+    .pop-img-row{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin:1.4rem 0;}
+    .pop-img-row img{width:100%;aspect-ratio:1.5;object-fit:cover;border-radius:6px;border:1px solid var(--border);}
+    .pop-img-single{margin:1.4rem 0;}
+    .pop-img-single img{width:100%;aspect-ratio:2.2;object-fit:cover;border-radius:6px;border:1px solid var(--border);}
+    .pop-tip{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--pur3);border-radius:0 6px 6px 0;padding:1.1rem 1.3rem;margin:1.3rem 0;display:flex;gap:.9rem;align-items:flex-start;}
+    .pop-tip-ico{color:var(--pur3);font-size:.95rem;margin-top:.15rem;flex-shrink:0;}
+    .pop-tip p{font-size:.84rem;color:var(--muted);line-height:1.8;margin:0;font-weight:300;}
+    .pop-tip strong{color:var(--pur);font-weight:600;}
+    .pop-table{width:100%;border-collapse:collapse;margin:1.2rem 0;font-size:.81rem;}
+    .pop-table th{background:var(--bg2);color:var(--pur);font-family:'Outfit',sans-serif;font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:.61rem;padding:.6rem .9rem;border:1px solid var(--border);text-align:left;}
+    .pop-table td{padding:.52rem .9rem;border:1px solid var(--border2);color:var(--muted);font-weight:300;}
+    .pop-table tr:hover td{background:var(--bg2);}
+    .pop-close{position:absolute;top:1rem;right:1rem;background:rgba(10,5,22,.55);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.15);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:white;font-size:.78rem;transition:all .25s;z-index:10;}
+    .pop-close:hover{background:var(--pur);}
+    .pop-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.6rem;padding-top:1.2rem;border-top:1px solid var(--border);}
+    .pop-tag{padding:.22rem .7rem;background:var(--bg2);border:1px solid var(--border);border-radius:100px;font-family:'Outfit',sans-serif;font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);}
+
+    footer{background:var(--pur);color:white;padding:2.5rem;position:relative;z-index:2;}
+    [data-theme="dark"] footer{background:#160c2e;}
+    .foot-inner{max-width:1260px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+    .foot-links{display:flex;gap:2rem;}
+    .foot-links a{font-family:'Outfit',sans-serif;font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);text-decoration:none;transition:color .25s;font-weight:300;}
+    .foot-links a:hover{color:white;}
+    .fs{display:flex;gap:.5rem;}
+    .fs a{width:30px;height:30px;border:1px solid rgba(255,255,255,.14);border-radius:3px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.35);font-size:.78rem;text-decoration:none;transition:all .25s;}
+    .fs a:hover{border-color:rgba(255,255,255,.5);color:white;}
+    .foot-copy{max-width:1260px;margin:.9rem auto 0;padding-top:.9rem;border-top:1px solid rgba(255,255,255,.1);text-align:center;font-size:.7rem;color:rgba(255,255,255,.25);font-weight:300;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:none;}}
+    @media(max-width:960px){.main-layout{grid-template-columns:1fr;}.sidebar{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}}
+    @media(max-width:580px){.sidebar{grid-template-columns:1fr;}.ac-img,.nc-img{width:90px;}.pop-img-row{grid-template-columns:1fr;}.pop-body{padding:1.4rem;}}
   </style>
 </head>
 <body>
-  <div class="main-container">
-    <!-- Navegación -->
-    <nav id="navbar">
-      <div class="nav-container">
-        <a href="mixfy.html" class="logo"><i class="fas fa-music"></i> Mixfy</a>
-        <button class="mobile-menu-btn" id="mobileMenuBtn">
-          <i class="fas fa-bars"></i>
-        </button>
-        <ul class="nav-links" id="navLinks">
-          <li><a href="mixfy.html">Inicio</a></li>
-        </ul>
-      </div>
-    </nav>
-
-    <!-- Encabezado del blog que ocupa toda la pantalla -->
-    <section class="blog-header">
-      <div class="header-content">
-        <div class="header-badge">
-          <i class="fas fa-wave-square"></i>
-          <span>LO ULTIMO EN MUSICA Y PRODUCCION</span>
-          <i class="fas fa-wave-square"></i>
-        </div>
-        <h1 class="animate__animated animate__fadeIn">Mixphere</h1>
-        <p class="animate__animated animate__fadeIn">Explora el universo de la producción musical con tutoriales, tendencias y consejos exclusivos</p>
-       <!-- <div class="header-buttons">
-            <button class="btn btn-primary" id="openSubscriptionPopup">
-            <i class="fas fa-envelope"></i> Suscribirse al Blog
-          </button>
-          <button class="btn btn-outline" id="openCommunityPopup">
-            <i class="fas fa-users"></i> Unirse a la Comunidad
-          </button>
-        </div> -->
-      </div>
-      <div class="scroll-indicator">
-        <i class="fas fa-chevron-down"></i>
-      </div>
-    </section>
-
-    <!-- Artículos del blog con carrusel -->
-    <section class="section-full">
-      <div class="section-header">
-        <h2>Últimos Artículos</h2>
-        <p>Descubre los contenidos más recientes sobre producción musical</p>
-      </div>
-      
-      <div class="carousel-container">
-        <div class="carousel-track" id="articlesCarousel">
-          <!-- Artículos se cargan dinámicamente -->
-        </div>
-        
-        <button class="carousel-btn carousel-prev" id="articlesPrev">
-          <i class="fas fa-chevron-left"></i>
-        </button>
-        <button class="carousel-btn carousel-next" id="articlesNext">
-          <i class="fas fa-chevron-right"></i>
-        </button>
-      </div>
-    </section>
-
-    <!-- Sección de Tutoriales con carrusel -->
-    <section class="tutorials-section">
-      <div class="section-header">
-        <h2>Tutoriales en Video</h2>
-        <p>Aprende técnicas de producción musical con nuestros tutoriales paso a paso</p>
-      </div>
-      
-      <div class="tutorials-carousel">
-        <div class="tutorials-track" id="tutorialsCarousel">
-          <!-- Tutoriales se cargan dinámicamente -->
-        </div>
-        
-        <button class="tutorial-btn tutorial-prev" id="tutorialsPrev">
-          <i class="fas fa-chevron-left"></i>
-        </button>
-        <button class="tutorial-btn tutorial-next" id="tutorialsNext">
-          <i class="fas fa-chevron-right"></i>
-        </button>
-      </div>
-    </section>
-
-    <!-- Sección de Tendencias -->
-    <section class="trends-section">
-      <div class="section-header">
-        <h2>Tendencias Musicales</h2>
-        <p>Descubre las últimas tendencias y tecnologías en producción musical</p>
-      </div>
-      
-      <div class="trends-grid">
-        <!-- Tendencia 1 -->
-        <div class="trend-card">
-          <div class="trend-icon">
-            <i class="fas fa-microphone-alt"></i>
-          </div>
-          <h3 class="trend-title">Producción con IA</h3>
-          <p class="trend-description">Cómo la inteligencia artificial está revolucionando la creación musical.</p>
-          <div class="trend-stats">
-            <div class="trend-stat">
-              <i class="fas fa-fire"></i>
-              <span>+45%</span>
-            </div>
-            <div class="trend-stat">
-              <i class="fas fa-eye"></i>
-              <span>2.5K</span>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Tendencia 2 -->
-        <div class="trend-card">
-          <div class="trend-icon">
-            <i class="fas fa-headphones"></i>
-          </div>
-          <h3 class="trend-title">Spatial Audio</h3>
-          <p class="trend-description">El audio espacial y su impacto en la experiencia musical inmersiva.</p>
-          <div class="trend-stats">
-            <div class="trend-stat">
-              <i class="fas fa-fire"></i>
-              <span>+32%</span>
-            </div>
-            <div class="trend-stat">
-              <i class="fas fa-eye"></i>
-              <span>1.8K</span>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Tendencia 3 -->
-        <div class="trend-card">
-          <div class="trend-icon">
-            <i class="fas fa-mobile-alt"></i>
-          </div>
-          <h3 class="trend-title">Producción Móvil</h3>
-          <p class="trend-description">El auge de la creación musical en dispositivos móviles y tablets.</p>
-          <div class="trend-stats">
-            <div class="trend-stat">
-              <i class="fas fa-fire"></i>
-              <span>+67%</span>
-            </div>
-            <div class="trend-stat">
-              <i class="fas fa-eye"></i>
-              <span>3.2K</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Sección de Acción - REEMPLAZA la sección de Newsletter -->
-    <section class="action-section">
-      <h2>¿Te gusta nuestro contenido?</h2>
-      <p>Únete a nuestra comunidad de productores musicales y lleva tus habilidades al siguiente nivel</p>
-      <div class="action-buttons">
-        <button class="action-btn" id="openSubscriptionPopup2">
-          <i class="fas fa-envelope"></i> Suscribirse a Mixphere
-        </button>
-        <button class="action-btn secondary" id="openCommunityPopup2">
-          <i class="fas fa-paper-plane"></i> Publicar contenido
-        </button>
-      </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-      <div class="footer-content">
-        <div class="footer-column">
-          <h3>Mixfy</h3>
-          <p>La herramienta definitiva para crear música en tu móvil. Diseñada por productores, para productores.</p>
-          <div class="social-icons">
-            <a href="#"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-facebook"></i></a>
-            <a href="#"><i class="fab fa-youtube"></i></a>
-            <a href="#"><i class="fab fa-tiktok"></i></a>
-          </div>
-        </div>
-        
-        <div class="footer-column">
-          <h3>Enlaces</h3>
-          <ul class="footer-links">
-            <li><a href="mixfy.html">Inicio</a></li>
-            <li><a href="mixfy.html#features">Características</a></li>
-            <li><a href="mixfy.html#pricing">Precios</a></li>
-            <li><a href="blog.html">Blog</a></li>
-            <li><a href="mixfy.html#contact">Contacto</a></li>
-          </ul>
-        </div>
-        
-        <div class="footer-column">
-          <h3>Legal</h3>
-          <ul class="footer-links">
-            <li><a href="#">Términos de servicio</a></li>
-            <li><a href="#">Política de privacidad</a></li>
-            <li><a href="#">Cookies</a></li>
-            <li><a href="#">DMCA</a></li>
-          </ul>
-        </div>
-        
-        <div class="footer-column">
-          <h3>Recursos</h3>
-          <ul class="footer-links">
-            <li><a href="#">Documentación</a></li>
-            <li><a href="#">Centro de ayuda</a></li>
-            <li><a href="#">Tutoriales</a></li>
-            <li><a href="#">API para desarrolladores</a></li>
-          </ul>
-        </div>
-      </div>
-      
-      <div class="copyright">
-        <p>&copy; 2025 Mixfy. Todos los derechos reservados.</p>
-        <p>Creado con ♥ por Sofia Fontan Rey</p>
-      </div>
-    </footer>
-  </div>
-
-  <!-- Popup de Suscripción -->
-  <div class="popup" id="subscriptionPopup">
-    <div class="popup-content">
-      <div class="popup-header">
-        <button class="popup-close" id="closeSubscriptionPopup">
-          <i class="fas fa-times"></i>
-        </button>
-        <h2 class="popup-title">Suscribirse a Mixphere</h2>
-      </div>
-      <div class="popup-body">
-        <form class="popup-form" id="subscriptionForm">
-          <div class="form-group">
-            <label class="form-label" for="subscriptionEmail">Correo electrónico</label>
-            <input type="email" class="form-input" id="subscriptionEmail" placeholder="tu@correo.com" required>
-          </div>
-          
-          <div class="form-group">
-            <label class="form-label">Preferencias de contenido</label>
-            <div class="checkbox-group">
-              <div class="checkbox">
-                <input type="checkbox" id="pref-tutoriales" name="preferences" value="tutoriales" checked>
-                <label for="pref-tutoriales">Tutoriales de producción</label>
-              </div>
-              <div class="checkbox">
-                <input type="checkbox" id="pref-novedades" name="preferences" value="novedades" checked>
-                <label for="pref-novedades">Novedades de la app</label>
-              </div>
-              <div class="checkbox">
-                <input type="checkbox" id="pref-entrevistas" name="preferences" value="entrevistas">
-                <label for="pref-entrevistas">Entrevistas a artistas</label>
-              </div>
-              <div class="checkbox">
-                <input type="checkbox" id="pref-samples" name="preferences" value="samples">
-                <label for="pref-samples">Lanzamientos de samples</label>
-              </div>
-            </div>
-          </div>
-          
-          <div class="form-actions">
-            <button type="submit" class="form-btn primary">Suscribirse</button>
-            <button type="button" class="form-btn secondary" id="enableNotificationsBtn">
-              <i class="fas fa-bell"></i> Notificaciones
-            </button>
-          </div>
-        </form>
-        <div class="popup-message" id="subscriptionMessage"></div>
-      </div>
+<nav id="nav">
+  <div class="nav-c">
+    <a href="mixfy.html" class="logo">Mixfy</a>
+    <ul class="nav-links"><li><a href="mixfy.html">Inicio</a></li><li><a href="#" class="active">Mixphere</a></li><li><a href="demo.html">Demo</a></li></ul>
+    <div class="nav-r">
+      <button class="ctrl-btn" id="themeBtn"><i id="themeIco" class="fas fa-moon"></i></button>
+      <a href="mixfy.html" class="back-btn"><i class="fas fa-arrow-left"></i> Volver</a>
     </div>
   </div>
+</nav>
 
-  <!-- Popup de Comunidad -->
-  <div class="popup" id="communityPopup">
-    <div class="popup-content">
-      <div class="popup-header">
-        <button class="popup-close" id="closeCommunityPopup">
-          <i class="fas fa-times"></i>
-        </button>
-        <h2 class="popup-title">Publicar en Mixphere</h2>
-      </div>
-      <div class="popup-body">
-        <form class="popup-form" id="communityForm">
-          <div class="form-group">
-            <label class="form-label" for="communityEmail">Correo electrónico</label>
-            <input type="email" class="form-input" id="communityEmail" placeholder="tu@correo.com" required>
-          </div>
-          
-          <div class="form-group">
-            <label class="form-label" for="tipo">Tipo de contribución</label>
-            <select class="form-select" id="tipo" name="tipo" required>
-              <option value="articulo">Artículo</option>
-              <option value="video">Video tutorial</option>
-            </select>
-          </div>
-          
-          <div id="sectionArticulo" class="form-section">
-            <div class="form-group">
-              <label class="form-label" for="temaArticulo">Tema</label>
-              <input type="text" class="form-input" id="temaArticulo" placeholder="Tema principal" required>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="tituloArticulo">Título</label>
-              <input type="text" class="form-input" id="tituloArticulo" placeholder="Título del artículo" required>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="contenidoArticulo">Contenido</label>
-              <textarea class="form-textarea" id="contenidoArticulo" placeholder="Escribe tu artículo" required></textarea>
-            </div>
-          </div>
-          
-          <div id="sectionVideo" class="form-section hidden">
-            <div class="form-group">
-              <label class="form-label" for="temaVideo">Tema</label>
-              <input type="text" class="form-input" id="temaVideo" placeholder="Tema del video">
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="tituloVideo">Título</label>
-              <input type="text" class="form-input" id="tituloVideo" placeholder="Título del video">
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="descripcionVideo">Descripción</label>
-              <textarea class="form-textarea" id="descripcionVideo" placeholder="Describe el contenido"></textarea>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="archivoVideo">Archivo de video</label>
-              <input type="file" class="form-input" id="archivoVideo" accept="video/*">
-            </div>
-            <div class="checkbox">
-              <input type="checkbox" id="confirmGestos">
-              <label for="confirmGestos">Confirmo que el video no incluye gestos ofensivos</label>
-            </div>
-          </div>
-          
-          <div class="form-actions">
-            <button type="submit" class="form-btn primary">Enviar a revisión</button>
-            <button type="button" class="form-btn secondary" id="testNotificationBtn">
-              <i class="fas fa-play"></i> Probar Notificación
-            </button>
-          </div>
-        </form>
-        <div class="popup-message" id="communityMessage"></div>
-      </div>
+<div class="masthead">
+  <div class="mast-photo"></div>
+  <div class="mast-bg1" aria-hidden="true">Mix</div>
+  <div class="mast-bg2" aria-hidden="true">PHERE</div>
+  <div class="mast-lines"></div>
+  <div class="mast-glow"></div>
+  <div class="mast-inner">
+    <div class="mast-meta">
+      <span class="mast-badge">Mixphere · El blog de Mixfy</span>
+      <span class="mast-sep"></span>
+      <span class="mast-date">Est. 2024</span>
     </div>
+    <div class="mast-h1">
+      <div class="line l1"><span class="inner w-heavy">Del estudio</span></div>
+      <div class="line l2"><span class="inner w-light">al escenario.</span></div>
+    </div>
+    <p class="mast-sub">Ideas, tutoriales y la última hora de la cultura musical.</p>
   </div>
+  <div class="mast-scroll"><span class="ms-txt">Scroll</span><div class="ms-line"></div></div>
+</div>
 
-  <!-- Popup de artículo -->
-  <div class="article-popup" id="articlePopup">
-    <div class="article-popup-content">
-      <button class="article-popup-close" id="popupClose">
-        <i class="fas fa-times"></i>
-      </button>
-      <div class="popup-image">
-        <img src="" alt="" id="popupImage">
-      </div>
-      <div class="article-popup-body">
-        <div class="popup-meta">
-          <div class="popup-category" id="popupCategory"></div>
-          <div class="popup-date" id="popupDate"></div>
-        </div>
-        <h1 class="popup-title" id="popupTitle"></h1>
-        <div class="popup-text" id="popupText"></div>
-        <div class="popup-footer">
-          <div class="article-author">
-            <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="Sofia Fontan Rey" class="author-avatar">
-            <div class="author-name">Sofia Fontan Rey</div>
-          </div>
-          <div class="read-time" id="popupReadTime"></div>
+<div class="sw"><div class="ticker"><div class="t-track">
+  <span>Producción</span><span>Mezcla</span><span>Mastering</span><span>Colaboración</span><span>Grammy Awards</span><span>Charts</span><span>Nuevos Artistas</span><span>Plugins</span><span>Técnica</span><span>Tendencias</span>
+  <span>Producción</span><span>Mezcla</span><span>Mastering</span><span>Colaboración</span><span>Grammy Awards</span><span>Charts</span><span>Nuevos Artistas</span><span>Plugins</span><span>Técnica</span><span>Tendencias</span>
+</div></div></div>
+
+<div class="tab-bar">
+  <div class="tab-inner">
+    <button class="tab-btn active" data-tab="articulos" onclick="switchTab('articulos')"><i class="fas fa-book-open"></i> Artículos</button>
+    <button class="tab-btn" data-tab="noticias" onclick="switchTab('noticias')"><i class="fas fa-bolt"></i> Noticias <span class="t-badge">HOY</span></button>
+  </div>
+</div>
+
+<div class="sw" style="background:var(--bg);transition:background .45s;">
+<div class="main-layout">
+  <div>
+    <div class="tab-panel active" id="tab-articulos">
+      <div class="feat-art rv" onclick="openPost(0)">
+        <div class="fa-img"><span class="fa-cat">Destacado</span><img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800&q=80" alt="Mastering"></div>
+        <div class="fa-body">
+          <div class="fa-meta"><span>Producción</span><span>·</span><span>12 Dic 2024</span><span>·</span><span>8 min</span></div>
+          <h2>Mastering para Spotify: guía completa 2025</h2>
+          <p>Aprende a preparar tus mezclas para sonar perfectas en la plataforma de streaming más grande del mundo con los parámetros de loudness correctos.</p>
+          <span class="fa-read">Leer artículo <i class="fas fa-arrow-right"></i></span>
         </div>
       </div>
+      <div class="art-card rv d1" onclick="openPost(1)"><div class="ac-img"><img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=80" alt=""></div><div class="ac-body"><p class="ac-cat">Colaboración</p><h3>Cómo colaborar con artistas de forma remota</h3><p>Herramientas y flujos para crear música con otros artistas desde cualquier lugar del mundo sin perder calidad.</p><div class="ac-foot"><span class="ac-date">5 Dic 2024</span><span class="ac-more">Leer <i class="fas fa-arrow-right"></i></span></div></div></div>
+      <div class="art-card rv d2" onclick="openPost(2)"><div class="ac-img"><img src="https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=800&q=80" alt=""></div><div class="ac-body"><p class="ac-cat">Técnica</p><h3>Teoría musical para productores sin formación clásica</h3><p>Armonía, escalas y acordes — lo que todo productor debería dominar para crear canciones memorables.</p><div class="ac-foot"><span class="ac-date">28 Nov 2024</span><span class="ac-more">Leer <i class="fas fa-arrow-right"></i></span></div></div></div>
+      <div class="art-card rv d3" onclick="openPost(3)"><div class="ac-img"><img src="https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=800&q=80" alt=""></div><div class="ac-body"><p class="ac-cat">Instrumentos</p><h3>Guitarra acústica en producciones modernas</h3><p>Cómo grabar y procesar guitarra acústica para que suene profesional en cualquier género musical.</p><div class="ac-foot"><span class="ac-date">20 Nov 2024</span><span class="ac-more">Leer <i class="fas fa-arrow-right"></i></span></div></div></div>
+    </div>
+    <div class="tab-panel" id="tab-noticias">
+      <div class="news-hd"><div class="news-live"><span class="ldot"></span> Últimas noticias</div><span class="news-ts">Actualizado hoy</span></div>
+      <div class="news-sec"><i class="fas fa-trophy" style="color:#8a6d00"></i> Premios</div>
+      <div class="news-card rv" onclick="openNews(0)"><div class="nc-img"><img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800&q=80" alt=""></div><div class="nc-body"><span class="n-tag t-grammy">Grammy 2025</span><h3>Beyoncé y Kendrick Lamar dominan las nominaciones</h3><p>La Academia anuncia los nominados con Beyoncé liderando con 11 candidaturas en categorías históricas.</p><div class="nc-foot"><span class="nc-time">Hace 3 horas</span><span class="nc-more">Leer →</span></div></div></div>
+      <div class="news-sec"><i class="fas fa-chart-bar" style="color:#1e6a3a"></i> Charts</div>
+      <div class="news-card rv" onclick="openNews(1)"><div class="nc-img"><img src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=800&q=80" alt=""></div><div class="nc-body"><span class="n-tag t-charts">Spotify Global</span><h3>El drill londinense conquista el número 1 global</h3><p>Central Cee debuta en el número uno global con 18 millones de streams en sus primeras 24 horas.</p><div class="nc-foot"><span class="nc-time">Hace 5 h</span><span class="nc-more">Leer →</span></div></div></div>
+      <div class="news-sec"><i class="fas fa-star" style="color:#2040a0"></i> Nuevos artistas</div>
+      <div class="news-card rv" onclick="openNews(2)"><div class="nc-img"><img src="https://images.unsplash.com/photo-1571397133301-3f0b5f022ac3?w=800&q=80" alt=""></div><div class="nc-body"><span class="n-tag t-nuevo">Revelación</span><h3>Tems Jr.: el artista de afrobeats de 19 años que arrasa en TikTok</h3><p>Más de 50 millones de reproducciones en dos semanas desde su debut grabado en un dormitorio universitario.</p><div class="nc-foot"><span class="nc-time">Hace 1 día</span><span class="nc-more">Leer →</span></div></div></div>
+      <div class="news-sec"><i class="fas fa-industry" style="color:#882010"></i> Industria</div>
+      <div class="news-card rv" onclick="openNews(3)"><div class="nc-img"><img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800&q=80" alt=""></div><div class="nc-body"><span class="n-tag t-ind">Industria</span><h3>Spotify lanza IA de mastering automático para artistas independientes</h3><p>La plataforma integra mastering con IA directamente en Spotify for Artists para nivelar el sonido indie.</p><div class="nc-foot"><span class="nc-time">Hace 2 días</span><span class="nc-more">Leer →</span></div></div></div>
     </div>
   </div>
+  <aside class="sidebar">
+    <div class="widget rv">
+      <div class="wt"><i class="fas fa-fire"></i> Lo más leído</div>
+      <div class="pop-item" onclick="openPost(0)"><span class="pop-n">01</span><div><div class="pop-t">Mastering para Spotify 2025</div><div class="pop-m">8 min · Producción</div></div></div>
+      <div class="pop-item" onclick="openPost(3)"><span class="pop-n">02</span><div><div class="pop-t">Guitarra acústica en producciones</div><div class="pop-m">6 min · Instrumentos</div></div></div>
+      <div class="pop-item" onclick="openPost(2)"><span class="pop-n">03</span><div><div class="pop-t">Teoría musical para productores</div><div class="pop-m">10 min · Técnica</div></div></div>
+      <div class="pop-item" onclick="openPost(1)"><span class="pop-n">04</span><div><div class="pop-t">Colaborar de forma remota</div><div class="pop-m">7 min · Colaboración</div></div></div>
+    </div>
+    <div class="widget nl-body rv d1">
+      <div class="wt"><i class="fas fa-bell"></i> Newsletter</div>
+      <p>Los mejores artículos y noticias de cultura musical cada semana.</p>
+      <input type="email" class="nl-in" placeholder="tu@email.com" id="nlE">
+      <button class="nl-btn" onclick="handleNL()">Suscribirme</button>
+      <p class="nl-msg" id="nlMsg"></p>
+    </div>
+    <div class="widget rv d2">
+      <div class="wt"><i class="fas fa-tag"></i> Tags</div>
+      <div class="tags"><span class="tag">Mastering</span><span class="tag">Mezcla</span><span class="tag">Grammy</span><span class="tag">Charts</span><span class="tag">DAW</span><span class="tag">Lo-Fi</span><span class="tag">Teoría</span><span class="tag">Plugins</span><span class="tag">Afrobeats</span></div>
+    </div>
+    <div class="widget cta-w rv d3">
+      <div class="wt">Demo</div>
+      <h4>¿Listo para crear?</h4>
+      <p>Prueba Mixfy gratis ahora mismo en el navegador.</p>
+      <a href="demo.html" class="cta-link">Abrir Demo →</a>
+    </div>
+  </aside>
+</div></div>
 
-  <!-- Script para funcionalidades -->
-  <script>
-    // Datos de los artículos
-    const articlesData = {
-      1: {
-        title: "5 Errores comunes al mezclar tus pistas",
-        category: "Tutoriales",
-        date: "15 MAY 2025",
-        image: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
-        readTime: "8 min",
-        content: `
-          <p>La mezcla de audio es una de las etapas más críticas en la producción musical. Muchos productores novatos cometen errores que pueden arruinar una buena composición. En este artículo, exploraremos los cinco errores más comunes y cómo evitarlos.</p>
-          
-          <p><strong>1. Exceso de compresión</strong><br>
-          Uno de los errores más frecuentes es aplicar demasiada compresión a las pistas. La compresión es una herramienta poderosa, pero cuando se usa en exceso, puede eliminar la dinámica natural de la música y hacer que suene plana y sin vida.</p>
-          
-          <p><strong>2. Ignorar el espacio acústico</strong><br>
-          Cada elemento en tu mezcla necesita su propio espacio en el espectro de frecuencia. Si varios instrumentos compiten por las mismas frecuencias, el resultado será una mezcla confusa y poco definida.</p>
-          
-          <p><strong>3. Mezclar con el volumen demasiado alto</strong><br>
-          Cuando mezclas con niveles de volumen excesivos, tus oídos se fatigan rápidamente y pierdes la capacidad de juzgar objetivamente el balance entre los diferentes elementos.</p>
-          
-          <p><strong>4. No utilizar referencias</strong><br>
-          Es fundamental comparar tu mezcla con producciones profesionales del mismo género. Esto te ayuda a mantener estándares de calidad y a identificar áreas de mejora en tu trabajo.</p>
-          
-          <p><strong>5. Subestimar la importancia de la fase</strong><br>
-          Los problemas de fase entre diferentes micrófonos o pistas pueden causar cancelaciones de frecuencia que debilitan tu mezcla. Siempre verifica la fase al grabar con múltiples micrófonos.</p>
-          
-          <p>Evitar estos errores comunes te ayudará a crear mezclas más profesionales y equilibradas. Recuerda que la mezcla es un proceso que requiere práctica y paciencia.</p>
-        `
-      },
-      2: {
-        title: "Cómo crear un beat atractivo en 10 pasos",
-        category: "Producción",
-        date: "8 MAY 2025",
-        image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
-        readTime: "12 min",
-        content: `
-          <p>Crear un beat atractivo es fundamental para cualquier producción musical moderna. Ya sea que estés produciendo hip-hop, pop o electrónica, estos 10 pasos te guiarán en el proceso de creation.</p>
-          
-          <p><strong>Paso 1: Define el tempo y el estilo</strong><br>
-          Antes de empezar, decide el tempo (BPM) y el género musical. Esto te ayudará a mantener la coherencia a lo largo de todo el proceso creativo.</p>
-          
-          <p><strong>Paso 2: Crea el patrón de bombo</strong><br>
-          El bombo es la base rítmica. Coloca los golpes en los tiempos fuertes (generalmente el 1 y el 3 en compás de 4/4) y experimenta con variaciones sutiles.</p>
-          
-          <p><strong>Paso 3: Añade la caja</strong><br>
-          La caja proporciona el groove. En la mayoría de los géneros modernos, se coloca en los tiempos 2 y 4. Puedes añadir ghost notes (notas fantasmas) para dar más textura.</p>
-          
-          <p><strong>Paso 4: Incorpora los hi-hats</strong><br>
-          Los hi-hats definen el movimiento rítmico. Comienza con un patrón simple de corcheas y luego añade variaciones, acentos y patrones más complejos.</p>
-          
-          <p><strong>Paso 5: Diseña el bajo</strong><br>
-          El bajo conecta la percusión con la armonía. Crea una línea de bajo que complemente el patrón rítmico y establezca la base armónica.</p>
-          
-          <p><strong>Paso 6: Añade elementos melódicos</strong><br>
-          Incorpora pads, leads o samples que establezcan la atmósfera y la identidad musical de tu beat.</p>
-          
-          <p><strong>Paso 7: Crea variaciones</strong><br>
-          Introduce cambios en cada sección (intro, verso, estribillo, puente) para mantener el interés del oyente.</p>
-          
-          <p><strong>Paso 8: Añade efectos y transiciones</strong><br>
-          Utiliza risers, impacts, sweeps y otros efectos para marcar cambios entre secciones y añadir energía.</p>
-          
-          <p><strong>Paso 9: Estructura tu beat</strong><br>
-          Organiza las diferentes secciones en una estructura coherente (intro-verso-estribillo-verso-estribillo-puente-estribillo-outro).</p>
-          
-          <p><strong>Paso 10: Mezcla y masterización</strong><br>
-          Ajusta los niveles, aplica ecualización, compresión y efectos para pulir tu beat y prepararlo para su distribución.</p>
-          
-          <p>Siguiendo estos 10 pasos, podrás crear beats atractivos y profesionales que capten la atención de tus oyentes.</p>
-        `
-      },
-      3: {
-        title: "Los mejores plugins gratuitos para Mixfy",
-        category: "Mezcla",
-        date: "1 MAY 2025",
-        image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
-        readTime: "6 min",
-        content: `
-          <p>No necesitas gastar una fortuna en plugins para crear producciones de calidad. Existen numerosas opciones gratuitas que pueden potenciar tus mezclas sin afectar tu presupuesto.</p>
-          
-          <p><strong>1. EQ - TDR Nova</strong><br>
-          Un ecualizador dinámico gratuito que ofrece un control preciso sobre las frecuencias. Perfecto para esculpir el sonido de tus pistas y eliminar frecuencias problemáticas.</p>
-          
-          <p><strong>2. Compresor - DC1A</strong><br>
-          Un compresor de emulación analógica que añade calidez y carácter a tus pistas. Ideal para voces, bajos y elementos rítmicos.</p>
-          
-          <p><strong>3. Reverb - OrilRiver</strong><br>
-          Una reverberación algorítmica de alta calidad que ofrece desde ambientes pequeños hasta espacios cavernosos. Perfecta para dar profundidad a tus mezclas.</p>
-          
-          <p><strong>4. Delay - TAL-Reverb-4</strong><br>
-          Aunque se llama reverb, este plugin incluye excelentes delays modulados que añaden movimiento y espacio a tus sonidos.</p>
-          
-          <p><strong>5. Sintetizador - Vital</strong><br>
-          Un sintetizador wavetable gratuito extremadamente potente. Ofrece capacidades similares a Serum pero sin el costo.</p>
-          
-          <p><strong>6. Analizador - SPAN</strong><br>
-          Un analizador de espectro gratuito que te ayuda a visualizar el contenido frecuencial de tus mezclas y identificar problemas de balance.</p>
-          
-          <p><strong>7. Limitador - LoudMax</strong><br>
-          Un limitador transparente que te permite aumentar el volumen sin introducir distorsión. Ideal para la etapa final de mastering.</p>
-          
-          <p>Estos plugins gratuitos, combinados con tu creatividad y habilidades, te permitirán crear producciones profesionales sin invertir en costosas herramientas.</p>
-        `
-      },
-      4: {
-        title: "Técnicas de masterización profesional",
-        category: "Mastering",
-        date: "24 ABR 2025",
-        image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
-        readTime: "10 min",
-        content: `
-          <p>La masterización es el toque final que convierte una buena mezcla en una producción lista para el mundo. Estas técnicas profesionales te ayudarán a lograr resultados de estudio.</p>
-          
-          <p><strong>1. Comienza con una buena mezcla</strong><br>
-          La masterización no puede arreglar una mala mezcla. Asegúrate de que tu mezcla esté equilibrada antes de comenzar el proceso de masterización.</p>
-          
-          <p><strong>2. Utiliza ecualización sutil</strong><br>
-          Aplica ajustes de EQ mínimos (generalmente menos de 2-3 dB) para corregir problemas de frecuencia y realzar las cualidades de la mezcla.</p>
-          
-          <p><strong>3. Controla la dinámica con compresión</strong><br>
-          Usa compresión multibanda para controlar diferentes rangos de frecuencia por separado. Esto te permite comprimir los graves sin afectar los agudos.</p>
-          
-          <p><strong>4. Añade estereo width</strong><br>
-          Utiliza herramientas de estéreo para ensanchar el campo sonoro, pero ten cuidado de not exagerar para evitar problemas de fase.</p>
-          
-          <p><strong>5. Aplica limitación cuidadosamente</strong><br>
-          El limitador es tu última línea de defensa. Ajusta el ceiling a -1 dB para evitar clipping y usa gain reduction moderada (2-4 dB).</p>
-          
-          <p><strong>6. Monitorea en diferentes sistemas</strong><br>
-          Escucha tu masterización en auriculares, monitores de estudio, altavoces de computadora y en el coche para asegurarte de que suena bien en todos los sistemas.</p>
-          
-          <p><strong>7. Toma descansos auditivos</strong><br>
-          Tu oído se fatiga rápidamente. Toma descansos regulares durante el proceso de masterización para mantener la objetividad.</p>
-          
-          <p><strong>8. Utiliza referencias</strong><br>
-          Compara tu masterización con producciones comerciales del mismo género para asegurarte de que cumple con los estándares de la industria.</p>
-          
-          <p>Dominar estas técnicas de masterización te permitirá entregar producciones que compitan con los mejores releases del mercado.</p>
-        `
-      }
-    };
+<footer>
+  <div class="foot-inner">
+    <a href="mixfy.html" class="logo" style="color:white;font-size:1.2rem;">Mixfy · Mixphere</a>
+    <div class="foot-links"><a href="mixfy.html">Inicio</a><a href="demo.html">Demo</a><a href="#">Privacidad</a></div>
+    <div class="fs"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-twitter"></i></a><a href="#"><i class="fab fa-youtube"></i></a><a href="#"><i class="fab fa-tiktok"></i></a></div>
+  </div>
+  <div class="foot-copy">&copy; 2025 Mixfy · Creado con ♥ por Sofia Fontan Rey</div>
+</footer>
 
-    // Datos de los tutoriales - CON IMÁGENES ÚNICAS
-const tutorialsData = [
+<!-- MODAL ENRIQUECIDO -->
+<div class="pop-ov" id="popOv" onclick="closePop(event)">
+  <div class="pop-box">
+    <button class="pop-close" onclick="closePop()"><i class="fas fa-times"></i></button>
+    <div class="pop-hero">
+      <img id="pImg" src="" alt="">
+      <div class="pop-hero-overlay"></div>
+      <span class="pop-hero-cat" id="pCat"></span>
+      <div class="pop-hero-meta">
+        <span class="pop-hero-date" id="pDate"></span>
+        <span class="pop-hero-time" id="pTime"></span>
+      </div>
+    </div>
+    <div class="pop-body">
+      <h2 id="pTitle"></h2>
+      <div id="pCont"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* THEME */
+let dark=localStorage.getItem('mxTheme')==='dark';
+function applyTheme(){document.documentElement.setAttribute('data-theme',dark?'dark':'light');document.getElementById('themeIco').className=dark?'fas fa-sun':'fas fa-moon';}
+applyTheme();
+document.getElementById('themeBtn').onclick=()=>{dark=!dark;localStorage.setItem('mxTheme',dark?'dark':'light');applyTheme();};
+
+/* TABS */
+function switchTab(t){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active',p.id==='tab-'+t));
+}
+
+/* ARTÍCULOS */
+const posts=[
   {
-    title: "Introducción a la mezcla de audio",
-    level: "Principiante",
-    duration: "15 min",
-    image: "imagenes/1.png"
+    img:'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=1200&q=85',
+    cat:'Producción',date:'12 Dic 2024',time:'8 min de lectura',
+    title:'Mastering para Spotify: guía completa 2025',
+    tags:['Mastering','Spotify','Loudness','DAW','Producción'],
+    content:`
+      <p class="pop-lead">El mastering para plataformas de streaming tiene sus propias reglas. Entender cómo Spotify procesa el audio antes de enviarlo al oyente es la diferencia entre una canción que suena profesional y una que desaparece entre el ruido.</p>
+      <div class="pop-section">
+        <h3>¿Qué es la normalización de Spotify?</h3>
+        <p>Spotify aplica un algoritmo de normalización de loudness que ajusta automáticamente el volumen de todas las canciones al mismo nivel de referencia. El nivel objetivo es <strong>-14 LUFS integrado</strong>. Si tu canción supera ese nivel, Spotify la bajará automáticamente. Si está por debajo, la dejará tal cual.</p>
+        <p>Esto significa que subir el volumen de tu master al máximo no solo no ayuda, sino que puede destruir la dinámica de tu mezcla de forma innecesaria.</p>
+      </div>
+      <div class="pop-img-single"><img src="https://images.unsplash.com/photo-1519508234439-4f23643125c1?w=1200&q=80" alt="Consola de mezclas en estudio profesional"></div>
+      <div class="pop-section">
+        <h3>Los parámetros clave</h3>
+        <p>Antes de exportar tu master definitivo, comprueba siempre estos valores con un medidor de loudness como <strong>Youlean Loudness Meter</strong> o el analizador integrado de tu DAW:</p>
+      </div>
+      <table class="pop-table">
+        <thead><tr><th>Parámetro</th><th>Valor recomendado</th><th>Por qué importa</th></tr></thead>
+        <tbody>
+          <tr><td>LUFS integrado</td><td>-14 a -16 LUFS</td><td>Objetivo de normalización de Spotify</td></tr>
+          <tr><td>True Peak</td><td>-1 dBTP o menos</td><td>Evita clipping en la conversión de códecs</td></tr>
+          <tr><td>Rango dinámico (DR)</td><td>8 o superior</td><td>Preserva la vitalidad y la emoción del audio</td></tr>
+          <tr><td>Profundidad de bits</td><td>24-bit WAV</td><td>Mayor resolución antes de la compresión de Spotify</td></tr>
+        </tbody>
+      </table>
+      <div class="pop-tip"><i class="fas fa-lightbulb pop-tip-ico"></i><p><strong>Consejo pro:</strong> usa el limitador solo al final de tu cadena de mastering y ajústalo para que el true peak no supere <strong>-1 dBTP</strong>. Con el codec AAC de Spotify, los picos por encima de 0 dBFS pueden distorsionarse incluso si el archivo WAV suena limpio.</p></div>
+      <div class="pop-section">
+        <h3>Herramientas recomendadas</h3>
+        <p><strong>iZotope Ozone 11</strong> incluye un asistente de mastering con IA que analiza tu mezcla y sugiere ajustes de EQ, compresor y limitador. Ideal para aprender el proceso mientras obtienes resultados rápidos.</p>
+        <p><strong>FabFilter Pro-L 2</strong> es el limitador favorito de muchos mastering engineers profesionales. Su modo de true peak limiting y el medidor de loudness integrado lo hacen perfecto para el flujo de trabajo de streaming.</p>
+      </div>
+      <div class="pop-img-row">
+        <img src="https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=800&q=80" alt="Mesa de mezclas profesional">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80" alt="Estudio de grabación">
+      </div>
+      <div class="pop-section">
+        <h3>El flujo de trabajo ideal</h3>
+        <p>Exporta tu mezcla sin limitación, con headroom de al menos <strong>-6 dB de pico</strong>. Importa ese archivo a una sesión limpia de mastering. Aplica EQ suave, compresión paralela si necesitas más pegada, y finaliza con el limitador. Mide el resultado con un analizador de loudness antes de subir.</p>
+      </div>
+      <div class="pop-tip"><i class="fas fa-headphones pop-tip-ico"></i><p>Compara siempre tu master con referencias comerciales del mismo género usando el <strong>modo de monitorización a -14 LUFS</strong> en tu DAW. Así escuchas tu mezcla en las mismas condiciones que el oyente en Spotify.</p></div>`
   },
   {
-    title: "Creación de ritmos complejos",
-    level: "Intermedio",
-    duration: "22 min",
-    image: "imagenes/2.png",
-    position: "center top"
+    img:'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=1200&q=85',
+    cat:'Colaboración',date:'5 Dic 2024',time:'7 min de lectura',
+    title:'Cómo colaborar con artistas de forma remota',
+    tags:['Colaboración','Remoto','DAW','Stems','Producción'],
+    content:`
+      <p class="pop-lead">La distancia ya no es un obstáculo para crear música. Con las herramientas correctas y un flujo de trabajo bien organizado, puedes co-producir canciones completas con artistas de cualquier parte del mundo sin perder calidad ni tiempo.</p>
+      <div class="pop-section">
+        <h3>El gran problema: el archivo de proyecto</h3>
+        <p>El mayor error al colaborar en remoto es compartir directamente el archivo de proyecto del DAW. A menos que ambos uséis la misma versión exacta del mismo software y los mismos plugins, el proyecto sonará diferente o directamente no abrirá. La solución es trabajar con <strong>stems y bounces</strong>.</p>
+        <p>Un <strong>stem</strong> es una mezcla parcial de un grupo de instrumentos: el stem de batería, de sintetizadores, de voces. Compartir stems permite que el otro productor tenga control total de esos elementos sin necesidad de tus plugins.</p>
+      </div>
+      <div class="pop-img-single"><img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&q=80" alt="Colaboración musical remota online"></div>
+      <div class="pop-section">
+        <h3>Plataformas para colaborar en tiempo real</h3>
+        <p><strong>Audiomovers LISTENTO</strong> transmite el audio de tu DAW directamente a un navegador con latencia mínima. Tu colaborador puede escuchar exactamente lo que está sonando en tu sesión mientras trabajáis juntos por videollamada. Perfecto para sesiones de feedback en directo.</p>
+        <p><strong>Cleanfeed</strong> es otra opción gratuita para streaming de audio de alta calidad entre colaboradores. Para el intercambio de archivos de gran tamaño, <strong>WeTransfer Pro</strong> o <strong>Splice</strong> son las opciones más populares.</p>
+      </div>
+      <div class="pop-tip"><i class="fas fa-folder-open pop-tip-ico"></i><p><strong>Estructura de carpetas recomendada:</strong> organiza cada proyecto con carpetas <strong>/stems</strong>, <strong>/bounces</strong>, <strong>/sessions</strong> y <strong>/references</strong>. Nombra cada archivo con la versión y la fecha. Evita nombres como "mezcla_final2_FINAL.wav".</p></div>
+      <div class="pop-img-row">
+        <img src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=800&q=80" alt="Estudio en casa home studio">
+        <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800&q=80" alt="Plugins y software musical">
+      </div>
+      <div class="pop-section">
+        <h3>Contratos y acuerdos de split</h3>
+        <p>Antes de lanzar cualquier colaboración, dejad por escrito el <strong>split de autoría</strong>: qué porcentaje de los derechos de composición y producción corresponde a cada parte. Herramientas como <strong>Songtrust</strong> o el sistema de <strong>DistroKid</strong> permiten gestionar splits directamente desde la distribución.</p>
+        <p>Un acuerdo de split claro desde el principio evita conflictos cuando la canción empieza a generar royalties. No importa si la colaboración es con un amigo — ponedlo por escrito siempre.</p>
+      </div>
+      <div class="pop-tip"><i class="fas fa-shield-alt pop-tip-ico"></i><p>Usa siempre <strong>BPM y tonalidad idénticos</strong> al enviar stems. Incluye un archivo de referencia con el tempo map si el proyecto tiene cambios de BPM, y exporta siempre desde el compás 1, aunque haya silencio al inicio.</p></div>`
   },
   {
-    title: "Masterización profesional",
-    level: "Avanzado",
-    duration: "30 min",
-    image: "imagenes/6.png"
+    img:'https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=1200&q=85',
+    cat:'Técnica',date:'28 Nov 2024',time:'10 min de lectura',
+    title:'Teoría musical para productores sin formación clásica',
+    tags:['Teoría','Acordes','Escalas','Armonía','Composición'],
+    content:`
+      <p class="pop-lead">No necesitas haber estudiado en un conservatorio para entender armonía. La teoría musical que realmente importa para producir puede resumirse en unos pocos conceptos fundamentales. Aquí tienes todo lo necesario para empezar a componer con cabeza.</p>
+      <div class="pop-section">
+        <h3>Las escalas: el vocabulario de la música</h3>
+        <p>Una escala es un conjunto de notas ordenadas que suenan bien juntas. La más importante es la <strong>escala mayor</strong>, con un sonido brillante y alegre. Su fórmula de intervalos es siempre: <strong>T-T-S-T-T-T-S</strong> (Tono-Tono-Semitono...).</p>
+        <p>La <strong>escala menor natural</strong> tiene una sonoridad más oscura y melancólica. La escala menor de La usa exactamente las mismas notas que la mayor de Do — solo cambia el punto de inicio. Esto se llama escala relativa.</p>
+      </div>
+      <div class="pop-img-single"><img src="https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?w=1200&q=80" alt="Piano y teclado para teoría musical"></div>
+      <div class="pop-section">
+        <h3>Acordes: cómo se construyen</h3>
+        <p>Un acorde es simplemente <strong>tres o más notas tocadas a la vez</strong>. El acorde básico es la tríada: tomas la raíz, saltas una nota, añades la tercera, saltas otra y añades la quinta. En cualquier escala mayor, los grados I, IV y V generan acordes mayores (alegres), y los grados II, III y VI generan menores (oscuros).</p>
+      </div>
+      <table class="pop-table">
+        <thead><tr><th>Grado</th><th>En Do Mayor</th><th>Tipo</th><th>Emoción</th></tr></thead>
+        <tbody>
+          <tr><td>I</td><td>Do Mayor</td><td>Mayor</td><td>Estable, hogar</td></tr>
+          <tr><td>II</td><td>Re Menor</td><td>Menor</td><td>Melancólico</td></tr>
+          <tr><td>IV</td><td>Fa Mayor</td><td>Mayor</td><td>Calidez, anhelo</td></tr>
+          <tr><td>V</td><td>Sol Mayor</td><td>Mayor</td><td>Tensión, anticipación</td></tr>
+          <tr><td>VI</td><td>La Menor</td><td>Menor</td><td>Tristeza suave</td></tr>
+        </tbody>
+      </table>
+      <div class="pop-tip"><i class="fas fa-music pop-tip-ico"></i><p>La progresión <strong>I – V – VI – IV</strong> en Do Mayor sería Do – Sol – La menor – Fa. Es la progresión más usada en la música pop moderna. La encuentras en cientos de éxitos de todos los géneros. Domínala y tendrás una base sólida para casi cualquier estilo.</p></div>
+      <div class="pop-img-row">
+        <img src="https://images.unsplash.com/photo-1485579149621-3123dd979885?w=800&q=80" alt="Teclado MIDI controlador">
+        <img src="https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=800&q=80" alt="Partituras y notas musicales">
+      </div>
+      <div class="pop-section">
+        <h3>El ritmo y el groove</h3>
+        <p>La teoría melódica y armónica es inútil sin ritmo. Un compás de <strong>4/4</strong> tiene cuatro tiempos; cada tiempo puede dividirse en corcheas (2) o semicorcheas (4). Las síncopas —acentos en los tiempos débiles— son la base del groove en el hip hop, el reggaetón y el R&B.</p>
+        <p>Experimenta desplazando los hits de tu batería ligeramente delante o detrás del grid. Ese micro-desplazamiento es lo que da humanidad y carácter a una programación que de otra forma sonaría robótica.</p>
+      </div>
+      <div class="pop-tip"><i class="fas fa-headphones pop-tip-ico"></i><p>La mejor forma de aprender teoría como productor es <strong>transcribir</strong>: coge canciones que te gusten, identifica su tonalidad y escribe la progresión de acordes. En pocas semanas tu oído habrá internalizado patrones que tardarías años en aprender de un libro.</p></div>`
   },
   {
-    title: "Síntesis de sonidos desde cero",
-    level: "Intermedio",
-    duration: "25 min",
-    image: "imagenes/4.png"
-  },
-  {
-    title: "Técnicas de sampling avanzado",
-    level: "Avanzado",
-    duration: "28 min",
-    image: "imagenes/5.png"
-  },
+    img:'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=1200&q=85',
+    cat:'Instrumentos',date:'20 Nov 2024',time:'6 min de lectura',
+    title:'Guitarra acústica en producciones modernas',
+    tags:['Guitarra','Grabación','Producción','Instrumentos','Técnica'],
+    content:`
+      <p class="pop-lead">La guitarra acústica puede ser el alma de una producción moderna cuando está bien grabada y procesada. Desde el folk intimista hasta el pop electrónico más brillante, saber capturar su carácter diferencia a los productores.</p>
+      <div class="pop-section">
+        <h3>El micrófono: la decisión más importante</h3>
+        <p>Para grabar guitarra acústica, un <strong>micrófono de condensador de pequeño diafragma</strong> suele ser la elección más acertada. Captura los transientes con mayor fidelidad y le da una presencia brillante y detallada al instrumento. Los clásicos del género como el Shure SM81 o el Rode NT5 son opciones accesibles y fiables.</p>
+        <p>Si solo tienes un micrófono de diafragma grande, también funciona muy bien. Colócalo a la altura del clavijero apuntando hacia el <strong>duodécimo traste</strong> a unos 30-40 cm de distancia.</p>
+      </div>
+      <div class="pop-img-single"><img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=1200&q=80" alt="Guitarra acústica siendo grabada en estudio"></div>
+      <div class="pop-section">
+        <h3>Posicionamiento del micrófono</h3>
+        <p>La posición más versátil es a <strong>45 grados</strong> apuntando al punto donde el mástil se une con el cuerpo del instrumento. Esta posición captura tanto el cuerpo cálido de la caja como la claridad del mástil, dando un sonido equilibrado para la mayoría de géneros.</p>
+        <p>Si quieres más cuerpo —ideal para folk o country— acerca el micro hacia la caja. Si quieres más claridad y definición para un arreglo pop denso, acércate al mástil.</p>
+      </div>
+      <div class="pop-tip"><i class="fas fa-ruler pop-tip-ico"></i><p><strong>Truco de la regla de los 3:</strong> si grabas con dos micrófonos, asegúrate de que la distancia entre ellos sea al menos <strong>tres veces</strong> la distancia de cada micro al instrumento. Esto minimiza los problemas de fase que hacen que la guitarra suene hueca en mono.</p></div>
+      <div class="pop-img-row">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80" alt="Interfaz de audio y cables XLR">
+        <img src="https://images.unsplash.com/photo-1519508234439-4f23643125c1?w=800&q=80" alt="Cabina de grabación profesional">
+      </div>
+      <div class="pop-section">
+        <h3>Procesamiento en mezcla</h3>
+        <p>Una vez grabada, la guitarra acústica generalmente necesita poco procesamiento si la grabación es buena. Un <strong>high-pass filter a 80-100 Hz</strong> elimina rumbles sin afectar al cuerpo. Un compresor suave con ratio de <strong>3:1 y attack lento</strong> (30-50 ms) añade consistencia a las dinámicas.</p>
+        <p>En EQ, un ligero corte alrededor de <strong>300-500 Hz</strong> abre espacio si suena embarrada, y un suave realce en <strong>5-8 kHz</strong> añade brillo y presencia sin volverla estridente.</p>
+      </div>
+      <div class="pop-tip"><i class="fas fa-lightbulb pop-tip-ico"></i><p>Para producciones modernas, prueba a colocar dos tomas de la misma parte en <strong>hard pan L y R</strong>. El resultado es una guitarra acústica ancha e inmersiva que llena el espacio estéreo sin competir con la voz central.</p></div>
+      <div class="pop-section">
+        <h3>Preparación: antes de grabar</h3>
+        <p>El 80% de los problemas de una guitarra acústica en mezcla se solucionan antes de grabar. Cambia las cuerdas máximo una semana antes de la sesión. Afina siempre con un afinador de clavija y vuelve a afinar cada dos o tres tomas — el calor y la tensión de tocar desafinan el instrumento rápidamente.</p>
+      </div>`
+  }
 ];
 
-    document.addEventListener('DOMContentLoaded', function() {
-      // Menú móvil
-      const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-      const navLinks = document.getElementById('navLinks');
-      
-      mobileMenuBtn.addEventListener('click', function() {
-        navLinks.classList.toggle('active');
-        this.innerHTML = navLinks.classList.contains('active') ? 
-          '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
-      });
-      
-      // Cerrar menú al hacer clic en un enlace
-      document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', function() {
-          navLinks.classList.remove('active');
-          mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-        });
-      });
-      
-      // Cambiar navbar al hacer scroll
-      const navbar = document.getElementById('navbar');
-      
-      window.addEventListener('scroll', function() {
-        if (window.scrollY > 50) {
-          navbar.classList.add('scrolled');
-        } else {
-          navbar.classList.remove('scrolled');
-        }
-      });
+/* NOTICIAS */
+const newsItems=[
+  {
+    img:'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=1200&q=85',
+    cat:'Grammy 2025',date:'Hoy · Hace 3 horas',time:'4 min de lectura',
+    title:'Beyoncé y Kendrick Lamar dominan las nominaciones al Grammy 2025',
+    tags:['Grammy','Beyoncé','Kendrick Lamar','Premios'],
+    content:`
+      <p class="pop-lead">La Academia de la Grabación ha publicado las candidaturas a los Grammy 2025 y los nombres de Beyoncé y Kendrick Lamar dominan la conversación con un total combinado de 20 nominaciones.</p>
+      <div class="pop-section">
+        <h3>Beyoncé lidera con 11 candidaturas</h3>
+        <p>Beyoncé llega a esta edición con <strong>11 nominaciones</strong>, impulsada por su álbum country-pop que desafió las fronteras de los géneros. Entre sus candidaturas destaca Álbum del Año, Grabación del Año y tres categorías de country, género históricamente reticente a abrirle las puertas a artistas negros.</p>
+        <p>Su presencia en las categorías country ha generado un intenso debate dentro de la Academia, con voces que celebran la evolución del género y detractores que argumentan que su música no encaja con las raíces del country tradicional.</p>
+      </div>
+      <div class="pop-img-single"><img src="https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=1200&q=80" alt="Ceremonia de premios musicales escenario"></div>
+      <div class="pop-section">
+        <h3>Kendrick Lamar: 9 nominaciones</h3>
+        <p>Kendrick llega con <strong>9 candidaturas</strong>, incluyendo Grabación del Año y Canción del Año por su single que desencadenó uno de los beefs más sonados del rap de los últimos años. La Academia ha reconocido también la producción del álbum, que mezcla jazz, soul y rap con una arquitectura sonora compleja.</p>
+      </div>
+      <div class="pop-tip"><i class="fas fa-calendar pop-tip-ico"></i><p>La ceremonia de los <strong>Grammy 2025</strong> se celebrará el 2 de febrero en el Crypto.com Arena de Los Ángeles. La presentación correrá a cargo de un presentador aún por confirmar oficialmente por la Academia.</p></div>`
+  },
+  {
+    img:'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=1200&q=85',
+    cat:'Spotify Global',date:'Hoy · Hace 5 horas',time:'3 min de lectura',
+    title:'Central Cee debuta en el número 1 global de Spotify con drill londinense',
+    tags:['Charts','Spotify','Central Cee','Drill','UK'],
+    content:`
+      <p class="pop-lead">El drill londinense ha llegado al pico más alto del pop global. Central Cee ha debutado directamente en el número uno del Spotify Global Chart con su nuevo single, acumulando 18 millones de streams en sus primeras 24 horas.</p>
+      <div class="pop-section">
+        <h3>El ascenso imparable del drill de Londres</h3>
+        <p>El drill londinense lleva años siendo el sonido más influyente del hip hop urbano global, pero esta semana ha dado el salto definitivo al mainstream internacional. El single mezcla los <strong>808s pesados</strong> y las líneas de bajo oscuras características del género con una producción más accesible que ha conectado con el gran público.</p>
+        <p>En sus primeras 24 horas, el single acumuló más de <strong>18 millones de streams</strong> en Spotify, convirtiéndose en el debut más rápido de un artista británico en la plataforma en lo que llevamos de año.</p>
+      </div>
+      <div class="pop-img-single"><img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=1200&q=80" alt="Concierto de música urbana en vivo"></div>
+      <div class="pop-section">
+        <h3>El impacto en la producción musical</h3>
+        <p>Las búsquedas de loops de 808, samples de piano oscuro y patrones de hi-hat estilo drill en plataformas como Splice y Loopmasters han aumentado un <strong>34%</strong> en el último mes. Productores de América Latina, Sudeste Asiático y África están adoptando la estética del drill y adaptándola a sus propias tradiciones musicales.</p>
+      </div>
+      <div class="pop-tip"><i class="fas fa-chart-line pop-tip-ico"></i><p>Para entender la producción del drill londinense, fíjate en la cadencia del hi-hat: el patrón usa tresillos y sextillos que crean una sensación de urgencia y tensión. Los 808 se programan con slides y pitch bends que le dan un carácter propio al género.</p></div>`
+  },
+  {
+    img:'https://images.unsplash.com/photo-1571397133301-3f0b5f022ac3?w=1200&q=85',
+    cat:'Revelación',date:'Hace 1 día',time:'3 min de lectura',
+    title:'Tems Jr.: el fenómeno de afrobeats de 19 años que arrasa en TikTok',
+    tags:['Afrobeats','TikTok','Nuevos Artistas','Nigeria','Tendencias'],
+    content:`
+      <p class="pop-lead">Un artista nigeriano de 19 años que grabó su primer single en el dormitorio de su residencia universitaria ha acumulado más de 50 millones de reproducciones en dos semanas. La historia de Tems Jr. es el retrato más claro de cómo ha cambiado la industria musical.</p>
+      <div class="pop-section">
+        <h3>De Lagos a los charts globales</h3>
+        <p>Tems Jr. publicó su primer single hace tres semanas sin sello discográfico, sin manager y con un presupuesto de producción que él mismo cifra en <strong>"menos de 200 dólares"</strong>. El track llegó a TikTok de la mano de un creador de contenido en Lagos con 2 millones de seguidores.</p>
+        <p>En 48 horas, el audio original había sido utilizado en más de <strong>400.000 vídeos</strong> en TikTok. En dos semanas, estaba en las listas de tendencias de Spotify en 14 países.</p>
+      </div>
+      <div class="pop-img-single"><img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=1200&q=80" alt="Estudio casero de grabación home studio"></div>
+      <div class="pop-section">
+        <h3>El sonido: afrobeats meets ambient electrónico</h3>
+        <p>Lo que hace diferente a Tems Jr. es su propuesta sonora: una fusión de <strong>afrobeats</strong> tradicional con texturas de <strong>ambient electrónico</strong> que crea algo a la vez familiar y completamente nuevo. Las percusiones características del afro tienen capas de pads etéreos y una reverberación larga que recuerda más a artistas como Four Tet que a Burna Boy.</p>
+        <p>Esta fusión de géneros aparentemente opuestos es lo que ha permitido conectar tanto con audiencias de nicho como con el enorme público del afrobeats global.</p>
+      </div>
+      <div class="pop-tip"><i class="fas fa-globe pop-tip-ico"></i><p>Varios sellos discográficos importantes han contactado con Tems Jr. para negociar un contrato. El artista ha declarado en redes que está tomándose el tiempo necesario para entender bien las implicaciones legales antes de firmar nada.</p></div>`
+  },
+  {
+    img:'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=1200&q=85',
+    cat:'Industria',date:'Hace 2 días',time:'5 min de lectura',
+    title:'Spotify lanza herramienta de mastering automático con IA para artistas independientes',
+    tags:['Spotify','IA','Mastering','Industria','Distribución'],
+    content:`
+      <p class="pop-lead">Spotify ha anunciado el lanzamiento de una herramienta de mastering automático con inteligencia artificial dentro de Spotify for Artists. La compañía asegura que permitirá a los artistas independientes obtener un master profesional sin coste adicional.</p>
+      <div class="pop-section">
+        <h3>Cómo funciona la tecnología</h3>
+        <p>Según Spotify, el sistema analiza la mezcla subida y aplica automáticamente una cadena de procesamiento que incluye <strong>ecualización adaptativa, compresión multibanda y limitación de loudness</strong>. El objetivo es normalizar el sonido para que las canciones de artistas independientes compitan en calidad percibida con las producciones de los grandes sellos.</p>
+        <p>La herramienta ajusta automáticamente el nivel al estándar de <strong>-14 LUFS</strong> de la plataforma, eliminando el paso de mastering para streaming que muchos productores nuevos ignoran o realizan incorrectamente.</p>
+      </div>
+      <div class="pop-img-row">
+        <img src="https://images.unsplash.com/photo-1519508234439-4f23643125c1?w=800&q=80" alt="Interfaz digital de mastering software">
+        <img src="https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=800&q=80" alt="Software de producción musical DAW">
+      </div>
+      <div class="pop-section">
+        <h3>La reacción de la industria</h3>
+        <p>Los mastering engineers profesionales han expresado preocupación, argumentando que una IA no puede replicar las decisiones creativas y el criterio artístico que un oído experto aporta al proceso. Los productores independientes y artistas emergentes, en cambio, han recibido la noticia con entusiasmo.</p>
+      </div>
+      <div class="pop-tip"><i class="fas fa-exclamation-triangle pop-tip-ico"></i><p><strong>Importante:</strong> la herramienta de Spotify procesa el audio <strong>después</strong> de publicarlo, no antes. Si subes un archivo con problemas de mezcla, la IA puede mejorar el loudness pero no puede arreglar fases incorrectas, frecuencias enmascaradas o una distribución espectral desequilibrada.</p></div>
+      <div class="pop-section">
+        <h3>¿Sustituirá a los mastering engineers?</h3>
+        <p>Las herramientas de mastering con IA son una opción válida para demos, singles de bajo presupuesto y contenido de redes sociales. Pero para un álbum que quiere posicionarse como referente de calidad, la intervención humana sigue siendo insustituible. Lo que sí cambia es el <strong>mínimo de calidad</strong> que puede esperar cualquier oyente, independientemente del presupuesto detrás de la música.</p>
+      </div>`
+  }
+];
 
-      // Cargar artículos dinámicamente
-      const articlesCarousel = document.getElementById('articlesCarousel');
-      Object.keys(articlesData).forEach(articleId => {
-        const article = articlesData[articleId];
-        const articleElement = document.createElement('div');
-        articleElement.className = 'carousel-item';
-        articleElement.innerHTML = `
-          <article class="blog-article" data-article="${articleId}">
-            <div class="article-image">
-              <img src="${article.image}" alt="${article.title}">
-              <div class="article-category">${article.category}</div>
-            </div>
-            <div class="article-content">
-              <div class="article-date"><i class="far fa-calendar"></i> ${article.date}</div>
-              <h3 class="article-title">${article.title}</h3>
-              <p class="article-excerpt">${article.content.substring(0, 120)}...</p>
-              <div class="article-meta">
-                <div class="article-author">
-                  <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="Sofia Fontan Rey" class="author-avatar">
-                  <div class="author-name">Sofia Fontan Rey</div>
-                </div>
-                <div class="read-time"><i class="far fa-clock"></i> ${article.readTime}</div>
-              </div>
-            </div>
-          </article>
-        `;
-        articlesCarousel.appendChild(articleElement);
-      });
+/* OPEN MODAL */
+function openModal(data){
+  document.getElementById('pImg').src=data.img;
+  document.getElementById('pCat').textContent=data.cat;
+  document.getElementById('pDate').textContent=data.date;
+  document.getElementById('pTime').textContent=data.time;
+  document.getElementById('pTitle').textContent=data.title;
+  const tagsHTML=data.tags.map(t=>`<span class="pop-tag">${t}</span>`).join('');
+  document.getElementById('pCont').innerHTML=data.content+`<div class="pop-tags">${tagsHTML}</div>`;
+  document.getElementById('popOv').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function openPost(i){openModal(posts[i]);}
+function openNews(i){openModal(newsItems[i]);}
+function closePop(e){
+  if(!e||e.target===document.getElementById('popOv')||e.currentTarget.classList.contains('pop-close')){
+    document.getElementById('popOv').classList.remove('open');
+    document.body.style.overflow='';
+  }
+}
 
-      // Cargar tutoriales dinámicamente
-      const tutorialsCarousel = document.getElementById('tutorialsCarousel');
-      tutorialsData.forEach((tutorial, index) => {
-        const tutorialElement = document.createElement('div');
-        tutorialElement.className = 'tutorial-item';
-        tutorialElement.innerHTML = `
-          <div class="tutorial-card">
-            <div class="tutorial-video">
-              <img src="${tutorial.image}" alt="${tutorial.title}">
-              <div class="play-icon">
-                <i class="fas fa-play"></i>
-              </div>
-            </div>
-            <div class="tutorial-content">
-              <span class="tutorial-level">${tutorial.level}</span>
-              <h3 class="tutorial-title">${tutorial.title}</h3>
-              <div class="tutorial-duration">
-                <i class="far fa-clock"></i>
-                <span>${tutorial.duration}</span>
-              </div>
-            </div>
-          </div>
-        `;
-        tutorialsCarousel.appendChild(tutorialElement);
-      });
+/* NEWSLETTER */
+function handleNL(){
+  const inp=document.getElementById('nlE');const m=document.getElementById('nlMsg');
+  if(!inp.value.includes('@')){m.textContent='Email inválido.';return;}
+  m.textContent='¡Suscripción confirmada!';inp.value='';
+}
 
-      // Carrusel de artículos
-      const articlesPrev = document.getElementById('articlesPrev');
-      const articlesNext = document.getElementById('articlesNext');
-      let articlesPosition = 0;
-      
-      articlesNext.addEventListener('click', function() {
-        const itemWidth = document.querySelector('.carousel-item').offsetWidth + 24;
-        const maxPosition = articlesCarousel.scrollWidth - articlesCarousel.offsetWidth;
-        
-        if (articlesPosition < maxPosition) {
-          articlesPosition += itemWidth;
-          articlesCarousel.style.transform = `translateX(-${articlesPosition}px)`;
-        }
-      });
-      
-      articlesPrev.addEventListener('click', function() {
-        const itemWidth = document.querySelector('.carousel-item').offsetWidth + 24;
-        
-        if (articlesPosition > 0) {
-          articlesPosition -= itemWidth;
-          articlesCarousel.style.transform = `translateX(-${articlesPosition}px)`;
-        }
-      });
-
-      // Carrusel de tutoriales
-      const tutorialsPrev = document.getElementById('tutorialsPrev');
-      const tutorialsNext = document.getElementById('tutorialsNext');
-      let tutorialsPosition = 0;
-      
-      tutorialsNext.addEventListener('click', function() {
-        const itemWidth = document.querySelector('.tutorial-item').offsetWidth + 24;
-        const maxPosition = tutorialsCarousel.scrollWidth - tutorialsCarousel.offsetWidth;
-        
-        if (tutorialsPosition < maxPosition) {
-          tutorialsPosition += itemWidth;
-          tutorialsCarousel.style.transform = `translateX(-${tutorialsPosition}px)`;
-        }
-      });
-      
-      tutorialsPrev.addEventListener('click', function() {
-        const itemWidth = document.querySelector('.tutorial-item').offsetWidth + 24;
-        
-        if (tutorialsPosition > 0) {
-          tutorialsPosition -= itemWidth;
-          tutorialsCarousel.style.transform = `translateX(-${tutorialsPosition}px)`;
-        }
-      });
-
-      // Popup de artículos
-      const articlePopup = document.getElementById('articlePopup');
-      const popupClose = document.getElementById('popupClose');
-      
-      document.addEventListener('click', function(e) {
-        if (e.target.closest('.blog-article')) {
-          const articleId = e.target.closest('.blog-article').getAttribute('data-article');
-          const articleData = articlesData[articleId];
-          
-          if (articleData) {
-            document.getElementById('popupImage').src = articleData.image;
-            document.getElementById('popupCategory').textContent = articleData.category;
-            document.getElementById('popupDate').textContent = articleData.date;
-            document.getElementById('popupTitle').textContent = articleData.title;
-            document.getElementById('popupText').innerHTML = articleData.content;
-            document.getElementById('popupReadTime').innerHTML = `<i class="far fa-clock"></i> ${articleData.readTime}`;
-            
-            articlePopup.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-          }
-        }
-      });
-      
-      popupClose.addEventListener('click', function() {
-        articlePopup.style.display = 'none';
-        document.body.style.overflow = 'auto';
-      });
-      
-      articlePopup.addEventListener('click', function(e) {
-        if (e.target === articlePopup) {
-          articlePopup.style.display = 'none';
-          document.body.style.overflow = 'auto';
-        }
-      });
-
-      // Funcionalidad para los popups de Suscripción y Comunidad
-      // Elementos de los popups
-      const subscriptionPopup = document.getElementById('subscriptionPopup');
-      const communityPopup = document.getElementById('communityPopup');
-      
-      // Botones para abrir popups
-      const openSubscriptionButtons = [
-        document.getElementById('openSubscriptionPopup'),
-        document.getElementById('openSubscriptionPopup2')
-      ];
-      
-      const openCommunityButtons = [
-        document.getElementById('openCommunityPopup'),
-        document.getElementById('openCommunityPopup2')
-      ];
-      
-      // Botones para cerrar popups
-      const closeSubscriptionPopup = document.getElementById('closeSubscriptionPopup');
-      const closeCommunityPopup = document.getElementById('closeCommunityPopup');
-      
-      // Funciones para abrir popups
-      openSubscriptionButtons.forEach(btn => {
-        if (btn) {
-          btn.addEventListener('click', function() {
-            subscriptionPopup.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-          });
-        }
-      });
-      
-      openCommunityButtons.forEach(btn => {
-        if (btn) {
-          btn.addEventListener('click', function() {
-            communityPopup.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-          });
-        }
-      });
-      
-      // Funciones para cerrar popups
-      closeSubscriptionPopup.addEventListener('click', function() {
-        subscriptionPopup.style.display = 'none';
-        document.body.style.overflow = 'auto';
-      });
-      
-      closeCommunityPopup.addEventListener('click', function() {
-        communityPopup.style.display = 'none';
-        document.body.style.overflow = 'auto';
-      });
-      
-      // Cerrar popups al hacer clic fuera del contenido
-      subscriptionPopup.addEventListener('click', function(e) {
-        if (e.target === subscriptionPopup) {
-          subscriptionPopup.style.display = 'none';
-          document.body.style.overflow = 'auto';
-        }
-      });
-      
-      communityPopup.addEventListener('click', function(e) {
-        if (e.target === communityPopup) {
-          communityPopup.style.display = 'none';
-          document.body.style.overflow = 'auto';
-        }
-      });
-      
-      // Mostrar/ocultar secciones del formulario de comunidad según el tipo
-      const tipoSelect = document.getElementById('tipo');
-      const sectionArticulo = document.getElementById('sectionArticulo');
-      const sectionVideo = document.getElementById('sectionVideo');
-      
-      if (tipoSelect && sectionArticulo && sectionVideo) {
-        tipoSelect.addEventListener('change', function() {
-          if (this.value === 'articulo') {
-            sectionArticulo.classList.remove('hidden');
-            sectionVideo.classList.add('hidden');
-          } else {
-            sectionArticulo.classList.add('hidden');
-            sectionVideo.classList.remove('hidden');
-          }
-        });
-      }
-      
-      // Manejar envío del formulario de suscripción
-      const subscriptionForm = document.getElementById('subscriptionForm');
-      const subscriptionMessage = document.getElementById('subscriptionMessage');
-      
-      if (subscriptionForm) {
-        subscriptionForm.addEventListener('submit', function(e) {
-          e.preventDefault();
-          
-          const email = document.getElementById('subscriptionEmail').value.trim();
-          
-          if (!email) {
-            showPopupMessage(subscriptionMessage, 'Por favor, introduce tu correo electrónico', 'error');
-            return;
-          }
-          
-          if (!isValidEmail(email)) {
-            showPopupMessage(subscriptionMessage, 'Por favor, introduce un correo electrónico válido', 'error');
-            return;
-          }
-          
-          // Simular envío exitoso
-          showPopupMessage(subscriptionMessage, '¡Te has suscrito exitosamente! Recibirás nuestras actualizaciones pronto.', 'success');
-          subscriptionForm.reset();
-          
-          // Cerrar popup después de 2 segundos
-          setTimeout(() => {
-            subscriptionPopup.style.display = 'none';
-            document.body.style.overflow = 'auto';
-          }, 2000);
-        });
-      }
-      
-      // Manejar envío del formulario de comunidad
-      const communityForm = document.getElementById('communityForm');
-      const communityMessage = document.getElementById('communityMessage');
-      
-      if (communityForm) {
-        communityForm.addEventListener('submit', function(e) {
-          e.preventDefault();
-          
-          const email = document.getElementById('communityEmail').value.trim();
-          const tipo = document.getElementById('tipo').value;
-          
-          if (!email) {
-            showPopupMessage(communityMessage, 'Por favor, introduce tu correo electrónico', 'error');
-            return;
-          }
-          
-          if (!isValidEmail(email)) {
-            showPopupMessage(communityMessage, 'Por favor, introduce un correo electrónico válido', 'error');
-            return;
-          }
-          
-          // Validaciones específicas según el tipo
-          if (tipo === 'articulo') {
-            const tema = document.getElementById('temaArticulo').value.trim();
-            const titulo = document.getElementById('tituloArticulo').value.trim();
-            const contenido = document.getElementById('contenidoArticulo').value.trim();
-            
-            if (!tema || !titulo || !contenido) {
-              showPopupMessage(communityMessage, 'Por favor, completa todos los campos del artículo', 'error');
-              return;
-            }
-          } else {
-            const confirmGestos = document.getElementById('confirmGestos').checked;
-            if (!confirmGestos) {
-              showPopupMessage(communityMessage, 'Debes confirmar que no hay gestos ofensivos', 'error');
-              return;
-            }
-          }
-          
-          // Simular envío exitoso
-          showPopupMessage(communityMessage, '¡Tu contribución ha sido enviada para revisión! Te contactaremos pronto.', 'success');
-          communityForm.reset();
-          
-          // Cerrar popup después de 2 segundos
-          setTimeout(() => {
-            communityPopup.style.display = 'none';
-            document.body.style.overflow = 'auto';
-          }, 2000);
-        });
-      }
-      
-      // Funciones de utilidad
-      function isValidEmail(email) {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(email);
-      }
-      
-      function showPopupMessage(element, message, type) {
-        element.textContent = message;
-        element.className = 'popup-message';
-        element.classList.add(type);
-        element.style.display = 'block';
-        
-        setTimeout(() => {
-          element.style.display = 'none';
-        }, 5000);
-      }
-      
-      // Funcionalidad de notificaciones
-      const enableNotificationsBtn = document.getElementById('enableNotificationsBtn');
-      const testNotificationBtn = document.getElementById('testNotificationBtn');
-      
-      if (enableNotificationsBtn) {
-        enableNotificationsBtn.addEventListener('click', async function() {
-          if ('Notification' in window) {
-            if (Notification.permission === 'default') {
-              const permission = await Notification.requestPermission();
-              if (permission === 'granted') {
-                showPopupMessage(subscriptionMessage, 'Notificaciones activadas correctamente', 'success');
-              } else {
-                showPopupMessage(subscriptionMessage, 'Las notificaciones han sido bloqueadas', 'error');
-              }
-            } else if (Notification.permission === 'granted') {
-              showPopupMessage(subscriptionMessage, 'Las notificaciones ya están activadas', 'success');
-            } else {
-              showPopupMessage(subscriptionMessage, 'Las notificaciones están bloqueadas. Por favor, habilítalas en la configuración de tu navegador.', 'error');
-            }
-          } else {
-            showPopupMessage(subscriptionMessage, 'Tu navegador no soporta notificaciones push', 'error');
-          }
-        });
-      }
-      
-      if (testNotificationBtn) {
-        testNotificationBtn.addEventListener('click', function() {
-          if ('Notification' in window && Notification.permission === 'granted') {
-            new Notification('Mixfy Blog', {
-              body: '¡Esta es una notificación de prueba! Gracias por contribuir a nuestra comunidad.',
-              icon: '/favicon.ico'
-            });
-            showPopupMessage(communityMessage, 'Notificación de prueba enviada', 'success');
-          } else {
-            showPopupMessage(communityMessage, 'Primero debes activar las notificaciones', 'error');
-          }
-        });
-      }
-
-      // Smooth scrolling para enlaces internos
-      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-          e.preventDefault();
-          const targetId = this.getAttribute('href');
-          if (targetId === '#') return;
-          const targetElement = document.querySelector(targetId);
-          if (targetElement) {
-            window.scrollTo({
-              top: targetElement.offsetTop - 80,
-              behavior: 'smooth'
-            });
-          }
-        });
-      });
-    });
-  </script>
+/* SCROLL & REVEAL */
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>50));
+const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('in');}),{threshold:.08});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+</script>
 </body>
 </html>
