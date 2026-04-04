@@ -8,10 +8,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
     :root{
-      --bg:#f7f3fc;--bg2:#ede5f8;--surface:#fff;
+      --bg:#f8f5fc;--bg2:#ede5f6;--surface:#fff;
       --pur:#5b2d8e;--pur2:#7a45b5;--pur3:#9b6dcc;--pur4:#c49eee;
-      --beige:#ede4d8;--ink:#1a0e2e;--muted:#7d6a90;--muted2:#a090b0;
-      --border:rgba(91,45,142,.15);--glow:rgba(91,45,142,.22);
+      --beige:#e8e0f0;--ink:#1a0e2e;--muted:#7d6a90;--muted2:#a090b0;
+      --border:rgba(91,45,142,.16);--glow:rgba(91,45,142,.22);
     }
     [data-theme="dark"]{
       --bg:#0c0718;--bg2:#120a24;--surface:#1a0e30;
@@ -22,7 +22,7 @@
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
     body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;overflow-x:hidden;transition:background .45s,color .45s;}
 
-    .demo-nav{position:fixed;top:0;width:100%;z-index:900;padding:1rem 0;background:rgba(250,247,242,.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:background .45s;}
+    .demo-nav{position:fixed;top:0;width:100%;z-index:900;padding:1rem 0;background:rgba(248,245,252,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:background .45s;}
     [data-theme="dark"] .demo-nav{background:rgba(12,7,24,.9);}
     .demo-nav-c{max-width:1100px;margin:0 auto;padding:0 2.5rem;display:flex;justify-content:space-between;align-items:center;}
     .logo{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:700;letter-spacing:.04em;color:var(--pur);text-decoration:none;}
@@ -172,10 +172,19 @@
     [data-theme="dark"] .drum-pad.kick{background:radial-gradient(circle at 35% 35%,var(--pur4),#3a1070,#08031a);}
 
     @keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:none;}}
+    @media(max-width:768px){
+      .demo-wrap{padding:75px 1.5rem 3rem;}
+      .inst-btn{padding:.55rem 1.1rem;font-size:.68rem;}
+      #viz3d-container{height:280px;}
+    }
     @media(max-width:580px){
       .k{height:140px;width:38px;}.k.b{height:86px;width:26px;margin-left:-13px;margin-right:-13px;}
       .flute-h{width:36px;height:36px;}.flute-tube{padding:0 1.2rem;}
       .drum-pad.kick{width:82px;height:82px;}.drum-pad.snare{width:68px;height:68px;}
+      .demo-wrap{padding:70px 1.2rem 2.5rem;}
+      .inst-sel{gap:.4rem;}
+      .inst-btn{padding:.5rem .9rem;font-size:.64rem;}
+      #viz3d-container{height:220px;}
     }
   </style>
 </head>
@@ -253,7 +262,7 @@
 
 <!-- THREE.JS + TONE.JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
 <script>
 // ── THEME ──
 let dark=localStorage.getItem('mxTheme')==='dark';
@@ -304,4 +313,532 @@ scene.add(ground);
 // ── SHARED: PARTICLES ──
 const pCount=80;
 const pGeo=new THREE.BufferGeometry();
-const pPos=new Floa
+const pPos=new Float32Array(pCount*3);
+const pV=[];
+for(let i=0;i<pCount;i++){pPos[i*3]=(Math.random()-.5)*16;pPos[i*3+1]=(Math.random()-.5)*7;pPos[i*3+2]=(Math.random()-.5)*6;pV.push({vx:(Math.random()-.5)*.003,vy:.0015+Math.random()*.003});}
+pGeo.setAttribute('position',new THREE.BufferAttribute(pPos,3));
+const pMat=new THREE.PointsMaterial({color:0x9b6dcc,size:.06,transparent:true,opacity:.55});
+const particles=new THREE.Points(pGeo,pMat);
+scene.add(particles);
+
+// ── SHARED: WAVEFORM BARS (always visible, react to notes) ──
+const BAR_N=36;
+const barGroup=new THREE.Group();
+barGroup.position.set(0,-0.5,0);
+scene.add(barGroup);
+const barMeshes=[];
+for(let i=0;i<BAR_N;i++){
+  const h=0.04;
+  const geo=new THREE.BoxGeometry(.14,h,.14);
+  const hue=0.74+i/BAR_N*0.14;
+  const mat=new THREE.MeshStandardMaterial({
+    color:new THREE.Color().setHSL(hue,.7,dark?.68:.46),
+    roughness:.15,metalness:.6,
+    emissive:new THREE.Color().setHSL(hue,.6,.01)
+  });
+  const bar=new THREE.Mesh(geo,mat);
+  bar.position.x=(i-BAR_N/2)*0.27;
+  bar.position.y=-1.3+h/2;
+  bar.castShadow=true;barGroup.add(bar);
+  barMeshes.push({mesh:bar,current:h});
+}
+
+// ── INSTRUMENT GROUPS ──
+const instGroups={piano:new THREE.Group(),flute:new THREE.Group(),guitar:new THREE.Group(),drums:new THREE.Group()};
+Object.values(instGroups).forEach(g=>{g.visible=false;scene.add(g);});
+instGroups.piano.visible=true;
+
+// ─── PIANO MODEL ───
+(()=>{
+  const g=instGroups.piano;
+  // Piano body
+  const bodyMat=new THREE.MeshStandardMaterial({color:0x1a0a30,roughness:.1,metalness:.6});
+  const body=new THREE.Mesh(new THREE.BoxGeometry(7,.5,2.2),bodyMat);
+  body.position.set(0,.2,0);body.castShadow=true;
+  g.add(body);
+  // Lid
+  const lidMat=new THREE.MeshStandardMaterial({color:0x2a1050,roughness:.08,metalness:.7,envMapIntensity:1});
+  const lid=new THREE.Mesh(new THREE.BoxGeometry(7,.06,2.2),lidMat);
+  lid.position.set(0,.48,0);lid.rotation.x=-0.18;g.add(lid);
+  // White keys (7 white keys visible)
+  const wMat=new THREE.MeshStandardMaterial({color:0xfaf5ff,roughness:.2,metalness:.05});
+  const bMat=new THREE.MeshStandardMaterial({color:0x1a0030,roughness:.1,metalness:.5});
+  const wPositions=[-2.7,-1.95,-1.2,-.45,.3,1.05,1.8,2.55,3.0];
+  wPositions.forEach((x,i)=>{
+    const wk=new THREE.Mesh(new THREE.BoxGeometry(.42,1.4,.18),wMat);
+    wk.position.set(x-.9,-.25,-1.1);wk.castShadow=true;g.add(wk);
+  });
+  // Black keys
+  [-2.4,-1.65,-.15,.6,1.35,2.1,2.85].forEach((x,i)=>{
+    if(i===2)return; // gap
+    const bk=new THREE.Mesh(new THREE.BoxGeometry(.28,.9,.14),bMat);
+    bk.position.set(x-.9,.02,-1.05);bk.castShadow=true;g.add(bk);
+  });
+  // Legs
+  [[-3,0],[-3,0],[3,0],[3,0]].forEach(([x],i)=>{
+    const leg=new THREE.Mesh(new THREE.CylinderGeometry(.06,.06,1.2,8),bodyMat);
+    leg.position.set(x+(i<2?-.1:.1),-1,(i%2===0?-.9:.9));g.add(leg);
+  });
+  g.position.set(0,.5,-.3);
+  g.rotation.y=0.15;
+})();
+
+// ─── FLUTE MODEL ───
+(()=>{
+  const g=instGroups.flute;
+  const silverMat=new THREE.MeshStandardMaterial({color:0xd0c8f0,roughness:.05,metalness:.92});
+  const goldMat=new THREE.MeshStandardMaterial({color:0xc49eee,roughness:.1,metalness:.8});
+  // Main tube - using CylinderGeometry instead of CapsuleGeometry
+  const tube=new THREE.Mesh(new THREE.CylinderGeometry(.12,.12,7,32),silverMat);
+  tube.rotation.z=Math.PI/2;
+  g.add(tube);
+  // End caps
+  const cap1=new THREE.Mesh(new THREE.SphereGeometry(.12,16,16),goldMat);
+  cap1.position.set(-3.5,0,0);g.add(cap1);
+  const cap2=new THREE.Mesh(new THREE.SphereGeometry(.1,16,16),silverMat);
+  cap2.position.set(3.5,0,0);g.add(cap2);
+  // Tone holes (rings)
+  const holePositions=[-2.8,-1.8,-.8,0,.8,1.6,2.4];
+  holePositions.forEach(x=>{
+    const ring=new THREE.Mesh(new THREE.TorusGeometry(.16,.04,12,32),goldMat);
+    ring.position.set(x,0,0);ring.rotation.y=Math.PI/2;g.add(ring);
+    const pad=new THREE.Mesh(new THREE.CylinderGeometry(.12,.12,.06,16),new THREE.MeshStandardMaterial({color:0x8a5dcc,roughness:.3,metalness:.4}));
+    pad.position.set(x,.2,0);pad.rotation.z=Math.PI/2;g.add(pad);
+  });
+  // Mouthpiece
+  const mouth=new THREE.Mesh(new THREE.CylinderGeometry(.18,.12,.4,16),goldMat);
+  mouth.position.set(-3.2,.3,0);mouth.rotation.z=Math.PI/2;g.add(mouth);
+  g.position.set(0,.5,0);
+  g.rotation.y=0.1;
+})();
+
+// ─── GUITAR MODEL ───
+(()=>{
+  const g=instGroups.guitar;
+  const woodMat=new THREE.MeshStandardMaterial({color:0x8b5e3c,roughness:.6,metalness:.05});
+  const darkWood=new THREE.MeshStandardMaterial({color:0x4a2810,roughness:.5,metalness:.02});
+  const stringMat=new THREE.MeshStandardMaterial({color:0xc8b8f0,roughness:.1,metalness:.9});
+  const bodyMat=new THREE.MeshStandardMaterial({color:0x7a45b5,roughness:.12,metalness:.35});
+  // Body (main shape - two rounded boxes for the figure-8)
+  const bodyTop=new THREE.Mesh(new THREE.CylinderGeometry(1.1,1.1,.28,32),bodyMat);
+  bodyTop.position.set(-.3,.14,0);bodyTop.rotation.x=Math.PI/2;g.add(bodyTop);
+  const bodyBot=new THREE.Mesh(new THREE.CylinderGeometry(1.4,1.4,.28,32),bodyMat);
+  bodyBot.position.set(.6,.14,0);bodyBot.rotation.x=Math.PI/2;g.add(bodyBot);
+  const waist=new THREE.Mesh(new THREE.BoxGeometry(1.2,1,.28),bodyMat);
+  waist.position.set(.15,.14,0);g.add(waist);
+  // Sound hole
+  const hole=new THREE.Mesh(new THREE.TorusGeometry(.45,.06,12,32),darkWood);
+  hole.position.set(.2,.14,.15);g.add(hole);
+  // Neck
+  const neck=new THREE.Mesh(new THREE.BoxGeometry(.28,3.5,.2),woodMat);
+  neck.position.set(-1.85,.14,0);neck.rotation.z=Math.PI/2;g.add(neck);
+  // Headstock
+  const head=new THREE.Mesh(new THREE.BoxGeometry(.38,.8,.18),darkWood);
+  head.position.set(-3.7,.14,0);head.rotation.z=0.1;g.add(head);
+  // Frets
+  for(let i=0;i<7;i++){
+    const fret=new THREE.Mesh(new THREE.BoxGeometry(.28,.04,.22),new THREE.MeshStandardMaterial({color:0xd0c8f0,metalness:.9,roughness:.1}));
+    fret.position.set(-1.2-i*.35,.14,0);fret.rotation.z=Math.PI/2;g.add(fret);
+  }
+  // Strings
+  for(let i=0;i<6;i++){
+    const str=new THREE.Mesh(new THREE.CylinderGeometry(.012,.012,6.5,8),stringMat);
+    str.position.set(-1.5,.15+.01*i,(i-2.5)*.06);str.rotation.z=Math.PI/2;g.add(str);
+  }
+  // Bridge
+  const bridge=new THREE.Mesh(new THREE.BoxGeometry(.15,.18,.6),darkWood);
+  bridge.position.set(.7,.2,0);g.add(bridge);
+  g.position.set(.5,.4,0);
+  g.rotation.y=0.25;
+  g.rotation.z=-0.08;
+})();
+
+// ─── DRUMS MODEL ───
+(()=>{
+  const g=instGroups.drums;
+  const drumMats={
+    kick:new THREE.MeshStandardMaterial({color:0x5b2d8e,roughness:.3,metalness:.2}),
+    snare:new THREE.MeshStandardMaterial({color:0x7a45b5,roughness:.25,metalness:.35}),
+    tom:new THREE.MeshStandardMaterial({color:0x9b6dcc,roughness:.28,metalness:.3}),
+    metal:new THREE.MeshStandardMaterial({color:0xc8b8f0,roughness:.05,metalness:.95}),
+    head:new THREE.MeshStandardMaterial({color:0xf0ecfa,roughness:.4,metalness:.02,transparent:true,opacity:.85}),
+  };
+  // Kick drum
+  const kick=new THREE.Mesh(new THREE.CylinderGeometry(1.2,1.2,.9,32),drumMats.kick);
+  kick.rotation.z=Math.PI/2;kick.position.set(0,-1,0);g.add(kick);
+  const kickHead=new THREE.Mesh(new THREE.CircleGeometry(1.2,32),drumMats.head);
+  kickHead.position.set(.46,-1,0);kickHead.rotation.y=Math.PI/2;g.add(kickHead);
+  // Snare
+  const snare=new THREE.Mesh(new THREE.CylinderGeometry(.55,.55,.3,32),drumMats.snare);
+  snare.position.set(-1.8,.2,.8);g.add(snare);
+  const snareHead=new THREE.Mesh(new THREE.CircleGeometry(.55,32),drumMats.head);
+  snareHead.position.set(-1.8,.36,.8);g.add(snareHead);
+  // Tom 1
+  const tom1=new THREE.Mesh(new THREE.CylinderGeometry(.5,.5,.38,32),drumMats.tom);
+  tom1.position.set(-.4,.9,-.5);g.add(tom1);
+  const t1h=new THREE.Mesh(new THREE.CircleGeometry(.5,32),drumMats.head);
+  t1h.position.set(-.4,1.1,-.5);g.add(t1h);
+  // Tom 2
+  const tom2=new THREE.Mesh(new THREE.CylinderGeometry(.6,.6,.44,32),drumMats.tom);
+  tom2.position.set(.8,.85,-.5);g.add(tom2);
+  const t2h=new THREE.Mesh(new THREE.CircleGeometry(.6,32),drumMats.head);
+  t2h.position.set(.8,1.08,-.5);g.add(t2h);
+  // Hi-hat (two cymbals)
+  const cymbalGeo=new THREE.CylinderGeometry(.72,.8,.04,32);
+  const hh1=new THREE.Mesh(cymbalGeo,drumMats.metal);
+  hh1.position.set(-2.1,1.3,.2);g.add(hh1);
+  const hh2=new THREE.Mesh(cymbalGeo,drumMats.metal);
+  hh2.position.set(-2.1,1.18,.2);g.add(hh2);
+  // Crash cymbal
+  const crash=new THREE.Mesh(new THREE.CylinderGeometry(.9,1,.03,32),drumMats.metal);
+  crash.position.set(1.8,1.6,-.4);crash.rotation.z=0.2;g.add(crash);
+  // Hi-hat stand
+  const hhStand=new THREE.Mesh(new THREE.CylinderGeometry(.03,.03,2.2,8),drumMats.metal);
+  hhStand.position.set(-2.1,.1,.2);g.add(hhStand);
+  g.position.set(0,.5,.3);
+  g.rotation.y=-0.2;
+})();
+
+// ── RING ACCENT (shared) ──
+const ringGroup=new THREE.Group();scene.add(ringGroup);
+const ring1=new THREE.Mesh(new THREE.TorusGeometry(3.8,.01,12,120),new THREE.MeshStandardMaterial({color:0x7a45b5,roughness:.1,metalness:.8,transparent:true,opacity:.3}));
+const ring2=new THREE.Mesh(new THREE.TorusGeometry(4.2,.007,8,80),new THREE.MeshStandardMaterial({color:0xc49eee,roughness:.15,metalness:.7,transparent:true,opacity:.15}));
+ringGroup.add(ring1);ringGroup.add(ring2);
+ringGroup.rotation.x=Math.PI/2.2;
+
+function updateMaterials(){
+  const l=dark?.68:.46;
+  barMeshes.forEach((b,i)=>{b.mesh.material.color.setHSL(.74+i/BAR_N*.14,.7,l);});
+  ground.material.color.set(dark?0x0c0718:0xede4d8);
+  renderer.setClearColor(dark?0x08031a:0xf2ece3,1);
+}
+
+// Animation
+let hitIntensity=0;
+let barHeights=new Array(BAR_N).fill(0);
+let time=0;
+let noteFlash=0;
+
+function fireBar(noteIdx){
+  const center=Math.round(noteIdx/13*BAR_N);
+  for(let i=0;i<BAR_N;i++){
+    const d=Math.abs(i-center);
+    const v=Math.exp(-d*.14)*(2.2+Math.random()*1);
+    barHeights[i]=Math.max(barHeights[i],v);
+  }
+  hitIntensity=1;noteFlash=1;
+}
+
+function resize(){
+  const w=canvas.parentElement.clientWidth;
+  const h=canvas.parentElement.clientHeight;
+  if(canvas.width!==w||canvas.height!==h){
+    renderer.setSize(w,h,false);
+    camera.aspect=w/h;camera.updateProjectionMatrix();
+  }
+}
+
+renderer.setClearColor(dark?0x08031a:0xf2ece3,1);
+
+(function animate(){
+  requestAnimationFrame(animate);
+  resize();time+=.016;
+
+  // Bars
+  for(let i=0;i<BAR_N;i++){
+    barHeights[i]*=.88;
+    const idle=hitIntensity<.05?(.03+Math.abs(Math.sin(time*.6+i*.31))*.05):0;
+    const h=Math.max(0.04,barHeights[i]+idle);
+    barMeshes[i].current=barMeshes[i].current*.78+h*.22;
+    const c=barMeshes[i].current;
+    barMeshes[i].mesh.scale.y=c/0.04;
+    barMeshes[i].mesh.position.y=-1.3+c/2;
+    barMeshes[i].mesh.material.emissive.setHSL(.76,.6,barHeights[i]*.1);
+  }
+  hitIntensity*=.91;
+
+  // Instrument gentle animation
+  const pi=instGroups.piano,fl=instGroups.flute,gu=instGroups.guitar,dr=instGroups.drums;
+  pi.rotation.y=0.15+Math.sin(time*.12)*.05;
+  fl.rotation.y=0.1+Math.sin(time*.14)*.06;
+  fl.position.y=.5+Math.sin(time*.18)*.08;
+  gu.rotation.y=0.25+Math.sin(time*.1)*.06;
+  gu.rotation.z=-0.08+Math.sin(time*.11)*.02;
+  dr.rotation.y=-0.2+Math.sin(time*.09)*.04;
+
+  // Note flash effect on instrument
+  const gk=Object.keys(instGroups).find(k=>instGroups[k].visible);
+  if(gk&&noteFlash>.01){
+    const g=instGroups[gk];
+    purLight.intensity=4+noteFlash*8;
+    purLight.color.setHSL(.76+noteFlash*.05,.8,.6);
+  } else {
+    purLight.intensity=4;
+  }
+  noteFlash*=.85;
+
+  // Rings
+  ringGroup.rotation.z+=.003;ring2.rotation.x+=.0015;
+
+  // Particles
+  for(let i=0;i<pCount;i++){
+    pPos[i*3]+=pV[i].vx;pPos[i*3+1]+=pV[i].vy;
+    if(pPos[i*3+1]>4){pPos[i*3+1]=-3.5;pPos[i*3]=(Math.random()-.5)*16;}
+    if(Math.abs(pPos[i*3])>8)pV[i].vx*=-1;
+  }
+  pGeo.attributes.position.needsUpdate=true;
+
+  // Camera
+  camera.position.x=Math.sin(time*.08)*.4;
+  camera.position.y=2.5+Math.cos(time*.06)*.18;
+  camera.lookAt(0,.2,0);
+  renderer.render(scene,camera);
+})();
+applyTheme();
+
+// ── AUDIO INIT ──
+let audioStarted=false;
+let pianoSynth,fluteSynth,guitarSynth,drumSynths={};
+
+async function initAudio(){
+  if(audioStarted)return;audioStarted=true;
+  await Tone.start();
+
+  // Piano - rich bell-like
+  pianoSynth=new Tone.PolySynth(Tone.Synth,{
+    oscillator:{type:'triangle'},
+    envelope:{attack:.005,decay:.4,sustain:.2,release:1.2}
+  }).toDestination();
+  pianoSynth.set({volume:-6});
+
+  // Flute - airy sine
+  fluteSynth=new Tone.Synth({
+    oscillator:{type:'sine'},
+    envelope:{attack:.05,decay:.15,sustain:.5,release:.8}
+  }).toDestination();
+  fluteSynth.set({volume:-4});
+
+  // Guitar - pluck feel
+  guitarSynth=new Tone.PolySynth(Tone.Synth,{
+    oscillator:{type:'sawtooth'},
+    envelope:{attack:.005,decay:.3,sustain:.1,release:.8}
+  }).toDestination();
+  const dist=new Tone.Distortion(.1).toDestination();
+  guitarSynth.connect(dist);
+  guitarSynth.set({volume:-8});
+
+  // Drums via Tone.js synthesizers
+  const drumDest=new Tone.Volume(-3).toDestination();
+  const reverb=new Tone.Reverb({decay:1,wet:.15}).connect(drumDest);
+
+  drumSynths={
+    kick:new Tone.MembraneSynth({pitchDecay:.08,octaves:8,envelope:{attack:.002,decay:.35,sustain:.01,release:.2}}).connect(drumDest),
+    snare:new Tone.NoiseSynth({noise:{type:'white'},envelope:{attack:.001,decay:.18,sustain:.0,release:.1}}).connect(reverb),
+    hihat:new Tone.MetalSynth({frequency:400,envelope:{attack:.001,decay:.05,release:.05},harmonicity:5.1,modulationIndex:32,resonance:4000,octaves:1.5}).connect(drumDest),
+    crash:new Tone.MetalSynth({frequency:300,envelope:{attack:.001,decay:.5,release:.5},harmonicity:3,modulationIndex:40,resonance:3500,octaves:2}).connect(reverb),
+    tom1:new Tone.MembraneSynth({pitchDecay:.06,octaves:5,envelope:{attack:.002,decay:.25,sustain:.0,release:.15}}).connect(drumDest),
+    tom2:new Tone.MembraneSynth({pitchDecay:.07,octaves:6,envelope:{attack:.002,decay:.3,sustain:.0,release:.18}}).connect(drumDest),
+    ride:new Tone.MetalSynth({frequency:500,envelope:{attack:.001,decay:.35,release:.3},harmonicity:5.5,modulationIndex:28,resonance:5000,octaves:1}).connect(reverb),
+    clap:new Tone.NoiseSynth({noise:{type:'pink'},envelope:{attack:.001,decay:.1,sustain:.0,release:.05}}).connect(reverb)
+  };
+}
+
+document.addEventListener('pointerdown',initAudio,{once:true});
+document.addEventListener('keydown',initAudio,{once:true});
+
+// ── INSTRUMENT BUILDER ──
+let activeInst='piano';
+
+// PIANO DATA
+const pianoKeys=[
+  {note:'C4',white:true,label:'C',kbd:'A'},
+  {note:'C#4',white:false,label:'C#',kbd:'W'},
+  {note:'D4',white:true,label:'D',kbd:'S'},
+  {note:'D#4',white:false,label:'D#',kbd:'E'},
+  {note:'E4',white:true,label:'E',kbd:'D'},
+  {note:'F4',white:true,label:'F',kbd:'F'},
+  {note:'F#4',white:false,label:'F#',kbd:'T'},
+  {note:'G4',white:true,label:'G',kbd:'G'},
+  {note:'G#4',white:false,label:'G#',kbd:'Y'},
+  {note:'A4',white:true,label:'A',kbd:'H'},
+  {note:'A#4',white:false,label:'A#',kbd:'U'},
+  {note:'B4',white:true,label:'B',kbd:'J'},
+  {note:'C5',white:true,label:'C',kbd:'K'}
+];
+const pianoEl=document.getElementById('pianoEl');
+pianoKeys.forEach((k,idx)=>{
+  const el=document.createElement('div');
+  el.className='k '+(k.white?'w':'b');
+  el.textContent=k.label;
+  el.dataset.note=k.note;el.dataset.idx=idx;
+  const play=()=>{
+    initAudio().then(()=>{
+      if(activeInst!=='piano')return;
+      pianoSynth&&pianoSynth.triggerAttackRelease(k.note,'8n');
+      el.classList.add('on');setTimeout(()=>el.classList.remove('on'),160);
+      showNote(k.note,idx);fireBar(idx);
+    });
+  };
+  el.addEventListener('mousedown',play);
+  el.addEventListener('touchstart',e=>{e.preventDefault();play();},{passive:false});
+  pianoEl.appendChild(el);
+});
+
+// FLUTE DATA
+const fluteData=[
+  {note:'C5',label:'C',key:'1'},{note:'D5',label:'D',key:'2'},
+  {note:'E5',label:'E',key:'3'},{note:'F5',label:'F',key:'4'},
+  {note:'G5',label:'G',key:'5'},{note:'A5',label:'A',key:'6'},
+  {note:'B5',label:'B',key:'7'},{note:'C6',label:'C',key:'8'}
+];
+const fluteEl=document.getElementById('fluteEl');
+fluteData.forEach((h,idx)=>{
+  const el=document.createElement('div');
+  el.className='flute-h';
+  el.innerHTML=`<span class="fh-note">${h.label}</span><span class="fh-key">${h.key}</span>`;
+  const play=()=>{
+    initAudio().then(()=>{
+      if(activeInst!=='flute')return;
+      if(fluteSynth){fluteSynth.triggerAttackRelease(h.note,'8n');}
+      el.classList.add('on');setTimeout(()=>el.classList.remove('on'),230);
+      showNote(h.note,idx*1.6);fireBar(Math.round(idx*5));
+    });
+  };
+  el.addEventListener('mousedown',play);
+  el.addEventListener('touchstart',e=>{e.preventDefault();play();},{passive:false});
+  fluteEl.appendChild(el);
+});
+
+// GUITAR DATA
+const guitarData=[
+  {note:'E2',label:'Cuerda E (6ª)',name:'Mi grave',key:'Q'},
+  {note:'A2',label:'Cuerda A (5ª)',name:'La',key:'W'},
+  {note:'D3',label:'Cuerda D (4ª)',name:'Re',key:'E'},
+  {note:'G3',label:'Cuerda G (3ª)',name:'Sol',key:'R'},
+  {note:'B3',label:'Cuerda B (2ª)',name:'Si',key:'T'},
+  {note:'E4',label:'Cuerda E (1ª)',name:'Mi agudo',key:'Y'}
+];
+const guitarEl=document.getElementById('guitarEl');
+guitarData.forEach((s,idx)=>{
+  const el=document.createElement('div');
+  el.className='g-str';
+  el.innerHTML=`<span class="g-label">${s.label}</span><span class="g-note">${s.name}</span><span class="g-key">${s.key}</span>`;
+  const play=()=>{
+    initAudio().then(()=>{
+      if(activeInst!=='guitar')return;
+      guitarSynth&&guitarSynth.triggerAttackRelease(s.note,'4n');
+      el.classList.add('on');setTimeout(()=>el.classList.remove('on'),380);
+      showNote(s.note,idx*2);fireBar(Math.round(idx*6.5));
+    });
+  };
+  el.addEventListener('mousedown',play);
+  el.addEventListener('touchstart',e=>{e.preventDefault();play();},{passive:false});
+  guitarEl.appendChild(el);
+});
+
+// DRUMS DATA
+const drumData=[
+  {id:'kick',label:'Kick',key:'Z',cls:'kick',note:'C1',size:'large'},
+  {id:'snare',label:'Snare',key:'X',cls:'snare',note:'white'},
+  {id:'hihat',label:'Hi-Hat',key:'C',cls:'hihat',note:'metal'},
+  {id:'crash',label:'Crash',key:'V',cls:'crash',note:'metal-crash'},
+  {id:'tom1',label:'Tom 1',key:'B',cls:'tom1',note:'D2'},
+  {id:'tom2',label:'Tom 2',key:'N',cls:'tom2',note:'A1'},
+  {id:'ride',label:'Ride',key:'M',cls:'ride',note:'metal-ride'},
+  {id:'clap',label:'Clap',key:',',cls:'clap',note:'pink'}
+];
+const drumsEl=document.getElementById('drumsEl');
+drumData.forEach((d,idx)=>{
+  const el=document.createElement('div');
+  el.className=`drum-pad ${d.cls}`;
+  el.innerHTML=`<span class="drum-name">${d.label}</span><span class="drum-key">${d.key}</span>`;
+  const play=()=>{
+    initAudio().then(()=>{
+      if(activeInst!=='drums')return;
+      const s=drumSynths[d.id];
+      if(!s)return;
+      if(d.id==='kick')s.triggerAttackRelease('C1','8n');
+      else if(d.id==='tom1')s.triggerAttackRelease('D2','8n');
+      else if(d.id==='tom2')s.triggerAttackRelease('A1','8n');
+      else s.triggerAttackRelease('8n');
+      el.classList.add('on');setTimeout(()=>el.classList.remove('on'),120);
+      showNote(d.label,idx*1.5);fireBar(Math.round(idx*5));
+    });
+  };
+  el.addEventListener('mousedown',play);
+  el.addEventListener('touchstart',e=>{e.preventDefault();play();},{passive:false});
+  drumsEl.appendChild(el);
+});
+
+// ── NOTE DISPLAY ──
+function showNote(note,idx){
+  const nb=document.getElementById('noteBubble');
+  nb.textContent=note;
+  nb.classList.add('hit');
+  setTimeout(()=>nb.classList.remove('hit'),280);
+}
+
+// ── INSTRUMENT SWITCH ──
+const instLabels={piano:'Piano — Modelo 3D',flute:'Flauta — Modelo 3D',guitar:'Guitarra — Modelo 3D',drums:'Batería — Modelo 3D'};
+document.querySelectorAll('.inst-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    activeInst=btn.dataset.inst;
+    document.querySelectorAll('.inst-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.inst-sec').forEach(s=>s.classList.remove('active'));
+    document.getElementById(activeInst).classList.add('active');
+    document.getElementById('vizLabel').textContent=instLabels[activeInst];
+    document.getElementById('noteBubble').textContent='—';
+    barHeights.fill(0);
+    // Show correct 3D model
+    Object.keys(instGroups).forEach(k=>{instGroups[k].visible=k===activeInst;});
+  });
+});
+
+// ── KEYBOARD ──
+const kbPiano={'a':'C4','w':'C#4','s':'D4','e':'D#4','d':'E4','f':'F4','t':'F#4','g':'G4','y':'G#4','h':'A4','u':'A#4','j':'B4','k':'C5'};
+const kbFlute={'1':0,'2':1,'3':2,'4':3,'5':4,'6':5,'7':6,'8':7};
+const kbGuitar={'q':0,'w':1,'e':2,'r':3,'t':4,'y':5};
+const kbDrums={'z':0,'x':1,'c':2,'v':3,'b':4,'n':5,'m':6,',':7};
+
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT'||e.repeat)return;
+  const k=e.key.toLowerCase();
+  initAudio().then(()=>{
+    if(activeInst==='piano'&&kbPiano[k]){
+      const note=kbPiano[k];
+      pianoSynth&&pianoSynth.triggerAttackRelease(note,'8n');
+      const el=[...document.querySelectorAll('.k')].find(x=>x.dataset.note===note);
+      if(el){el.classList.add('on');setTimeout(()=>el.classList.remove('on'),160);}
+      showNote(note,Object.keys(kbPiano).indexOf(k));
+      fireBar(Object.keys(kbPiano).indexOf(k));
+    } else if(activeInst==='flute'&&kbFlute[k]!==undefined){
+      const idx=kbFlute[k];
+      fluteSynth&&fluteSynth.triggerAttackRelease(fluteData[idx].note,'8n');
+      const els=document.querySelectorAll('.flute-h');
+      if(els[idx]){els[idx].classList.add('on');setTimeout(()=>els[idx].classList.remove('on'),230);}
+      showNote(fluteData[idx].note,idx);fireBar(Math.round(idx*5));
+    } else if(activeInst==='guitar'&&kbGuitar[k]!==undefined){
+      const idx=kbGuitar[k];
+      guitarSynth&&guitarSynth.triggerAttackRelease(guitarData[idx].note,'4n');
+      const els=document.querySelectorAll('.g-str');
+      if(els[idx]){els[idx].classList.add('on');setTimeout(()=>els[idx].classList.remove('on'),380);}
+      showNote(guitarData[idx].note,idx);fireBar(Math.round(idx*6.5));
+    } else if(activeInst==='drums'&&kbDrums[k]!==undefined){
+      const idx=kbDrums[k];const d=drumData[idx];
+      const s=drumSynths[d.id];
+      if(s){
+        if(d.id==='kick')s.triggerAttackRelease('C1','8n');
+        else if(d.id==='tom1')s.triggerAttackRelease('D2','8n');
+        else if(d.id==='tom2')s.triggerAttackRelease('A1','8n');
+        else s.triggerAttackRelease('8n');
+      }
+      const els=document.querySelectorAll('.drum-pad');
+      if(els[idx]){els[idx].classList.add('on');setTimeout(()=>els[idx].classList.remove('on'),120);}
+      showNote(d.label,idx);fireBar(Math.round(idx*5));
+    }
+  });
+});
+</script>
+</body>
+</html>
