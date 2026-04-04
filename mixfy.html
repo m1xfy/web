@@ -23,8 +23,6 @@
     html{scroll-behavior:smooth;}
     body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;line-height:1.65;transition:background .45s,color .45s;}
     body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.018'/%3E%3C/svg%3E");opacity:.5;}
-
-    /* NAV */
     nav{position:fixed;top:0;width:100%;z-index:900;padding:1.1rem 0;background:rgba(248,245,252,.94);backdrop-filter:blur(20px);border-bottom:1px solid transparent;transition:all .4s;}
     [data-theme="dark"] nav{background:rgba(12,7,24,.92);}
     nav.scrolled{border-bottom-color:var(--border);}
@@ -39,25 +37,23 @@
     .ctrl-btn{width:36px;height:36px;border:1px solid var(--border);background:transparent;border-radius:50%;cursor:pointer;color:var(--pur);display:flex;align-items:center;justify-content:center;font-size:.78rem;transition:all .25s;}
     .ctrl-btn:hover{background:var(--pur);color:white;border-color:var(--pur);}
     [data-theme="dark"] .ctrl-btn:hover{color:#0c0718;}
-    .mob-btn{display:none;background:none;border:none;color:var(--pur);font-size:1.2rem;cursor:pointer;}
-
-    /* HERO */
+    .mob-btn{display:none;background:none;border:none;color:var(--pur);font-size:1.2rem;cursor:pointer;padding:.2rem;}
     header{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:100px 2.5rem 80px;}
-    header::before{content:'';position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse 55% 65% at 72% 48%,rgba(155,109,204,.18) 0%,transparent 60%),radial-gradient(ellipse 45% 55% at 10% 80%,rgba(91,45,142,.1) 0%,transparent 60%),radial-gradient(ellipse 35% 40% at 85% 12%,rgba(196,158,238,.09) 0%,transparent 55%);}
-    [data-theme="dark"] header::before{background:radial-gradient(ellipse 60% 70% at 70% 50%,rgba(91,45,142,.28) 0%,transparent 65%),radial-gradient(ellipse 45% 55% at 10% 80%,rgba(220,197,255,.06) 0%,transparent 60%);}
+    header::before{content:'';position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse 70% 80% at 75% 50%,rgba(155,109,204,.22) 0%,transparent 58%),radial-gradient(ellipse 50% 60% at 8% 75%,rgba(91,45,142,.12) 0%,transparent 58%),radial-gradient(ellipse 40% 45% at 88% 10%,rgba(196,158,238,.1) 0%,transparent 55%);}
+    [data-theme="dark"] header::before{background:radial-gradient(ellipse 70% 80% at 75% 50%,rgba(91,45,142,.32) 0%,transparent 60%),radial-gradient(ellipse 45% 55% at 8% 75%,rgba(220,197,255,.07) 0%,transparent 58%);}
     .hero-bg-word{position:absolute;bottom:-3rem;left:-1rem;z-index:0;pointer-events:none;font-family:'Cormorant Garamond',serif;font-size:clamp(10rem,26vw,22rem);font-weight:700;color:transparent;-webkit-text-stroke:1px var(--border);line-height:1;user-select:none;white-space:nowrap;}
     header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:var(--border);z-index:2;}
     .hero-ct{position:relative;z-index:2;max-width:1240px;width:100%;margin:0 auto;}
     .hero-row{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
-    .hero-label{font-family:'Outfit',sans-serif;font-size:.62rem;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--pur3);display:flex;align-items:center;gap:.7rem;margin-bottom:1.8rem;opacity:0;animation:fadeUp .6s .1s ease forwards;}
-    .hero-label::before{content:'';display:block;width:28px;height:1px;background:var(--pur3);opacity:.7;}
-    .hero-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(3.2rem,6.5vw,5.5rem);font-weight:700;line-height:1.0;letter-spacing:-.02em;color:var(--pur);margin-bottom:1.8rem;}
+    .hero-label{font-family:'Outfit',sans-serif;font-size:.6rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--pur);display:inline-flex;align-items:center;gap:.6rem;margin-bottom:1.8rem;opacity:0;animation:fadeUp .6s .1s ease forwards;background:rgba(91,45,142,.08);border:1px solid rgba(91,45,142,.2);padding:.38rem 1rem;border-radius:100px;}
+    .hero-label::before{content:"✦";font-size:.52rem;color:var(--pur3);}
+    .hero-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(3.5rem,7vw,6rem);font-weight:700;line-height:.95;letter-spacing:-.03em;color:var(--pur);margin-bottom:1.8rem;}
     .hero-h1 .line{display:block;overflow:hidden;}
     .hero-h1 .inner{display:block;opacity:0;transform:translateY(100%);animation:slideUp .75s cubic-bezier(.16,1,.3,1) forwards;}
     .l1 .inner{animation-delay:.22s;}.l2 .inner{animation-delay:.36s;}.l3 .inner{animation-delay:.5s;}
     .hero-h1 .it{font-style:italic;font-weight:300;color:var(--pur3);}
     @keyframes slideUp{to{opacity:1;transform:none;}}
-    .hero-quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:1.05rem;color:var(--muted);border-left:2px solid var(--pur4);padding-left:1rem;margin-bottom:2.5rem;line-height:1.7;opacity:0;animation:fadeUp .6s .7s ease forwards;}
+    .hero-quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:1.1rem;color:var(--muted);border-left:3px solid var(--pur3);padding:.8rem 1.2rem;margin-bottom:2.5rem;line-height:1.7;opacity:0;animation:fadeUp .6s .7s ease forwards;background:linear-gradient(135deg,rgba(91,45,142,.04) 0%,transparent 100%);border-radius:0 6px 6px 0;}
     .hero-btns{display:flex;gap:1rem;flex-wrap:wrap;opacity:0;animation:fadeUp .6s .88s ease forwards;}
     .btn-p{display:inline-flex;align-items:center;gap:.5rem;background:var(--pur);color:white;padding:.88rem 2.3rem;border-radius:3px;text-decoration:none;font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;transition:all .3s;position:relative;overflow:hidden;}
     [data-theme="dark"] .btn-p{color:#0c0718;}
@@ -68,10 +64,12 @@
     .btn-o{display:inline-flex;align-items:center;gap:.5rem;background:transparent;color:var(--pur);padding:.88rem 2.3rem;border-radius:3px;text-decoration:none;font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;transition:all .3s;border:1px solid var(--border);}
     .btn-o:hover{background:var(--pur);color:white;border-color:var(--pur);transform:translateY(-2px);}
     [data-theme="dark"] .btn-o:hover{color:#0c0718;}
-
-    /* hero visual */
-    .hero-visual{opacity:0;animation:fadeUp .8s .52s ease forwards;}
-    .h-panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:2rem;box-shadow:0 24px 64px rgba(91,45,142,.08);position:relative;}
+    .hero-visual{opacity:0;animation:fadeUp .8s .52s ease forwards;position:relative;}
+    .hero-img-bg{position:absolute;inset:-40px -60px;z-index:0;border-radius:20px;overflow:hidden;pointer-events:none;}
+    .hero-img-bg img{width:100%;height:100%;object-fit:cover;filter:grayscale(30%) saturate(.7);opacity:.13;mix-blend-mode:multiply;}
+    [data-theme="dark"] .hero-img-bg img{opacity:.07;mix-blend-mode:screen;}
+    .hero-visual .h-panel{position:relative;z-index:1;}
+    .h-panel{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2rem;box-shadow:0 32px 80px rgba(91,45,142,.15),0 8px 24px rgba(91,45,142,.08);position:relative;}
     [data-theme="dark"] .h-panel{box-shadow:0 24px 64px rgba(0,0,0,.5);}
     .h-panel::before{content:'';position:absolute;top:-1px;left:2rem;right:2rem;height:2px;background:linear-gradient(to right,transparent,var(--pur3),transparent);}
     .p-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;}
@@ -99,18 +97,14 @@
     .scroll-i span{font-family:'Outfit',sans-serif;font-size:.56rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);}
     .scroll-line{width:1px;height:36px;background:linear-gradient(to bottom,var(--pur),transparent);animation:scrollPulse 2s ease-in-out infinite;}
     @keyframes scrollPulse{0%,100%{opacity:.8;}50%{opacity:.2;}}
-
-    /* TICKER */
     .ticker{background:var(--pur);padding:.52rem 0;overflow:hidden;position:relative;z-index:2;}
     [data-theme="dark"] .ticker{background:var(--pur4);}
     .t-track{display:flex;gap:2rem;animation:tScroll 24s linear infinite;white-space:nowrap;}
     .t-track span{font-family:'Outfit',sans-serif;font-size:.6rem;font-weight:400;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.5);}
     [data-theme="dark"] .t-track span{color:rgba(0,0,0,.5);}
-    .t-track span::before{content:'♪  ';color:rgba(255,255,255,.22);}
+    .t-track span::before{content:"♪  ";color:rgba(255,255,255,.22);}
     [data-theme="dark"] .t-track span::before{color:rgba(0,0,0,.22);}
     @keyframes tScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
-
-    /* SECTION COMMONS */
     .sw{position:relative;z-index:2;}
     .section{padding:5.5rem 2.5rem;max-width:1240px;margin:0 auto;}
     .sc-label{font-family:'Outfit',sans-serif;font-size:.6rem;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:var(--pur3);display:flex;align-items:center;gap:.7rem;margin-bottom:.9rem;}
@@ -124,21 +118,14 @@
     .d1{transition-delay:.08s;}.d2{transition-delay:.16s;}.d3{transition-delay:.24s;}.d4{transition-delay:.32s;}
     .bg-alt{background:var(--bg2);}
     .bg-surf{background:var(--surface);}
-
-    /* ABOUT STRIP */
     .about-strip{display:grid;grid-template-columns:1fr 1fr;gap:0;background:var(--border);}
     .as-img{overflow:hidden;aspect-ratio:1.2;}
     .as-img img{width:100%;height:100%;object-fit:cover;transition:transform .8s;filter:grayscale(15%);}
     .as-img:hover img{transform:scale(1.04);filter:grayscale(0);}
     .as-body{padding:4rem;background:var(--surface);display:flex;flex-direction:column;justify-content:center;}
-    [data-theme="dark"] .as-body{background:var(--surface);}
     .as-body blockquote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1.3rem,2.5vw,1.9rem);font-weight:300;color:var(--pur);line-height:1.5;margin-bottom:1.5rem;border-left:2px solid var(--pur4);padding-left:1.5rem;}
     .as-body p{font-size:.88rem;color:var(--muted);line-height:1.85;font-weight:300;max-width:400px;}
-
-    /* FEATURES — hover reveal */
     .fg{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;}
-    @media(max-width:900px){.fg{grid-template-columns:repeat(2,1fr);}}
-    @media(max-width:500px){.fg{grid-template-columns:1fr;}}
     .fc{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:2.2rem 1.8rem;cursor:default;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;text-align:center;transition:all .38s cubic-bezier(.16,1,.3,1);}
     .fc::before{content:'';position:absolute;inset:0;background:var(--pur);transform:translateY(101%);transition:transform .42s cubic-bezier(.16,1,.3,1);z-index:0;}
     .fc:hover{border-color:var(--pur);transform:translateY(-4px);box-shadow:0 20px 48px var(--glow);}
@@ -150,9 +137,7 @@
     .fc:hover h3{color:white;}
     .fc p{color:var(--muted);font-size:.84rem;line-height:1.8;font-weight:300;position:relative;z-index:1;max-height:0;overflow:hidden;opacity:0;margin-top:0;transition:max-height .42s cubic-bezier(.16,1,.3,1),opacity .32s .08s,margin-top .38s;}
     .fc:hover p{max-height:120px;opacity:1;margin-top:.65rem;color:rgba(255,255,255,.78);}
-
-    /* PRICING */
-    .pg{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;background:var(--border);}
+    .pg{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);}
     .pc{background:var(--surface);padding:2.4rem;display:flex;flex-direction:column;transition:background .3s;}
     .pc:hover:not(.pc-feat){background:var(--bg2);}
     .pc-feat{background:var(--pur);}
@@ -188,8 +173,6 @@
     .p-btn-l{color:var(--pur);background:white;border-color:white;}
     [data-theme="dark"] .p-btn-l{color:#0c0718;}
     .p-btn-l:hover{background:var(--bg);}
-
-    /* GALLERY */
     .gal-wrap{overflow:hidden;}
     .gal-track{display:flex;gap:1.2rem;transition:transform .55s cubic-bezier(.4,0,.2,1);}
     .gal-item{flex:0 0 240px;aspect-ratio:.85;overflow:hidden;border-radius:8px;position:relative;cursor:pointer;}
@@ -203,9 +186,7 @@
     .gal-btn{width:38px;height:38px;border:1px solid var(--border);background:var(--surface);border-radius:3px;cursor:pointer;color:var(--pur);font-size:.78rem;display:flex;align-items:center;justify-content:center;transition:all .25s;}
     .gal-btn:hover{background:var(--pur);color:white;border-color:var(--pur);}
     [data-theme="dark"] .gal-btn:hover{color:#0c0718;}
-
-    /* BLOG */
-    .bg-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1px;background:var(--border);}
+    .bg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);}
     .bc{background:var(--surface);display:flex;flex-direction:column;cursor:pointer;transition:background .3s;}
     .bc:hover{background:var(--bg2);}
     .bc-img{overflow:hidden;aspect-ratio:1.6;}
@@ -219,8 +200,6 @@
     .bc-date{font-size:.7rem;color:var(--muted2);font-weight:300;}
     .bc-more{font-family:'Outfit',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--pur3);display:flex;align-items:center;gap:.3rem;transition:gap .25s;}
     .bc:hover .bc-more{gap:.55rem;}
-
-    /* SUBSCRIBE */
     .sub-row{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);}
     .sub-c{background:var(--surface);padding:2.8rem;}
     .sub-c.creator{background:var(--pur);}
@@ -252,8 +231,6 @@
     .sub-c.creator .sub-btn{background:white;color:var(--pur);}
     [data-theme="dark"] .sub-c.creator .sub-btn{color:#0c0718;}
     .sub-msg{font-size:.74rem;color:var(--pur3);margin-top:.5rem;min-height:1.1em;}
-
-    /* FAQ */
     .faq-l{max-width:700px;margin:0 auto;}
     .faq-i{border-bottom:1px solid var(--border);}
     .faq-q{width:100%;padding:1.3rem 0;display:flex;justify-content:space-between;align-items:center;background:none;border:none;cursor:pointer;text-align:left;font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:600;color:var(--pur);transition:color .25s;}
@@ -262,8 +239,6 @@
     .faq-q.open .fq-ic{transform:rotate(45deg);}
     .faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease;}
     .faq-ai{padding:.1rem 0 1.3rem;font-size:.87rem;color:var(--muted);line-height:1.85;font-weight:300;}
-
-    /* DOWNLOAD */
     .dl-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
     .dl-btns{display:flex;flex-direction:column;gap:.9rem;}
     .dl-btn{display:flex;align-items:center;gap:1.1rem;padding:1.2rem 1.6rem;background:var(--surface);border:1px solid var(--border);border-radius:6px;text-decoration:none;color:var(--ink);transition:all .3s;}
@@ -274,8 +249,6 @@
     .qr-side{text-align:center;}
     .qr-side img{border:4px solid var(--beige);border-radius:8px;max-width:150px;}
     .qr-lbl{font-family:'Outfit',sans-serif;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;font-weight:300;}
-
-    /* CONTACT */
     .cg{display:grid;grid-template-columns:1fr 1fr;gap:4.5rem;align-items:start;}
     .ci-info p{color:var(--muted);font-size:.88rem;margin-bottom:2.2rem;line-height:1.85;font-weight:300;}
     .ci-row{display:flex;align-items:center;gap:.9rem;margin-bottom:1rem;}
@@ -289,8 +262,6 @@
     form.contact button{background:var(--pur);color:white;width:100%;padding:.86rem;border:none;border-radius:3px;font-family:'Outfit',sans-serif;font-size:.74rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .3s;}
     [data-theme="dark"] form.contact button{color:#0c0718;}
     form.contact button:hover{background:var(--pur2);transform:translateY(-1px);}
-
-    /* POPUP */
     .pop-ov{position:fixed;inset:0;z-index:9999;background:rgba(26,14,46,.78);backdrop-filter:blur(14px);display:none;align-items:center;justify-content:center;padding:2rem;}
     .pop-ov.open{display:flex;animation:pIn .22s ease;}
     @keyframes pIn{from{opacity:0;}to{opacity:1;}}
@@ -306,8 +277,6 @@
     .pop-close{position:absolute;top:1rem;right:1rem;background:var(--bg2);border:1px solid var(--border);border-radius:3px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);font-size:.82rem;transition:all .25s;z-index:1;}
     .pop-close:hover{background:var(--pur);color:white;}
     [data-theme="dark"] .pop-close:hover{color:#0c0718;}
-
-    /* FOOTER */
     footer{background:var(--pur);color:white;padding:4.5rem 2.5rem 2rem;position:relative;z-index:2;}
     [data-theme="dark"] footer{background:#160c2e;}
     .fi-grid{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3.5rem;margin-bottom:3.5rem;}
@@ -330,19 +299,14 @@
     .foot-bot p{font-size:.73rem;color:rgba(255,255,255,.28);font-weight:300;}
     [data-theme="dark"] .foot-bot p{color:var(--muted2);}
     [data-theme="dark"] .foot-bot{border-top-color:var(--border);}
-
     @keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:none;}}
-    @media(max-width:768px){
-      .nav-links{display:none;}.nav-links.open{display:flex;flex-direction:column;position:fixed;top:60px;left:0;right:0;background:rgba(248,245,252,.97);padding:2rem;z-index:899;border-bottom:1px solid var(--border);}
-      [data-theme="dark"] .nav-links.open{background:rgba(12,7,24,.97);}
-      .mob-btn{display:block;}.hero-row{grid-template-columns:1fr;}.hero-visual{display:none;}
-      .dl-grid,.cg,.sub-row,.about-strip{grid-template-columns:1fr;}
-      .fi-grid{grid-template-columns:1fr 1fr;}
-    }
+    @media(max-width:1100px){.hero-row{gap:3rem;}.fi-grid{grid-template-columns:1fr 1fr 1fr;}}
+    @media(max-width:900px){.fg{grid-template-columns:repeat(2,1fr);}.pg{grid-template-columns:1fr;}.about-strip{grid-template-columns:1fr;}.as-img{aspect-ratio:1.8;}.bg-grid{grid-template-columns:1fr 1fr;}.sub-row{grid-template-columns:1fr;}.dl-grid{grid-template-columns:1fr;gap:2rem;}.qr-side{display:none;}.cg{grid-template-columns:1fr;gap:2.5rem;}.fi-grid{grid-template-columns:1fr 1fr;}.section{padding:4rem 2rem;}}
+    @media(max-width:768px){.nav-links{display:none;}.nav-links.open{display:flex;flex-direction:column;position:fixed;top:60px;left:0;right:0;background:rgba(248,245,252,.97);padding:2rem;z-index:899;border-bottom:1px solid var(--border);}[data-theme="dark"] .nav-links.open{background:rgba(12,7,24,.97);}.mob-btn{display:block;}.hero-row{grid-template-columns:1fr;}.hero-visual{display:none;}.hero-h1{font-size:clamp(2.8rem,10vw,4rem);}.section{padding:3rem 1.5rem;}.sc-h{font-size:clamp(1.9rem,6vw,2.8rem);}.bg-grid{grid-template-columns:1fr;}.fi-grid{grid-template-columns:1fr 1fr;}header{padding:90px 1.5rem 60px;}}
+    @media(max-width:480px){.fg{grid-template-columns:1fr;}.pg{grid-template-columns:1fr;}.bg-grid{grid-template-columns:1fr;}.fi-grid{grid-template-columns:1fr;}.hero-btns{flex-direction:column;}.btn-p,.btn-o{width:100%;justify-content:center;}.sub-form{flex-direction:column;}.sub-btn{width:100%;}.section{padding:2.8rem 1.2rem;}.hero-h1{font-size:clamp(2.4rem,11vw,3rem);}.as-body{padding:2rem 1.5rem;}.gal-item{flex:0 0 200px;}footer{padding:3rem 1.2rem 1.5rem;}.foot-bot{flex-direction:column;text-align:center;}nav{padding:.85rem 0;}.nav-c{padding:0 1.2rem;}}
   </style>
-</head></head>
+</head>
 <body>
-
 <nav id="nav">
   <div class="nav-c">
     <a href="index.html" class="logo">Mixfy</a>
@@ -359,7 +323,6 @@
   </div>
 </nav>
 
-<!-- HERO -->
 <header>
   <div class="hero-bg-word" aria-hidden="true">MIXFY</div>
   <div class="hero-ct">
@@ -377,8 +340,7 @@
           <a href="#download" class="btn-o">Descargar gratis</a>
         </div>
       </div>
-      <div class="hero-visual">
-        <div class="h-panel">
+      <div class="hero-visual"><div class="hero-img-bg"><img src="https://images.pexels.com/photos/164938/pexels-photo-164938.jpeg?auto=compress&cs=tinysrgb&w=900" alt=""></div>        <div class="h-panel">
           <div class="float-badge">● Live</div>
           <div class="p-top">
             <div class="p-dots"><div class="p-dot pd1"></div><div class="p-dot pd2"></div><div class="p-dot pd3"></div></div>
@@ -398,22 +360,17 @@
   <div class="scroll-i"><div class="scroll-line"></div><span>Scroll</span></div>
 </header>
 
-<!-- TICKER -->
 <div class="sw"><div class="ticker"><div class="t-track">
   <span>Deep House</span><span>Hip-Hop</span><span>Ambient</span><span>Trap</span><span>Lo-Fi</span><span>Classical</span><span>Electronic</span><span>Jazz</span><span>R&amp;B</span><span>Afrobeats</span><span>Future Bass</span><span>Drill</span>
   <span>Deep House</span><span>Hip-Hop</span><span>Ambient</span><span>Trap</span><span>Lo-Fi</span><span>Classical</span><span>Electronic</span><span>Jazz</span><span>R&amp;B</span><span>Afrobeats</span><span>Future Bass</span><span>Drill</span>
 </div></div></div>
 
-<!-- ABOUT STRIP (real image) -->
-<div class="sw bg-surf"><div class="about-strip rv">
-  <div class="as-img"><img src="5.png" alt="Estudio de producción profesional"/></div>
-  <div class="as-body">
+<div class="sw bg-surf"><div class="about-strip rv">  <div class="as-img"><img src="https://images.pexels.com/photos/164938/pexels-photo-164938.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Estudio de producción profesional"/></div>  <div class="as-body">
     <blockquote>"Música sin límites. Producción sin fronteras."</blockquote>
     <p>Mixfy nace de la necesidad de los productores modernos de tener herramientas profesionales accesibles desde cualquier lugar. Desde el estudio hasta el escenario, tu música merece lo mejor.</p>
   </div>
 </div></div>
 
-<!-- FEATURES -->
 <div class="sw" id="features" style="background:linear-gradient(135deg,var(--bg2) 0%,rgba(196,158,238,.07) 100%);"><div class="section">
   <div class="sc-head rv">
     <div class="sc-label">Funcionalidades</div>
@@ -430,7 +387,6 @@
   </div>
 </div></div>
 
-<!-- PRICING -->
 <div class="sw bg-surf" id="pricing"><div class="section">
   <div class="sc-head rv">
     <div class="sc-label">Precios</div>
@@ -479,52 +435,42 @@
   </div>
 </div></div>
 
-<!-- GALLERY (real images) -->
 <div class="sw bg-alt"><div class="section">
   <div class="sc-head rv">
     <div class="sc-label">Samples &amp; Sesiones</div>
     <div class="sc-h">Nuestra colección.</div>
   </div>
-  <div class="gal-wrap rv"><div class="gal-track" id="gT">
-    <div class="gal-item"><img src="1.png" alt="Mixer headphones"><div class="gal-ov"><div><h4>Studio Headphones Pack</h4><p>45 stems de calidad</p></div></div></div>
-    <div class="gal-item"><img src="2.png" alt="Acoustic guitar"><div class="gal-ov"><div><h4>Acoustic Sessions</h4><p>30 loops de guitarra</p></div></div></div>
-    <div class="gal-item"><img src="3.png" alt="Waveform artist"><div class="gal-ov"><div><h4>Sound Design Lab</h4><p>Síntesis avanzada</p></div></div></div>
-    <div class="gal-item"><img src="4.png" alt="Concert stage"><div class="gal-ov"><div><h4>Concert Vibes</h4><p>Pads y atmósferas</p></div></div></div>
-    <div class="gal-item"><img src="5.png" alt="Pro studio"><div class="gal-ov"><div><h4>Pro Studio Sessions</h4><p>Samples de estudio</p></div></div></div>
-    <div class="gal-item"><img src="6.png" alt=""><div class="gal-ov"><div><h4>Live Recording</h4><p>Samples vocales</p></div></div></div>
-    <div class="gal-item"><img src="7.png" alt=""><div class="gal-ov"><div><h4>Electronic Drums</h4><p>Ritmos electrónicos</p></div></div></div>
-    <div class="gal-item"><img src="8.png" alt=""><div class="gal-ov"><div><h4>DJ Toolkit</h4><p>Transiciones y FX</p></div></div></div>
+  <div class="gal-wrap rv"><div class="gal-track" id="gT">    <div class="gal-item"><img src="https://images.pexels.com/photos/3756766/pexels-photo-3756766.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Headphones"><div class="gal-ov"><div><h4>Studio Headphones Pack</h4><p>45 stems de calidad</p></div></div></div>
+    <div class="gal-item"><img src="https://images.pexels.com/photos/1407322/pexels-photo-1407322.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Guitar"><div class="gal-ov"><div><h4>Acoustic Sessions</h4><p>30 loops de guitarra</p></div></div></div>
+    <div class="gal-item"><img src="https://images.pexels.com/photos/1694980/pexels-photo-1694980.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Producer"><div class="gal-ov"><div><h4>Sound Design Lab</h4><p>Síntesis avanzada</p></div></div></div>
+    <div class="gal-item"><img src="https://images.pexels.com/photos/2747446/pexels-photo-2747446.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Concert"><div class="gal-ov"><div><h4>Concert Vibes</h4><p>Pads y atmósferas</p></div></div></div>
+    <div class="gal-item"><img src="https://images.pexels.com/photos/164938/pexels-photo-164938.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Studio"><div class="gal-ov"><div><h4>Pro Studio Sessions</h4><p>Samples de estudio</p></div></div></div>
+    <div class="gal-item"><img src="https://images.pexels.com/photos/1751731/pexels-photo-1751731.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Mic"><div class="gal-ov"><div><h4>Live Recording</h4><p>Samples vocales</p></div></div></div>
+    <div class="gal-item"><img src="https://images.pexels.com/photos/995301/pexels-photo-995301.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Drums"><div class="gal-ov"><div><h4>Electronic Drums</h4><p>Ritmos electrónicos</p></div></div></div>
+    <div class="gal-item"><img src="https://images.pexels.com/photos/3944091/pexels-photo-3944091.jpeg?auto=compress&cs=tinysrgb&w=600" alt="DJ"><div class="gal-ov"><div><h4>DJ Toolkit</h4><p>Transiciones y FX</p></div></div></div>
   </div></div>
   <div class="gal-ctrl rv"><button class="gal-btn" id="gPrev"><i class="fas fa-chevron-left"></i></button><button class="gal-btn" id="gNext"><i class="fas fa-chevron-right"></i></button></div>
 </div></div>
 
-<!-- BLOG (real images) -->
 <div class="sw bg-surf" id="blog"><div class="section">
   <div class="sc-head rv">
     <div class="sc-label">Mixphere</div>
     <div class="sc-h">Del estudio<br><em>al escenario.</em></div>
   </div>
   <div class="bg-grid">
-    <div class="bc rv d1" onclick="openPost(0)">
-      <div class="bc-img"><img src="1.png" alt="Mastering"></div>
-      <div class="bc-body"><p class="bc-cat">Producción</p><h3>Mastering para Spotify: guía completa 2025</h3><p>Aprende a preparar tus mezclas para sonar perfectas en streaming.</p></div>
+    <div class="bc rv d1" onclick="openPost(0)">      <div class="bc-img"><img src="https://images.pexels.com/photos/3756766/pexels-photo-3756766.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Mastering"></div>      <div class="bc-body"><p class="bc-cat">Producción</p><h3>Mastering para Spotify: guía completa 2025</h3><p>Aprende a preparar tus mezclas para sonar perfectas en streaming.</p></div>
       <div class="bc-foot"><span class="bc-date">12 Dic 2024</span><span class="bc-more">Leer <i class="fas fa-arrow-right"></i></span></div>
     </div>
-    <div class="bc rv" onclick="openPost(1)">
-      <div class="bc-img"><img src="5.png" alt="Colaboración"></div>
-      <div class="bc-body"><p class="bc-cat">Colaboración</p><h3>Cómo colaborar con artistas de forma remota</h3><p>Flujos de trabajo para crear música con artistas desde cualquier lugar del mundo.</p></div>
+    <div class="bc rv" onclick="openPost(1)">      <div class="bc-img"><img src="https://images.pexels.com/photos/164938/pexels-photo-164938.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Colaboración"></div>      <div class="bc-body"><p class="bc-cat">Colaboración</p><h3>Cómo colaborar con artistas de forma remota</h3><p>Flujos de trabajo para crear música con artistas desde cualquier lugar del mundo.</p></div>
       <div class="bc-foot"><span class="bc-date">5 Dic 2024</span><span class="bc-more">Leer <i class="fas fa-arrow-right"></i></span></div>
     </div>
-    <div class="bc rv d2" onclick="openPost(2)">
-      <div class="bc-img"><img src="3.png" alt="Teoría"></div>
-      <div class="bc-body"><p class="bc-cat">Técnica</p><h3>Teoría musical para productores modernos</h3><p>Los conceptos de armonía y acordes que todo productor debería dominar.</p></div>
+    <div class="bc rv d2" onclick="openPost(2)">      <div class="bc-img"><img src="https://images.pexels.com/photos/1694980/pexels-photo-1694980.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Técnica"></div>      <div class="bc-body"><p class="bc-cat">Técnica</p><h3>Teoría musical para productores modernos</h3><p>Los conceptos de armonía y acordes que todo productor debería dominar.</p></div>
       <div class="bc-foot"><span class="bc-date">28 Nov 2024</span><span class="bc-more">Leer <i class="fas fa-arrow-right"></i></span></div>
     </div>
   </div>
   <div style="margin-top:2.2rem;" class="rv"><a href="mixphere.html" class="btn-o" style="display:inline-flex">Ver todos los artículos →</a></div>
 </div></div>
 
-<!-- SUBSCRIBE -->
 <div class="sw bg-alt" id="suscribirse"><div class="section">
   <div class="sc-head rv"><div class="sc-label">Comunidad</div><div class="sc-h">Únete a <em>Mixphere.</em></div></div>
   <div class="sub-row">
@@ -555,7 +501,6 @@
   </div>
 </div></div>
 
-<!-- FAQ -->
 <div class="sw bg-surf"><div class="section">
   <div class="sc-head rv"><div class="sc-label">FAQ</div><div class="sc-h">Preguntas <em>frecuentes.</em></div></div>
   <div class="faq-l">
@@ -566,7 +511,6 @@
   </div>
 </div></div>
 
-<!-- DOWNLOAD -->
 <div class="sw bg-alt" id="download"><div class="section">
   <div class="sc-head rv"><div class="sc-label">Descarga</div><div class="sc-h">Descarga Mixfy <em>ahora.</em></div></div>
   <div class="dl-grid rv">
@@ -575,11 +519,10 @@
       <a href="#" class="dl-btn"><i class="fab fa-apple"></i><div><div class="dl-t">App Store</div><div class="dl-s">iOS · iPadOS</div></div></a>
       <a href="demo.html" class="dl-btn"><i class="fas fa-globe"></i><div><div class="dl-t">Demo Web</div><div class="dl-s">Prueba en el navegador ahora</div></div></a>
     </div>
-    <div class="qr-side"><p class="qr-lbl">Escanea para descargar</p><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://mixfy.app/download&bgcolor=faf7f2&color=5b2d8e" alt="QR"></div>
+    <div class="qr-side"><p class="qr-lbl">Escanea para descargar</p><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://mixfy.app/download&bgcolor=f8f5fc&color=5b2d8e" alt="QR"></div>
   </div>
 </div></div>
 
-<!-- CONTACT -->
 <div class="sw bg-surf" id="contact"><div class="section">
   <div class="sc-head rv"><div class="sc-label">Contacto</div><div class="sc-h">Hablemos.</div></div>
   <div class="cg rv">
@@ -600,7 +543,6 @@
   </div>
 </div></div>
 
-<!-- FOOTER -->
 <footer>
   <div class="fi-grid">
     <div class="fb"><span class="logo-f">Mixfy</span><p>La herramienta definitiva para crear música en tu móvil. Diseñada por productores, para productores.</p><div class="fs-socials"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-twitter"></i></a><a href="#"><i class="fab fa-youtube"></i></a><a href="#"><i class="fab fa-tiktok"></i></a></div></div>
@@ -626,7 +568,6 @@ document.getElementById('themeBtn').onclick=()=>{dark=!dark;localStorage.setItem
 document.getElementById('menuBtn').onclick=()=>document.getElementById('navLinks').classList.toggle('open');
 window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>50));
 
-// Track rows
 const tracks=[{name:'Kick',bars:'0101010101010101010101010101010101010101'},{name:'Bass',bars:'1101100110011001100110011001100110011001'},{name:'Synth',bars:'1111100011111000111110001111100011111000'},{name:'Voz',bars:'0011111111001100111111110011001111111100'}];
 const tl=document.getElementById('trackList');
 tracks.forEach((t,ti)=>{
@@ -637,11 +578,10 @@ tracks.forEach((t,ti)=>{
   row.appendChild(barsDiv);row.innerHTML+=`<span class="track-time">4:32</span>`;
   tl.appendChild(row);
 });
-
 const posts=[
-  {img:'1.png',cat:'Producción',title:'Mastering para Spotify: guía completa 2025',content:'<p>Spotify normaliza a <strong>-14 LUFS</strong>. Apunta con true peak de <strong>-1 dBTP</strong>. Exporta en WAV 24-bit para mejores resultados.</p>'},
-  {img:'5.png',cat:'Colaboración',title:'Cómo colaborar con artistas de forma remota',content:'<p>Usa <strong>Audiomovers</strong> o <strong>Cleanfeed</strong> para feedback de audio en tiempo real. Mixfy tiene colaboración nativa integrada.</p>'},
-  {img:'3.png',cat:'Técnica',title:'Teoría musical para productores modernos',content:'<p>Lo esencial: <strong>escalas</strong> y <strong>acordes</strong>. El Scale Helper de Mixfy muestra qué notas están en tu escala automáticamente.</p>'}
+  {img:'https://images.pexels.com/photos/3756766/pexels-photo-3756766.jpeg?auto=compress&cs=tinysrgb&w=800',cat:'Producción',title:'Mastering para Spotify: guía completa 2025',content:'<p>Spotify normaliza a <strong>-14 LUFS</strong>. Apunta con true peak de <strong>-1 dBTP</strong>. Exporta en WAV 24-bit para mejores resultados.</p>'},
+  {img:'https://images.pexels.com/photos/164938/pexels-photo-164938.jpeg?auto=compress&cs=tinysrgb&w=800',cat:'Colaboración',title:'Cómo colaborar con artistas de forma remota',content:'<p>Usa <strong>Audiomovers</strong> o <strong>Cleanfeed</strong> para feedback de audio en tiempo real. Mixfy tiene colaboración nativa integrada.</p>'},
+  {img:'https://images.pexels.com/photos/1694980/pexels-photo-1694980.jpeg?auto=compress&cs=tinysrgb&w=800',cat:'Técnica',title:'Teoría musical para productores modernos',content:'<p>Lo esencial: <strong>escalas</strong> y <strong>acordes</strong>. El Scale Helper de Mixfy muestra qué notas están en tu escala automáticamente.</p>'}
 ];
 function openPost(i){const p=posts[i];document.getElementById('pImg').src=p.img;document.getElementById('pCat').textContent=p.cat;document.getElementById('pTitle').textContent=p.title;document.getElementById('pCont').innerHTML=p.content;document.getElementById('popOv').classList.add('open');document.body.style.overflow='hidden';}
 function closePop(e){if(!e||e.target===document.getElementById('popOv')||e.currentTarget.classList.contains('pop-close')){document.getElementById('popOv').classList.remove('open');document.body.style.overflow='';}}
@@ -652,6 +592,7 @@ document.getElementById('gPrev').onclick=()=>{gPos=Math.max(0,gPos-252);gt.style
 document.getElementById('gNext').onclick=()=>{const m=gt.scrollWidth-gt.parentElement.offsetWidth;gPos=Math.min(m,gPos+252);gt.style.transform=`translateX(-${gPos}px)`;};
 
 document.querySelectorAll('.faq-q').forEach(q=>{q.addEventListener('click',()=>{q.classList.toggle('open');const a=q.nextElementSibling;a.style.maxHeight=q.classList.contains('open')?a.scrollHeight+'px':'0';});});
+
 const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');}),{threshold:.12});
 document.querySelectorAll('.rv').forEach(el=>io.observe(el));
 </script>
